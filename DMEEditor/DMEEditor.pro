@@ -13,8 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    DecisionTreeScene.cpp \
+    UnkownDecisionTreeNode.cpp \
+    Node.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    DecisionTreeScene.h \
+    UnkownDecisionTreeNode.h \
+    Node.h
 
 FORMS    += mainwindow.ui

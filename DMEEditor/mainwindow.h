@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include "DecisionTreeScene.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,13 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    QGraphicsView *view = nullptr;
+
+    DecisionTreeScene *scene = nullptr;
+
+public slots:
+    void CreateNewDecisionTree();
 };
 
 #endif // MAINWINDOW_H
