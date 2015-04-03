@@ -14,13 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    DecisionTreeScene.cpp \
-    UnkownDecisionTreeNode.cpp \
-    Node.cpp
+    UndeterminedDecisionTreeNode.cpp \
+    DecisionTreeNode.cpp \
+    DecisionTreeEditor.cpp \
+    DecisionNode.cpp \
+    ActionNode.cpp
 
 HEADERS  += mainwindow.h \
-    DecisionTreeScene.h \
-    UnkownDecisionTreeNode.h \
-    Node.h
+    UndeterminedDecisionTreeNode.h \
+    DecisionTreeNode.h \
+    DecisionTreeEditor.h \
+    DecisionNode.h \
+    ActionNode.h
 
 FORMS    += mainwindow.ui

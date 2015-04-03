@@ -6,16 +6,20 @@
 #include <QBrush>
 
 
-class Node : public QGraphicsItem
+
+class DecisionTreeNode : public QGraphicsItem
 {
+
 public:
-    Node(QGraphicsItem *parent = 0);
-    ~Node();
+    DecisionTreeNode(QGraphicsItem *parent = 0);
+    ~DecisionTreeNode();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
 
 protected:
     QGraphicsEllipseItem* ellipse = nullptr;
+
+    QGraphicsTextItem* textItem = nullptr;
 };
 
 #endif // GUINODE_H

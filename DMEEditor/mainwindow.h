@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "DecisionTreeScene.h"
+#include "DecisionTreeEditor.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +22,11 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    QGraphicsView *view = nullptr;
 
-    DecisionTreeScene *scene = nullptr;
+    DecisionTreeEditor* editor = nullptr;
 
 public slots:
-    void CreateNewDecisionTree();
+    void CreateNewDecisionTreeEditor();
 };
 
 #endif // MAINWINDOW_H
