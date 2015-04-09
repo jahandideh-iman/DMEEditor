@@ -1,11 +1,13 @@
 #include "DecisionTreeEditor.h"
 
-DecisionTreeEditor::DecisionTreeEditor()
+DecisionTreeEditor::DecisionTreeEditor(PropertyPanel* propertyPanel)
 {
+    this->propertyPanel = propertyPanel;
+
     scene = new QGraphicsScene();
     view = new QGraphicsView(scene);
 
-    root = new UndeterminedDecisionTreeNode(this,nullptr);
+    root = new UndeterminedDecisionTreeNode(this,nullptr, propertyPanel);
     scene->addItem(root);
 }
 
@@ -36,7 +38,7 @@ void DecisionTreeEditor::ConvertToDecisionNode(UndeterminedDecisionTreeNode *und
 
 DecisionTreeNode *DecisionTreeEditor::CreateActionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
 {
-    DecisionTreeNode* newNode = new ActionNode();
+    DecisionTreeNode* newNode = new ActionNode(propertyPanel);
     scene->addItem(newNode);
     newNode->setPos(undeterminedNode->pos());
 
@@ -45,9 +47,9 @@ DecisionTreeNode *DecisionTreeEditor::CreateActionNodeFrom(UndeterminedDecisionT
 
 DecisionTreeNode *DecisionTreeEditor::CreateDecisionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
 {
-    DecisionNode* newNode = new DecisionNode();
-    DecisionTreeNode* rightChild = new UndeterminedDecisionTreeNode(this, newNode);
-    DecisionTreeNode* leftChild = new UndeterminedDecisionTreeNode(this, newNode);
+    DecisionNode* newNode = new DecisionNode(propertyPanel);
+    DecisionTreeNode* rightChild = new UndeterminedDecisionTreeNode(this, newNode, propertyPanel);
+    DecisionTreeNode* leftChild = new UndeterminedDecisionTreeNode(this, newNode, propertyPanel);
 
     newNode->SetRightChild(rightChild);
     newNode->SetLeftChild(leftChild);

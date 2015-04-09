@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "StringProperty.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -18,7 +19,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::CreateNewDecisionTreeEditor()
 {
-    editor = new DecisionTreeEditor();
+    propertyPanel = new PropertyPanel(this);
+    editor = new DecisionTreeEditor(propertyPanel);
 
-    ui->ViewLayout->addWidget(editor->GetView());
+
+    ui->viewLayout->addWidget(editor->GetView(),0,0,3,1);
+    ui->viewLayout->addWidget(propertyPanel,0,3,1,1, Qt::AlignLeft);
+
 }

@@ -2,12 +2,23 @@
 #define ACTIONNODE_H
 
 #include "DecisionTreeNode.h"
+#include "StringProperty.h"
 
 class ActionNode : public DecisionTreeNode
 {
+    Q_OBJECT
 public:
-    ActionNode();
+    ActionNode(PropertyPanel* propertyPanel);
     ~ActionNode();
+
+protected:
+    void InitialPropertyWidgets() override;
+
+public slots:
+    void ActionNameChanged(const QString& value);
+
+private:
+    void SetActionName(QString value);
 
 private:
     QString actionName;

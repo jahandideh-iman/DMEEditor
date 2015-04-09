@@ -4,7 +4,8 @@
 
 
 
-UndeterminedDecisionTreeNode::UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode *parentNode)
+UndeterminedDecisionTreeNode::UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode *parentNode, PropertyPanel *propertyPanel)
+    : DecisionTreeNode(propertyPanel)
 {
     this->parentNode = parentNode;
     this->editor = editor;

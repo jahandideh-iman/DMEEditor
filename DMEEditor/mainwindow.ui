@@ -6,39 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>646</width>
-    <height>300</height>
+    <width>674</width>
+    <height>417</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>DMEEditor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>0</y>
-      <width>611</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="ViewLayout">
-     <property name="spacing">
-      <number>7</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="viewLayout"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>646</width>
+     <width>674</width>
      <height>21</height>
     </rect>
    </property>

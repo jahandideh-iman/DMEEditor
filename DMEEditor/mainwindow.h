@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "DecisionTreeEditor.h"
+#include "PropertyPanel.h"
 
 
 namespace Ui {
@@ -19,11 +20,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private:
     Ui::MainWindow *ui;
 
-
     DecisionTreeEditor* editor = nullptr;
+
+    PropertyPanel* propertyPanel = nullptr;
 
 public slots:
     void CreateNewDecisionTreeEditor();

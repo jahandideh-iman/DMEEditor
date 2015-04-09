@@ -10,11 +10,11 @@ class DecisionTreeEditor;
 
 
 
-class UndeterminedDecisionTreeNode : public QObject ,public DecisionTreeNode
+class UndeterminedDecisionTreeNode :public DecisionTreeNode
 {
     Q_OBJECT
 public:
-    UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode* parentNode);
+    UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode* parentNode, PropertyPanel* propertyPanel);
     ~UndeterminedDecisionTreeNode();
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

@@ -7,10 +7,12 @@
 #include "ActionNode.h"
 #include "DecisionNode.h"
 
+class PropertyPanel;
+
 class DecisionTreeEditor
 {
 public:
-    DecisionTreeEditor();
+    DecisionTreeEditor(PropertyPanel* propertyPanel);
     ~DecisionTreeEditor();
 
 
@@ -28,7 +30,9 @@ private:
     QGraphicsScene *scene = nullptr;
     QGraphicsView *view = nullptr;
 
-    DecisionTreeNode* root;
+    PropertyPanel* propertyPanel = nullptr;
+
+    DecisionTreeNode* root = nullptr;
 };
 
 #endif // DECISIONTREEEDITOR_H

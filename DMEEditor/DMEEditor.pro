@@ -18,13 +18,19 @@ SOURCES += main.cpp\
     DecisionTreeNode.cpp \
     DecisionTreeEditor.cpp \
     DecisionNode.cpp \
-    ActionNode.cpp
+    ActionNode.cpp \
+    PropertyPanel.cpp \
+    StringProperty.cpp \
+    PropertyWidget.cpp
 
 HEADERS  += mainwindow.h \
     UndeterminedDecisionTreeNode.h \
     DecisionTreeNode.h \
     DecisionTreeEditor.h \
     DecisionNode.h \
-    ActionNode.h
+    ActionNode.h \
+    PropertyPanel.h \
+    StringProperty.h \
+    PropertyWidget.h
 
 FORMS    += mainwindow.ui

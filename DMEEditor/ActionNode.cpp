@@ -1,16 +1,31 @@
 #include "ActionNode.h"
 
-ActionNode::ActionNode()
+ActionNode::ActionNode(PropertyPanel *propertyPanel) : DecisionTreeNode(propertyPanel)
 {
-    actionName = "DefaultAction";
-
-    textItem->setPlainText(actionName);
-
+    SetActionName("Default");
     ellipse->setBrush(QBrush(Qt::yellow));
 }
 
 ActionNode::~ActionNode()
 {
+
+}
+
+void ActionNode::InitialPropertyWidgets()
+{
+    DecisionTreeNode::InitialPropertyWidgets();
+    propertyPanel->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(ActionNameChanged(const QString& ))));
+}
+
+void ActionNode::ActionNameChanged(const QString &value)
+{
+    SetActionName(value);
+}
+
+void ActionNode::SetActionName(QString value)
+{
+    actionName = value;
+    textItem->setPlainText(actionName);
 
 }
 

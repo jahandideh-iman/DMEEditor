@@ -4,22 +4,29 @@
 #include <QGraphicsItem>
 #include <QGraphicsEllipseItem>
 #include <QBrush>
+#include "PropertyPanel.h"
 
-
-
-class DecisionTreeNode : public QGraphicsItem
+class DecisionTreeNode :  public QObject ,public QGraphicsItem
 {
 
 public:
-    DecisionTreeNode(QGraphicsItem *parent = 0);
+    DecisionTreeNode(PropertyPanel* propertyPanel,QGraphicsItem *parent = 0);
     ~DecisionTreeNode();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
 
+   void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event) override;
+
+       QGraphicsEllipseItem* ellipse = nullptr;
 protected:
-    QGraphicsEllipseItem* ellipse = nullptr;
+    virtual void InitialPropertyWidgets() ;
+
+protected:
+
 
     QGraphicsTextItem* textItem = nullptr;
+
+    PropertyPanel* propertyPanel = nullptr;
 };
 
 #endif // GUINODE_H
