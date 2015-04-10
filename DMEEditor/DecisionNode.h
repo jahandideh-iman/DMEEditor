@@ -15,6 +15,11 @@ public:
     void SetLeftChild(DecisionTreeNode* leftChild);
     void SetRightChild(DecisionTreeNode* rightChild);
 
+    DecisionTreeNode *GetLeftChild();
+    DecisionTreeNode *GetRightChild();
+
+    QString GetConditionName();
+
     void ReplaceChild(DecisionTreeNode* child, DecisionTreeNode* newNode);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;

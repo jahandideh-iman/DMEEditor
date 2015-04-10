@@ -11,6 +11,8 @@ public:
     ActionNode(PropertyPanel* propertyPanel);
     ~ActionNode();
 
+    QString GetActionName();
+
 protected:
     void InitialPropertyWidgets() override;
 

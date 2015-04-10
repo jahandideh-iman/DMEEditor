@@ -1,4 +1,5 @@
 #include "DecisionTreeEditor.h"
+#include <QFile>
 
 DecisionTreeEditor::DecisionTreeEditor(PropertyPanel* propertyPanel)
 {
@@ -34,6 +35,18 @@ void DecisionTreeEditor::ConvertToDecisionNode(UndeterminedDecisionTreeNode *und
 {
     DecisionTreeNode* newNode = CreateDecisionNodeFrom(undeterminedNode);
     ReplaceAndDeleteUndeterminedNode(undeterminedNode, newNode);
+}
+
+void DecisionTreeEditor::SaveToFile(QString &fileName)
+{
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        file.write("<DMEComponent type=\"DecisionTree\" >\n" );
+        SaveNode(root, &file);
+        file.write("</DMEComponent>\n");
+        file.close();
+    }
 }
 
 DecisionTreeNode *DecisionTreeEditor::CreateActionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
@@ -75,5 +88,34 @@ void DecisionTreeEditor::ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTr
 
     scene->removeItem(undeterminedNode);
     delete undeterminedNode;
+}
+
+void DecisionTreeEditor::SaveNode(DecisionTreeNode *node, QFile *file, int depth)
+{
+    if(node == nullptr)
+        return;
+    QString tabs = QString(depth, '\t');
+    if(dynamic_cast<DecisionNode*>(node) != nullptr)
+    {
+        DecisionNode* decisionNode = dynamic_cast<DecisionNode*>(node);
+        file->write( (tabs + "<Node type=\"DecisionNode\" > \n").toStdString().c_str());
+
+        file->write( (tabs + '\t' + "<Condition>" + decisionNode->GetConditionName() +"</Condition>" + "\n").toStdString().c_str());
+        file->write( (tabs + "\t" + "<TruePath>" + "\n").toStdString().c_str());
+        SaveNode(decisionNode->GetRightChild(),file, depth+2);
+        file->write( (tabs + "\t" + "</TruePath>" + "\n").toStdString().c_str());
+        file->write( (tabs + "\t" + "<FalsePath>" + "\n").toStdString().c_str());
+        SaveNode(decisionNode->GetLeftChild(),file, depth+2);
+        file->write( (tabs + "\t" + "</FalsePath>" + "\n").toStdString().c_str());
+
+        file->write( (tabs + "</Node> \n").toStdString().c_str());
+    }
+    else if(dynamic_cast<ActionNode*>(node)!= nullptr)
+    {
+        ActionNode* actionNode = dynamic_cast<ActionNode*>(node);
+        file->write( (tabs + "<Node type=\"ActionNode\" > \n").toStdString().c_str());
+        file->write((tabs + "\t<Action>" + actionNode->GetActionName() + "</Action> \n").toStdString().c_str());
+        file->write( (tabs + "</Node> \n").toStdString().c_str());
+    }
 }
 

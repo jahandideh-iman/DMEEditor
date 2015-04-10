@@ -11,6 +11,11 @@ ActionNode::~ActionNode()
 
 }
 
+QString ActionNode::GetActionName()
+{
+    return actionName;
+}
+
 void ActionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();

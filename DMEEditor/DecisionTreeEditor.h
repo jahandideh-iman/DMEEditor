@@ -8,6 +8,7 @@
 #include "DecisionNode.h"
 
 class PropertyPanel;
+class QFile;
 
 class DecisionTreeEditor
 {
@@ -21,11 +22,15 @@ public:
     void ConvertToActionNode(UndeterminedDecisionTreeNode* undeterminedNode);
     void ConvertToDecisionNode(UndeterminedDecisionTreeNode* undeterminedNode);
 
+    void SaveToFile(QString &fileName);
+
 private:
     DecisionTreeNode* CreateActionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
     DecisionTreeNode* CreateDecisionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
 
     void ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTreeNode *undeterminedNode, DecisionTreeNode *newNode);
+
+    void SaveNode(DecisionTreeNode* node, QFile* file, int depth = 1);
 private:
     QGraphicsScene *scene = nullptr;
     QGraphicsView *view = nullptr;

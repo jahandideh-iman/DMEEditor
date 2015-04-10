@@ -24,6 +24,21 @@ void DecisionNode::SetRightChild(DecisionTreeNode *rightChild)
     this->rightChild = rightChild;
 }
 
+DecisionTreeNode *DecisionNode::GetLeftChild()
+{
+    return leftChild;
+}
+
+DecisionTreeNode *DecisionNode::GetRightChild()
+{
+    return rightChild;
+}
+
+QString DecisionNode::GetConditionName()
+{
+    return conditionName;
+}
+
 void DecisionNode::ReplaceChild(DecisionTreeNode *child, DecisionTreeNode *newNode)
 {
     if(rightChild == child)

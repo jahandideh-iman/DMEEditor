@@ -22,7 +22,9 @@ void UndeterminedDecisionTreeNode::contextMenuEvent(QGraphicsSceneContextMenuEve
     QMenu *menu=new QMenu();
     menu->addAction("Convert to Decsion Node",this,SLOT(ConvertToDecisionNode()));
     menu->addAction("Convert to Action Node",this,SLOT(ConvertToActionNode()));
-    menu->exec(event->pos().toPoint());
+    QPointF pos = event->pos();
+    QPointF pos1 = mapToScene(pos);
+    menu->exec(event->screenPos());
 }
 
 DecisionNode *UndeterminedDecisionTreeNode::getParentNode()

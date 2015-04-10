@@ -20,6 +20,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void CreateNewDecisionTreeEditor();
+    void SaveToFile();
 
 private:
     Ui::MainWindow *ui;
@@ -28,8 +31,7 @@ private:
 
     PropertyPanel* propertyPanel = nullptr;
 
-public slots:
-    void CreateNewDecisionTreeEditor();
+
 };
 
 #endif // MAINWINDOW_H
