@@ -8,7 +8,7 @@ class ActionNode : public DecisionTreeNode
 {
     Q_OBJECT
 public:
-    ActionNode(PropertyPanel* propertyPanel);
+    ActionNode(QGraphicsItem *parent = 0);
     ~ActionNode();
 
     QString GetActionName();
@@ -17,10 +17,7 @@ protected:
     void InitialPropertyWidgets() override;
 
 public slots:
-    void ActionNameChanged(const QString& value);
-
-private:
-    void SetActionName(QString value);
+    void SetActionName(const QString& value);
 
 private:
     QString actionName;

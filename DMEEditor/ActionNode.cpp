@@ -1,6 +1,7 @@
 #include "ActionNode.h"
+#include "mainwindow.h"
 
-ActionNode::ActionNode(PropertyPanel *propertyPanel) : DecisionTreeNode(propertyPanel)
+ActionNode::ActionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
     SetActionName("Default");
     ellipse->setBrush(QBrush(Qt::yellow));
@@ -19,15 +20,11 @@ QString ActionNode::GetActionName()
 void ActionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    propertyPanel->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(ActionNameChanged(const QString& ))));
+    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(SetActionName(const QString& ))));
 }
 
-void ActionNode::ActionNameChanged(const QString &value)
-{
-    SetActionName(value);
-}
 
-void ActionNode::SetActionName(QString value)
+void ActionNode::SetActionName(const QString& value)
 {
     actionName = value;
     textItem->setPlainText(actionName);

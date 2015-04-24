@@ -6,6 +6,7 @@
 #include "UndeterminedDecisionTreeNode.h"
 #include "ActionNode.h"
 #include "DecisionNode.h"
+#include "DecisionTreeIOManager.h"
 
 class PropertyPanel;
 class QFile;
@@ -13,7 +14,7 @@ class QFile;
 class DecisionTreeEditor
 {
 public:
-    DecisionTreeEditor(PropertyPanel* propertyPanel);
+    DecisionTreeEditor();
     ~DecisionTreeEditor();
 
 
@@ -23,6 +24,9 @@ public:
     void ConvertToDecisionNode(UndeterminedDecisionTreeNode* undeterminedNode);
 
     void SaveToFile(QString &fileName);
+    void OpenFromFile(QString &fileName);
+
+    void SetRoot(DecisionTreeNode *node);
 
 private:
     DecisionTreeNode* CreateActionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
@@ -35,9 +39,10 @@ private:
     QGraphicsScene *scene = nullptr;
     QGraphicsView *view = nullptr;
 
-    PropertyPanel* propertyPanel = nullptr;
 
     DecisionTreeNode* root = nullptr;
+
+    DecisionTreeIOManager *ioManager = nullptr;
 };
 
 #endif // DECISIONTREEEDITOR_H

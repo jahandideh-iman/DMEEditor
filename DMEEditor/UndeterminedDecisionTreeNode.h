@@ -14,7 +14,7 @@ class UndeterminedDecisionTreeNode :public DecisionTreeNode
 {
     Q_OBJECT
 public:
-    UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode* parentNode, PropertyPanel* propertyPanel);
+    UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode* parentNode);
     ~UndeterminedDecisionTreeNode();
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;

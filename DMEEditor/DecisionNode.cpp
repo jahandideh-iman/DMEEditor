@@ -1,12 +1,13 @@
 #include "DecisionNode.h"
 #include <QPainter>
+#include "mainwindow.h"
 
-DecisionNode::DecisionNode(PropertyPanel *propertyPanel) : DecisionTreeNode(propertyPanel)
+
+DecisionNode::DecisionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
     SetConditionName("DefaultCondition");
     ellipse->setBrush(QBrush(Qt::gray));
 }
-
 
 DecisionNode::~DecisionNode()
 {
@@ -64,16 +65,11 @@ void DecisionNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 void DecisionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    propertyPanel->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(ConditionNameChanged(const QString& ))));
+    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(SetConditionName(const QString& ))));
 }
 
 
-void DecisionNode::ConditionNameChanged(const QString &value)
-{
-    SetConditionName(value);
-}
-
-void DecisionNode::SetConditionName(QString value)
+void DecisionNode::SetConditionName(const QString &value)
 {
     conditionName = value;
     textItem->setPlainText(conditionName);

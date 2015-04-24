@@ -1,14 +1,13 @@
 #include "DecisionTreeNode.h"
+#include "mainwindow.h"
 
-DecisionTreeNode::DecisionTreeNode(PropertyPanel* propertyPanel,QGraphicsItem *parent) : QGraphicsItem(parent)
+DecisionTreeNode::DecisionTreeNode(QGraphicsItem *parent) : QGraphicsItem(parent)
 {
     ellipse = new QGraphicsEllipseItem(this);
     ellipse->setRect(QRect(-25,-25,50,50));
-
     textItem = new QGraphicsTextItem("?",this);
     textItem->setScale(1.5);
 
-    this->propertyPanel = propertyPanel;
 }
 
 
@@ -35,6 +34,6 @@ void DecisionTreeNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void DecisionTreeNode::InitialPropertyWidgets()
 {
-    propertyPanel->Clear();
+    MainWindow::GetPropertyPanel()->Clear();
 }
 

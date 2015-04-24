@@ -21,7 +21,13 @@ SOURCES += main.cpp\
     ActionNode.cpp \
     PropertyPanel.cpp \
     StringProperty.cpp \
-    PropertyWidget.cpp
+    PropertyWidget.cpp \
+    FiniteStateMachineEditor.cpp \
+    FiniteStateMachineGraphicsScene.cpp \
+    StateNode.cpp \
+    StateLink.cpp \
+    FiniteStateMachineIOManager.cpp \
+    DecisionTreeIOManager.cpp
 
 HEADERS  += mainwindow.h \
     UndeterminedDecisionTreeNode.h \
@@ -31,6 +37,13 @@ HEADERS  += mainwindow.h \
     ActionNode.h \
     PropertyPanel.h \
     StringProperty.h \
-    PropertyWidget.h
+    PropertyWidget.h \
+    FiniteStateMachineEditor.h \
+    FiniteStateMachineGraphicsScene.h \
+    StateNode.h \
+    StateLink.h \
+    FiniteStateMachineIOManager.h \
+    rapidxml.hpp \
+    DecisionTreeIOManager.h
 
 FORMS    += mainwindow.ui

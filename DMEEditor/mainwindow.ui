@@ -34,9 +34,10 @@
      <string>File</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionNew_Finite_State_Machine"/>
     <addaction name="actionNew_Decision_Tree"/>
     <addaction name="actionNew"/>
-    <addaction name="actionFile"/>
+    <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionExit"/>
    </widget>
@@ -57,7 +58,7 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionFile">
+  <action name="actionOpen">
    <property name="text">
     <string>Open</string>
    </property>
@@ -80,6 +81,11 @@
   <action name="actionNew_Decision_Tree">
    <property name="text">
     <string>New Decision Tree</string>
+   </property>
+  </action>
+  <action name="actionNew_Finite_State_Machine">
+   <property name="text">
+    <string>New Finite State Machine</string>
    </property>
   </action>
  </widget>

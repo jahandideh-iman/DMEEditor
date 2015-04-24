@@ -5,7 +5,9 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "DecisionTreeEditor.h"
+#include "FiniteStateMachineEditor.h"
 #include "PropertyPanel.h"
+
 
 
 namespace Ui {
@@ -20,16 +22,20 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    static PropertyPanel* GetPropertyPanel();
+
 public slots:
     void CreateNewDecisionTreeEditor();
+    void CreateNewFiniteStateMachine();
     void SaveToFile();
+    void OpenFile();
 
 private:
     Ui::MainWindow *ui;
 
     DecisionTreeEditor* editor = nullptr;
 
-    PropertyPanel* propertyPanel = nullptr;
+    FiniteStateMachineEditor *FSMEditor = nullptr;
 
 
 };

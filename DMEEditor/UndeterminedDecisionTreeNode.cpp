@@ -4,8 +4,7 @@
 
 
 
-UndeterminedDecisionTreeNode::UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode *parentNode, PropertyPanel *propertyPanel)
-    : DecisionTreeNode(propertyPanel)
+UndeterminedDecisionTreeNode::UndeterminedDecisionTreeNode(DecisionTreeEditor* editor, DecisionNode *parentNode)
 {
     this->parentNode = parentNode;
     this->editor = editor;
@@ -22,8 +21,6 @@ void UndeterminedDecisionTreeNode::contextMenuEvent(QGraphicsSceneContextMenuEve
     QMenu *menu=new QMenu();
     menu->addAction("Convert to Decsion Node",this,SLOT(ConvertToDecisionNode()));
     menu->addAction("Convert to Action Node",this,SLOT(ConvertToActionNode()));
-    QPointF pos = event->pos();
-    QPointF pos1 = mapToScene(pos);
     menu->exec(event->screenPos());
 }
 

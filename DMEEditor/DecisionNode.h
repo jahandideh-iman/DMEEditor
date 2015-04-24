@@ -9,7 +9,7 @@ class DecisionNode : public DecisionTreeNode
     Q_OBJECT
 public:
 
-    DecisionNode(PropertyPanel* propertyPanel);
+    DecisionNode(QGraphicsItem *parent = 0);
     ~DecisionNode();
 
     void SetLeftChild(DecisionTreeNode* leftChild);
@@ -28,10 +28,7 @@ protected:
     void InitialPropertyWidgets() override;
 
 public slots:
-    void ConditionNameChanged(const QString& value);
-
-private:
-    void SetConditionName(QString value);
+    void SetConditionName(const QString& value);
 
 private:
     QString conditionName;
