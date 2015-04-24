@@ -2,7 +2,8 @@
 #include "StateNode.h"
 #include <QDebug>
 #include <QGraphicsScene>
-#include "mainwindow.h"
+#include "MainWindow.h"
+#include "StringProperty.h"
 
 StateLink::StateLink(StateNode *startNode, StateNode *endNode, QString condition)
 {
@@ -56,6 +57,8 @@ void StateLink::InitialPropertyWidgets()
 
 void StateLink::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    option;
+    widget;
     //pathPainter->
     QPainterPath pathPainter(startNode->pos());
     pathPainter.quadTo(rect->pos(), endNode->pos());

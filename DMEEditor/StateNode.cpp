@@ -4,7 +4,8 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include "StateLink.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
+#include "StringProperty.h"
 
 
 
@@ -43,6 +44,9 @@ void StateNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void StateNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter;
+    option;
+    widget;
 //    for(auto child : children)
 //    {
 //        painter->drawLine(QPointF(0,0), child->pos() - pos());

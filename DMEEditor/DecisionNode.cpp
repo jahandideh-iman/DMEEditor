@@ -1,6 +1,6 @@
 #include "DecisionNode.h"
 #include <QPainter>
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 
 DecisionNode::DecisionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)

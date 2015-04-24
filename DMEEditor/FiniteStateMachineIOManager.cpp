@@ -7,7 +7,7 @@
 
 
 
-FiniteStateMachineIOManager::FiniteStateMachineIOManager(FiniteStateMachineEditor *editor)
+FiniteStateMachineIOManager::FiniteStateMachineIOManager()
 {
     this->editor = editor;
 }
@@ -17,8 +17,9 @@ FiniteStateMachineIOManager::~FiniteStateMachineIOManager()
 
 }
 
-void FiniteStateMachineIOManager::SaveTo(QString &fileName)
+void FiniteStateMachineIOManager::SaveToFile(QString &fileName, Editor *editor)
 {
+    this->editor = dynamic_cast<FiniteStateMachineEditor*>(editor);
     QFile file(fileName);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -114,8 +115,9 @@ QVector<StateNode *> FiniteStateMachineIOManager::GetBreadthFirstTraversal()
     return traversal;
 }
 
-void FiniteStateMachineIOManager::ReadFrom(QString &fileName)
+void FiniteStateMachineIOManager::ReadFromFile(QString &fileName, Editor *editor)
 {
+    this->editor = dynamic_cast<FiniteStateMachineEditor*> (editor);
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -133,6 +135,26 @@ void FiniteStateMachineIOManager::ReadFrom(QString &fileName)
 
     }
     file.close();
+}
+
+bool FiniteStateMachineIOManager::IsFileValid(QString &fileName)
+{
+    QFile file(fileName);
+     xml_node<char>* rootXMLNode = nullptr;
+     QByteArray dataArray = nullptr;
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        dataArray = file.readAll();
+        //QString data = file.readAll().toStdString();
+        xml_document<> xmlData;
+        xmlData.parse<0>(dataArray.data());
+        rootXMLNode = xmlData.first_node("DMEComponent");
+    }
+    file.close();
+    if(rootXMLNode != nullptr)
+        return QString::compare(rootXMLNode->first_attribute("type")->value(),"FiniteStateMachine") == 0;
+
+    return false;
 }
 
 void FiniteStateMachineIOManager::ParseStates(FiniteStateMachineIOManager::XMLNode *statesXMLNode)
@@ -208,6 +230,11 @@ void FiniteStateMachineIOManager::ParseInitialState(FiniteStateMachineIOManager:
     if(initalStateXMLNode == nullptr)
         return;
     editor->SetRootNode(parsedStatesMap[initalStateXMLNode->value()]);
+}
+
+bool FiniteStateMachineIOManager::IsCompatibleWith(Editor *editor)
+{
+    return dynamic_cast<FiniteStateMachineEditor*> (editor) != nullptr ;
 }
 
 

@@ -1,5 +1,5 @@
 #include "DecisionTreeNode.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 DecisionTreeNode::DecisionTreeNode(QGraphicsItem *parent) : QGraphicsItem(parent)
 {
@@ -18,7 +18,9 @@ DecisionTreeNode::~DecisionTreeNode()
 
 void DecisionTreeNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-
+    painter;
+    option;
+    widget;
 }
 
 QRectF DecisionTreeNode::boundingRect() const

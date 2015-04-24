@@ -13,7 +13,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     UndeterminedDecisionTreeNode.cpp \
     DecisionTreeNode.cpp \
     DecisionTreeEditor.cpp \
@@ -27,9 +26,12 @@ SOURCES += main.cpp\
     StateNode.cpp \
     StateLink.cpp \
     FiniteStateMachineIOManager.cpp \
-    DecisionTreeIOManager.cpp
+    DecisionTreeIOManager.cpp \
+    Editor.cpp \
+    IOManager.cpp \
+    MainWindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     UndeterminedDecisionTreeNode.h \
     DecisionTreeNode.h \
     DecisionTreeEditor.h \
@@ -44,6 +46,9 @@ HEADERS  += mainwindow.h \
     StateLink.h \
     FiniteStateMachineIOManager.h \
     rapidxml.hpp \
-    DecisionTreeIOManager.h
+    DecisionTreeIOManager.h \
+    Editor.h \
+    IOManager.h \
+    MainWindow.h
 
 FORMS    += mainwindow.ui

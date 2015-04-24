@@ -3,7 +3,7 @@
 
 #include <QVector>
 #include <rapidxml.hpp>
-
+#include "IOManager.h"
 #include <QMap>
 
 using namespace rapidxml;
@@ -12,15 +12,17 @@ class StateNode;
 class FiniteStateMachineEditor;
 class QFile;
 
-class FiniteStateMachineIOManager
+class FiniteStateMachineIOManager : public IOManager
 {
     typedef  xml_node<char> XMLNode;
 public:
-    FiniteStateMachineIOManager(FiniteStateMachineEditor* editor);
+    FiniteStateMachineIOManager();
     ~FiniteStateMachineIOManager();
 
-    void SaveTo(QString &fileName);
-    void ReadFrom(QString &fileName);
+    void SaveToFile(QString &fileName, Editor *editor) override;
+    void ReadFromFile(QString &fileName, Editor *editor)override;
+    bool IsCompatibleWith(Editor *editor) override;
+    bool IsFileValid(QString &fileName) override;
 
 private:
     void SaveStates(QFile* file);

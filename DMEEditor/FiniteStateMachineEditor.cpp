@@ -13,7 +13,7 @@ FiniteStateMachineEditor::FiniteStateMachineEditor()
     view->setSceneRect(0,0,1000,1000);
     view->setMouseTracking(true);
 
-    IOManager = new FiniteStateMachineIOManager(this);
+    IOManager = new FiniteStateMachineIOManager();
 
 }
 
@@ -25,16 +25,6 @@ FiniteStateMachineEditor::~FiniteStateMachineEditor()
 QGraphicsView *FiniteStateMachineEditor::GetView() const
 {
     return view;
-}
-
-void FiniteStateMachineEditor::SaveToFile(QString &fileName)
-{
-    IOManager->SaveTo(fileName);
-}
-
-void FiniteStateMachineEditor::OpenFromFile(QString &fileName)
-{
-    IOManager->ReadFrom(fileName);
 }
 
 StateNode *FiniteStateMachineEditor::GetRootNode()

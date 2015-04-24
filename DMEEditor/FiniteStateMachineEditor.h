@@ -4,12 +4,13 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include "FiniteStateMachineIOManager.h"
+#include "Editor.h"
 
 class StateNode;
 class StateLink;
 class QFile;
 
-class FiniteStateMachineEditor : public QObject
+class FiniteStateMachineEditor : public QObject , public Editor
 {
     Q_OBJECT
 public:
@@ -18,8 +19,6 @@ public:
 
     QGraphicsView *GetView() const;
 
-    void SaveToFile(QString &fileName);
-    void OpenFromFile(QString &fileName);
 
     StateNode *GetRootNode();
 
@@ -40,8 +39,7 @@ public slots:
 private:
 
 private:
-    QGraphicsView *view = nullptr;
-    QGraphicsScene *scene = nullptr;
+
 
     StateNode* rootNode = nullptr;
 

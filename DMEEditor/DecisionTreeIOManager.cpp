@@ -4,9 +4,8 @@
 #include "ActionNode.h"
 #include "QFile"
 
-DecisionTreeIOManager::DecisionTreeIOManager(DecisionTreeEditor *editor)
+DecisionTreeIOManager::DecisionTreeIOManager()
 {
-    this->editor = editor;
 }
 
 DecisionTreeIOManager::~DecisionTreeIOManager()
@@ -14,8 +13,9 @@ DecisionTreeIOManager::~DecisionTreeIOManager()
 
 }
 
-void DecisionTreeIOManager::ReadFrom(QString &fileName)
+void DecisionTreeIOManager::ReadFromFile(QString &fileName, Editor *editor_)
 {
+    editor = dynamic_cast<DecisionTreeEditor*> (editor_);
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -31,6 +31,77 @@ void DecisionTreeIOManager::ReadFrom(QString &fileName)
 
     }
     file.close();
+}
+
+bool DecisionTreeIOManager::IsFileValid(QString &fileName)
+{
+    QFile file(fileName);
+     xml_node<char>* rootXMLNode = nullptr;
+     QByteArray dataArray = nullptr;
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        dataArray = file.readAll();
+        //QString data = file.readAll().toStdString();
+        xml_document<> xmlData;
+        xmlData.parse<0>(dataArray.data());
+        rootXMLNode = xmlData.first_node("DMEComponent");
+    }
+    file.close();
+    if(rootXMLNode != nullptr)
+         return QString::compare(rootXMLNode->first_attribute("type")->value(),"DecisionTree") == 0;
+    return false;
+}
+
+
+void DecisionTreeIOManager::SaveToFile(QString &fileName, Editor *editor_)
+{
+    this->editor = dynamic_cast<DecisionTreeEditor*> (editor_);
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        file.write("<DMEComponent type=\"DecisionTree\" >\n" );
+        SaveNode(this->editor->GetRoot(), &file);
+        file.write("</DMEComponent>\n");
+        file.close();
+    }
+}
+
+void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, QFile *file, int depth)
+{
+    if(node == nullptr)
+        return;
+    QString tabs = QString(depth, '\t');
+
+    QString xPos = "XPos=\"" +QString::number(node->pos().x()) + "\" ";
+    QString yPos = "YPos=\"" +QString::number(node->pos().y()) + "\" ";
+
+    if(dynamic_cast<DecisionNode*>(node) != nullptr)
+    {
+        DecisionNode* decisionNode = dynamic_cast<DecisionNode*>(node);
+        file->write( (tabs + "<Node type=\"DecisionNode\" " + xPos + yPos +" > \n").toStdString().c_str());
+
+        file->write( (tabs + '\t' + "<Condition>" + decisionNode->GetConditionName() +"</Condition>" + "\n").toStdString().c_str());
+        file->write( (tabs + "\t" + "<TruePath>" + "\n").toStdString().c_str());
+        SaveNode(decisionNode->GetRightChild(),file, depth+2);
+        file->write( (tabs + "\t" + "</TruePath>" + "\n").toStdString().c_str());
+        file->write( (tabs + "\t" + "<FalsePath>" + "\n").toStdString().c_str());
+        SaveNode(decisionNode->GetLeftChild(),file, depth+2);
+        file->write( (tabs + "\t" + "</FalsePath>" + "\n").toStdString().c_str());
+
+        file->write( (tabs + "</Node> \n").toStdString().c_str());
+    }
+    else if(dynamic_cast<ActionNode*>(node)!= nullptr)
+    {
+        ActionNode* actionNode = dynamic_cast<ActionNode*>(node);
+        file->write( (tabs + "<Node type=\"ActionNode\" " + xPos + yPos + "> \n").toStdString().c_str());
+        file->write((tabs + "\t<Action>" + actionNode->GetActionName() + "</Action> \n").toStdString().c_str());
+        file->write( (tabs + "</Node> \n").toStdString().c_str());
+    }
+}
+
+bool DecisionTreeIOManager::IsCompatibleWith(Editor *editor)
+{
+    return dynamic_cast<DecisionTreeEditor*> (editor) != nullptr ;
 }
 
 DecisionTreeNode *DecisionTreeIOManager::ExtractNode(DecisionTreeIOManager::XMLNode *xmlNode, DecisionTreeNode *parent)

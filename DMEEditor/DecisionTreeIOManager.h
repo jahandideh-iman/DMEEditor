@@ -3,7 +3,7 @@
 
 #include <QVector>
 #include <rapidxml.hpp>
-
+#include "IOManager.h"
 #include <QMap>
 
 using namespace rapidxml;
@@ -14,16 +14,22 @@ class DecisionTreeNode;
 class DecisionNode;
 class QFile;
 
-class DecisionTreeIOManager
+class DecisionTreeIOManager : public IOManager
 {
     typedef  xml_node<char> XMLNode;
 public:
-    DecisionTreeIOManager(DecisionTreeEditor *editor);
+    DecisionTreeIOManager();
     ~DecisionTreeIOManager();
 
-    void ReadFrom(QString &fileName);
+    void ReadFromFile(QString &fileName, Editor *editor_) override;
+    void SaveToFile(QString &fileName, Editor *editor_) override;
+    bool IsCompatibleWith(Editor *editor) override;
+    bool IsFileValid(QString &fileName) override;
 
 private:
+    void SaveNode(DecisionTreeNode* node, QFile* file, int depth = 1);
+
+
     DecisionTreeNode *ExtractNode(XMLNode* xmlNode, DecisionTreeNode *parent = 0);
     QString GetNodeType(XMLNode* xmlNode);
 

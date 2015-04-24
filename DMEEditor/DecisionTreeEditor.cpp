@@ -9,15 +9,14 @@ DecisionTreeEditor::DecisionTreeEditor()
 
     SetRoot(new UndeterminedDecisionTreeNode(this,nullptr));
 
-    ioManager = new DecisionTreeIOManager(this);
+    ioManager = new DecisionTreeIOManager();
 
 }
 
 
 DecisionTreeEditor::~DecisionTreeEditor()
 {
-    delete view;
-    delete scene;
+
     delete root;
 }
 
@@ -38,27 +37,16 @@ void DecisionTreeEditor::ConvertToDecisionNode(UndeterminedDecisionTreeNode *und
     ReplaceAndDeleteUndeterminedNode(undeterminedNode, newNode);
 }
 
-void DecisionTreeEditor::SaveToFile(QString &fileName)
-{
-    QFile file(fileName);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        file.write("<DMEComponent type=\"DecisionTree\" >\n" );
-        SaveNode(root, &file);
-        file.write("</DMEComponent>\n");
-        file.close();
-    }
-}
-
-void DecisionTreeEditor::OpenFromFile(QString &fileName)
-{
-    ioManager->ReadFrom(fileName);
-}
 
 void DecisionTreeEditor::SetRoot(DecisionTreeNode *node)
 {
     root = node;
     scene->addItem(root);
+}
+
+DecisionTreeNode *DecisionTreeEditor::GetRoot()
+{
+    return root;
 }
 
 DecisionTreeNode *DecisionTreeEditor::CreateActionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
@@ -102,36 +90,5 @@ void DecisionTreeEditor::ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTr
     delete undeterminedNode;
 }
 
-void DecisionTreeEditor::SaveNode(DecisionTreeNode *node, QFile *file, int depth)
-{
-    if(node == nullptr)
-        return;
-    QString tabs = QString(depth, '\t');
 
-    QString xPos = "XPos=\"" +QString::number(node->pos().x()) + "\" ";
-    QString yPos = "YPos=\"" +QString::number(node->pos().y()) + "\" ";
-
-    if(dynamic_cast<DecisionNode*>(node) != nullptr)
-    {
-        DecisionNode* decisionNode = dynamic_cast<DecisionNode*>(node);
-        file->write( (tabs + "<Node type=\"DecisionNode\" " + xPos + yPos +" > \n").toStdString().c_str());
-
-        file->write( (tabs + '\t' + "<Condition>" + decisionNode->GetConditionName() +"</Condition>" + "\n").toStdString().c_str());
-        file->write( (tabs + "\t" + "<TruePath>" + "\n").toStdString().c_str());
-        SaveNode(decisionNode->GetRightChild(),file, depth+2);
-        file->write( (tabs + "\t" + "</TruePath>" + "\n").toStdString().c_str());
-        file->write( (tabs + "\t" + "<FalsePath>" + "\n").toStdString().c_str());
-        SaveNode(decisionNode->GetLeftChild(),file, depth+2);
-        file->write( (tabs + "\t" + "</FalsePath>" + "\n").toStdString().c_str());
-
-        file->write( (tabs + "</Node> \n").toStdString().c_str());
-    }
-    else if(dynamic_cast<ActionNode*>(node)!= nullptr)
-    {
-        ActionNode* actionNode = dynamic_cast<ActionNode*>(node);
-        file->write( (tabs + "<Node type=\"ActionNode\" " + xPos + yPos + "> \n").toStdString().c_str());
-        file->write((tabs + "\t<Action>" + actionNode->GetActionName() + "</Action> \n").toStdString().c_str());
-        file->write( (tabs + "</Node> \n").toStdString().c_str());
-    }
-}
 

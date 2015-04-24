@@ -7,11 +7,12 @@
 #include "ActionNode.h"
 #include "DecisionNode.h"
 #include "DecisionTreeIOManager.h"
+#include "Editor.h"
 
 class PropertyPanel;
 class QFile;
 
-class DecisionTreeEditor
+class DecisionTreeEditor : public Editor
 {
 public:
     DecisionTreeEditor();
@@ -23,10 +24,8 @@ public:
     void ConvertToActionNode(UndeterminedDecisionTreeNode* undeterminedNode);
     void ConvertToDecisionNode(UndeterminedDecisionTreeNode* undeterminedNode);
 
-    void SaveToFile(QString &fileName);
-    void OpenFromFile(QString &fileName);
-
     void SetRoot(DecisionTreeNode *node);
+    DecisionTreeNode *GetRoot();
 
 private:
     DecisionTreeNode* CreateActionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
@@ -34,10 +33,8 @@ private:
 
     void ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTreeNode *undeterminedNode, DecisionTreeNode *newNode);
 
-    void SaveNode(DecisionTreeNode* node, QFile* file, int depth = 1);
+
 private:
-    QGraphicsScene *scene = nullptr;
-    QGraphicsView *view = nullptr;
 
 
     DecisionTreeNode* root = nullptr;
