@@ -1,52 +1,33 @@
 #ifndef FINITESTATEMACHINEEDITOR_H
 #define FINITESTATEMACHINEEDITOR_H
 
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include "FiniteStateMachineIOManager.h"
 #include "Editor.h"
 
 class StateNode;
-class StateLink;
-class QFile;
+class StateTransition;
 
-class FiniteStateMachineEditor : public QObject , public Editor
+class FiniteStateMachineEditor : public Editor
 {
-    Q_OBJECT
+
 public:
     FiniteStateMachineEditor();
     ~FiniteStateMachineEditor();
 
-    QGraphicsView *GetView() const;
+    void CreateState(QPointF pos);
+    void DeleteState(StateNode *state);
+    void AddState(StateNode* state);
+    void ConnectStates(StateNode *startState, StateNode *endState);
 
+    void SetRootState(StateNode* node);
+    StateNode *GetRootState();
 
-    StateNode *GetRootNode();
-
-    void AddNode(StateNode* node);
-
-    void AddLink(StateLink *link);
-    void DeleteLink(StateLink *link);
-
-
-public slots:
-    void CreateNode(QPointF pos);
-    void DeleteNode(StateNode* node);
-    void StartConnectingNode(StateNode* node);
-    void FinishConnectingNode(StateNode* endNode);
-    void CancelConnectingNode();
-    void SetRootNode(StateNode* node);
+    void AddTransition(StateTransition *transition);
+    void DeleteTransition(StateTransition *transition);
 
 private:
+    StateNode* rootState = nullptr;
 
-private:
-
-
-    StateNode* rootNode = nullptr;
-
-    StateNode* connectionStartNode = nullptr;
-
-    FiniteStateMachineIOManager *IOManager = nullptr;
-
+    QVector<StateNode *> states;
 
 };
 

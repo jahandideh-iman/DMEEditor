@@ -3,7 +3,7 @@
 #include <QMenu>
 #include <FiniteStateMachineEditor.h>
 #include "StateNode.h"
-#include "StateLink.h"
+#include "StateTransition.h"
 #include <QGraphicsEllipseItem>
 
 FiniteStateMachineGraphicsScene::FiniteStateMachineGraphicsScene(FiniteStateMachineEditor *editor)
@@ -28,8 +28,8 @@ void FiniteStateMachineGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenu
 
     if(dynamic_cast<StateNode*> (item) != nullptr)
         ShowContextMenuForNode(event, dynamic_cast<StateNode*> (item));
-    else if(dynamic_cast<StateLink*> (item) != nullptr )
-        ShowContextMenuForLink(event,dynamic_cast<StateLink*> (item));
+    else if(dynamic_cast<StateTransition*> (item) != nullptr )
+        ShowContextMenuForLink(event,dynamic_cast<StateTransition*> (item));
     else
         ShowContextMenu(event);
 }
@@ -85,7 +85,7 @@ void FiniteStateMachineGraphicsScene::ShowContextMenuForNode(QGraphicsSceneConte
     menu->exec(event->screenPos());
 }
 
-void FiniteStateMachineGraphicsScene::ShowContextMenuForLink(QGraphicsSceneContextMenuEvent *event, StateLink *link)
+void FiniteStateMachineGraphicsScene::ShowContextMenuForLink(QGraphicsSceneContextMenuEvent *event, StateTransition *link)
 {
     selectedLink = link;
     QMenu *menu=new QMenu();
@@ -95,12 +95,12 @@ void FiniteStateMachineGraphicsScene::ShowContextMenuForLink(QGraphicsSceneConte
 
 void FiniteStateMachineGraphicsScene::CreateNodeHelper()
 {
-    editor->CreateNode(contexMenuPosition);
+    editor->CreateState(contexMenuPosition);
 }
 
 void FiniteStateMachineGraphicsScene::DeleteNodeHelper()
 {
-    editor->DeleteNode(selectedNode);
+    editor->DeleteState(selectedNode);
 }
 
 void FiniteStateMachineGraphicsScene::StartConnectingNodeHelper()
@@ -108,29 +108,28 @@ void FiniteStateMachineGraphicsScene::StartConnectingNodeHelper()
     isInConnectingState = true;
     connectionPlaceHolder->setVisible(true);
     connectionPlaceHolder->setLine(QLineF(selectedNode->pos(),selectedNode->pos()));
-    editor->StartConnectingNode(selectedNode);
 }
 
 void FiniteStateMachineGraphicsScene::FinishConnectingNodeHelper(StateNode* endNode)
 {
     isInConnectingState = false;
     connectionPlaceHolder->setVisible(false);
-    editor->FinishConnectingNode(endNode);
+    editor->ConnectStates(selectedNode,endNode);
 }
 
 void FiniteStateMachineGraphicsScene::CancelConnectingNodeHelper()
 {
     isInConnectingState = false;
     connectionPlaceHolder->setVisible(false);
-    editor->CancelConnectingNode();
+    selectedNode = nullptr;
 }
 
 void FiniteStateMachineGraphicsScene::SetRootNodeHelper()
 {
-    editor->SetRootNode(selectedNode);
+    editor->SetRootState(selectedNode);
 }
 
 void FiniteStateMachineGraphicsScene::DeleteLinkHelper()
 {
-    editor->DeleteLink(selectedLink);
+    editor->DeleteTransition(selectedLink);
 }

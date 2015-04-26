@@ -1,16 +1,12 @@
 #ifndef DECISIONTREEEDITOR_H
 #define DECISIONTREEEDITOR_H
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include "UndeterminedDecisionTreeNode.h"
-#include "ActionNode.h"
-#include "DecisionNode.h"
-#include "DecisionTreeIOManager.h"
 #include "Editor.h"
 
-class PropertyPanel;
-class QFile;
+class DecisionNode;
+class UndeterminedDecisionTreeNode;
+class DecisionTreeNode;
+
 
 class DecisionTreeEditor : public Editor
 {
@@ -35,11 +31,8 @@ private:
 
 
 private:
-
-
     DecisionTreeNode* root = nullptr;
 
-    DecisionTreeIOManager *ioManager = nullptr;
 };
 
 #endif // DECISIONTREEEDITOR_H

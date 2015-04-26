@@ -1,22 +1,18 @@
 #include "DecisionTreeEditor.h"
-#include <QFile>
+#include "DecisionNode.h"
+#include "ActionNode.h"
+#include "UndeterminedDecisionTreeNode.h"
 
 DecisionTreeEditor::DecisionTreeEditor()
 {
-
     scene = new QGraphicsScene();
     view = new QGraphicsView(scene);
 
     SetRoot(new UndeterminedDecisionTreeNode(this,nullptr));
-
-    ioManager = new DecisionTreeIOManager();
-
 }
-
 
 DecisionTreeEditor::~DecisionTreeEditor()
 {
-
     delete root;
 }
 
@@ -36,7 +32,6 @@ void DecisionTreeEditor::ConvertToDecisionNode(UndeterminedDecisionTreeNode *und
     DecisionTreeNode* newNode = CreateDecisionNodeFrom(undeterminedNode);
     ReplaceAndDeleteUndeterminedNode(undeterminedNode, newNode);
 }
-
 
 void DecisionTreeEditor::SetRoot(DecisionTreeNode *node)
 {

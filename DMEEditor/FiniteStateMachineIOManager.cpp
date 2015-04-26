@@ -1,7 +1,7 @@
 #include "FiniteStateMachineIOManager.h"
 #include <QFile>
 #include "StateNode.h"
-#include "StateLink.h"
+#include "StateTransition.h"
 #include "FiniteStateMachineEditor.h"
 #include <QQueue>
 
@@ -75,9 +75,9 @@ void FiniteStateMachineIOManager::SaveTransitions(QFile *file)
 
 void FiniteStateMachineIOManager::SaveRoot(QFile *file)
 {
-    if(editor->GetRootNode() == nullptr)
+    if(editor->GetRootState() == nullptr)
         return;
-    file->write(("  <InitialState>" + editor->GetRootNode()->GetStateName()+"</InitialState>\n").toStdString().c_str());
+    file->write(("  <InitialState>" + editor->GetRootState()->GetStateName()+"</InitialState>\n").toStdString().c_str());
 }
 
 QVector<StateNode *> FiniteStateMachineIOManager::GetBreadthFirstTraversal()
@@ -85,8 +85,8 @@ QVector<StateNode *> FiniteStateMachineIOManager::GetBreadthFirstTraversal()
     QVector<StateNode*> traversal;
     QQueue<StateNode*> queue;
     QVector<StateNode*> discovered;
-    queue.enqueue(editor->GetRootNode());
-    discovered.push_back(editor->GetRootNode());
+    queue.enqueue(editor->GetRootState());
+    discovered.push_back(editor->GetRootState());
     while(!queue.empty())
     {
         StateNode* state = queue.dequeue();
@@ -177,7 +177,7 @@ void FiniteStateMachineIOManager::ParseState(FiniteStateMachineIOManager::XMLNod
     ParseStateUpdateAction(node, stateXMLNode->first_node("UpdateAction"));
     ParseStateEntryAction(node, stateXMLNode->first_node("EntryAction"));
     ParseStateExitAction(node, stateXMLNode->first_node("ExitAction"));
-    editor->AddNode(node);
+    editor->AddState(node);
 }
 
 void FiniteStateMachineIOManager::ParseStatePosition(StateNode *node, XMLNode *stateXMLNode)
@@ -221,15 +221,15 @@ void FiniteStateMachineIOManager::ParseTransition(FiniteStateMachineIOManager::X
     QString toStateNode = transitionXMLNode->first_node("To")->value();
     QString condition = transitionXMLNode->first_node("Condition")->value();
 
-    StateLink* link = new StateLink(parsedStatesMap[fromStateNode], parsedStatesMap[toStateNode], condition);
-    editor->AddLink(link);
+    StateTransition* transition = new StateTransition(parsedStatesMap[fromStateNode], parsedStatesMap[toStateNode], condition);
+    editor->AddTransition(transition);
 }
 
 void FiniteStateMachineIOManager::ParseInitialState(FiniteStateMachineIOManager::XMLNode *initalStateXMLNode)
 {
     if(initalStateXMLNode == nullptr)
         return;
-    editor->SetRootNode(parsedStatesMap[initalStateXMLNode->value()]);
+    editor->SetRootState(parsedStatesMap[initalStateXMLNode->value()]);
 }
 
 bool FiniteStateMachineIOManager::IsCompatibleWith(Editor *editor)

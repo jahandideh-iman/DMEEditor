@@ -7,12 +7,12 @@
 
 class StateNode;
 
-class StateLink : public QObject, public QGraphicsItem
+class StateTransition : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
-    StateLink(StateNode* startState, StateNode* endState, QString condition = "");
-    ~StateLink();
+    StateTransition(StateNode* startState, StateNode* endState, QString condition = "");
+    ~StateTransition();
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
@@ -20,6 +20,7 @@ public:
     StateNode *GetStartNode();
     StateNode *GetEndNode();
 
+    void RemoveFromStates();
     QString GetConditionName();
 
 public slots:

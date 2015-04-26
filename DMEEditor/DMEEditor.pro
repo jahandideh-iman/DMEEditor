@@ -24,12 +24,12 @@ SOURCES += main.cpp\
     FiniteStateMachineEditor.cpp \
     FiniteStateMachineGraphicsScene.cpp \
     StateNode.cpp \
-    StateLink.cpp \
     FiniteStateMachineIOManager.cpp \
     DecisionTreeIOManager.cpp \
     Editor.cpp \
     IOManager.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    StateTransition.cpp
 
 HEADERS  += \
     UndeterminedDecisionTreeNode.h \
@@ -43,12 +43,12 @@ HEADERS  += \
     FiniteStateMachineEditor.h \
     FiniteStateMachineGraphicsScene.h \
     StateNode.h \
-    StateLink.h \
     FiniteStateMachineIOManager.h \
     rapidxml.hpp \
     DecisionTreeIOManager.h \
     Editor.h \
     IOManager.h \
-    MainWindow.h
+    MainWindow.h \
+    StateTransition.h
 
 FORMS    += mainwindow.ui

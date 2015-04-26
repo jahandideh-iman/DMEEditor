@@ -1,11 +1,11 @@
-#include "StateLink.h"
+#include "StateTransition.h"
 #include "StateNode.h"
 #include <QDebug>
 #include <QGraphicsScene>
 #include "MainWindow.h"
 #include "StringProperty.h"
 
-StateLink::StateLink(StateNode *startNode, StateNode *endNode, QString condition)
+StateTransition::StateTransition(StateNode *startNode, StateNode *endNode, QString condition)
 {
     this->setZValue(-10);
     this->startNode = startNode;
@@ -33,21 +33,21 @@ StateLink::StateLink(StateNode *startNode, StateNode *endNode, QString condition
     //line->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 }
 
-StateLink::~StateLink()
+StateTransition::~StateTransition()
 {
-    endNode->RemoveInLink(this);
-    startNode->RemoveOutLink(this);
-//    delete line;
-//    line = nullptr;
+    RemoveFromStates();
+    delete rect;
+    delete path;
+    delete pathPainter;
 }
 
-void StateLink::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void StateTransition::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseDoubleClickEvent(event);
     InitialPropertyWidgets();
 }
 
-void StateLink::InitialPropertyWidgets()
+void StateTransition::InitialPropertyWidgets()
 {
     MainWindow::GetPropertyPanel()->Clear();
     MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("Condtion", conditionName,this,SLOT(SetConditionName(const QString& ))));
@@ -55,7 +55,7 @@ void StateLink::InitialPropertyWidgets()
 }
 
 
-void StateLink::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void StateTransition::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     option;
     widget;
@@ -79,32 +79,33 @@ void StateLink::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 }
 
-QRectF StateLink::boundingRect() const
+QRectF StateTransition::boundingRect() const
 {
     return path->boundingRect();
 }
 
-StateNode *StateLink::GetStartNode()
+StateNode *StateTransition::GetStartNode()
 {
     return startNode;
 }
 
-StateNode *StateLink::GetEndNode()
+StateNode *StateTransition::GetEndNode()
 {
     return endNode;
 }
 
-QString StateLink::GetConditionName()
+void StateTransition::RemoveFromStates()
+{
+    endNode->RemoveInLink(this);
+    startNode->RemoveOutLink(this);
+}
+
+QString StateTransition::GetConditionName()
 {
     return conditionName;
 }
 
-void StateLink::SetConditionName(const QString &value)
+void StateTransition::SetConditionName(const QString &value)
 {
     conditionName = value;
 }
-
-
-
-
-

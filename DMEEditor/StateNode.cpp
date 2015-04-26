@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QGraphicsScene>
-#include "StateLink.h"
+#include "StateTransition.h"
 #include "MainWindow.h"
 #include "StringProperty.h"
 
@@ -31,9 +31,13 @@ StateNode::StateNode(QString name, QString updateAction, QString entryAction, QS
 
 StateNode::~StateNode()
 {
-    scene()->removeItem(this);
-    outLinkes.clear();
-    inLinkes.clear();
+    auto inLinksCopy (inLinks);
+    for(auto l : inLinksCopy)
+        delete l;
+
+    auto outLinksCopy (outLinks);
+    for(auto l : outLinksCopy)
+        delete l;
 }
 
 void StateNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -58,34 +62,34 @@ QRectF StateNode::boundingRect() const
     return ellipse->boundingRect();
 }
 
-void StateNode::AddOutLink(StateLink *link)
+void StateNode::AddOutLink(StateTransition *link)
 {
-    outLinkes.push_back(link);
+    outLinks.push_back(link);
 }
 
-void StateNode::AddInLink(StateLink *link)
+void StateNode::AddInLink(StateTransition *link)
 {
-    inLinkes.push_back(link);
+    inLinks.push_back(link);
 }
 
-void StateNode::RemoveOutLink(StateLink *link)
+void StateNode::RemoveOutLink(StateTransition *link)
 {
-    outLinkes.removeOne(link);
+    outLinks.removeAll(link);
 }
 
-void StateNode::RemoveInLink(StateLink *link)
+void StateNode::RemoveInLink(StateTransition *link)
 {
-    inLinkes.removeOne(link);
+    inLinks.removeAll(link);
 }
 
-QVector<StateLink *> &StateNode::GetOutLinks()
+QVector<StateTransition *> &StateNode::GetOutLinks()
 {
-    return outLinkes;
+    return outLinks;
 }
 
-QVector<StateLink *> &StateNode::GetInLinks()
+QVector<StateTransition *> &StateNode::GetInLinks()
 {
-    return inLinkes;
+    return inLinks;
 }
 
 void StateNode::SetRootFlag(bool flag)

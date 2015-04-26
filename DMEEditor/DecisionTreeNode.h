@@ -11,7 +11,7 @@ class DecisionTreeNode :  public QObject ,public QGraphicsItem
 
 public:
     DecisionTreeNode(QGraphicsItem *parent = 0);
-    ~DecisionTreeNode();
+    virtual ~DecisionTreeNode();
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
 

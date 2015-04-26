@@ -5,7 +5,7 @@
 
 class FiniteStateMachineEditor;
 class StateNode;
-class StateLink;
+class StateTransition;
 
 class FiniteStateMachineGraphicsScene : public QGraphicsScene
 {
@@ -31,13 +31,13 @@ public slots:
 private:
     void ShowContextMenu(QGraphicsSceneContextMenuEvent *event);
     void ShowContextMenuForNode(QGraphicsSceneContextMenuEvent *event, StateNode* node);
-    void ShowContextMenuForLink(QGraphicsSceneContextMenuEvent *event, StateLink* link);
+    void ShowContextMenuForLink(QGraphicsSceneContextMenuEvent *event, StateTransition* link);
 
     FiniteStateMachineEditor* editor;
 
     QPointF contexMenuPosition;
     StateNode* selectedNode = nullptr;
-    StateLink* selectedLink = nullptr;
+    StateTransition* selectedLink = nullptr;
 
     QGraphicsLineItem* connectionPlaceHolder = nullptr;
 

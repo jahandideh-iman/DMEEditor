@@ -1,10 +1,7 @@
 #include "FiniteStateMachineEditor.h"
 #include "FiniteStateMachineGraphicsScene.h"
 #include "StateNode.h"
-#include "StateLink.h"
-#include <QFile>
-#include <QQueue>
-#include <QVector>
+#include "StateTransition.h"
 
 FiniteStateMachineEditor::FiniteStateMachineEditor()
 {
@@ -12,93 +9,68 @@ FiniteStateMachineEditor::FiniteStateMachineEditor()
     view = new QGraphicsView(scene);
     view->setSceneRect(0,0,1000,1000);
     view->setMouseTracking(true);
-
-    IOManager = new FiniteStateMachineIOManager();
-
 }
 
 FiniteStateMachineEditor::~FiniteStateMachineEditor()
 {
-
+    for(auto state : states)
+        DeleteState(state);
 }
 
-QGraphicsView *FiniteStateMachineEditor::GetView() const
-{
-    return view;
-}
-
-StateNode *FiniteStateMachineEditor::GetRootNode()
-{
-    return rootNode;
-}
-
-void FiniteStateMachineEditor::AddNode(StateNode *node)
-{
-    scene->addItem(node);
-
-    if(rootNode == nullptr)
-        SetRootNode(node);
-}
-
-void FiniteStateMachineEditor::AddLink(StateLink *link)
-{
-    scene->addItem(link);
-}
-
-void FiniteStateMachineEditor::DeleteLink(StateLink *link)
-{
-    scene->removeItem(link);
-    delete link;
-}
-
-
-void FiniteStateMachineEditor::CreateNode(QPointF pos)
+void FiniteStateMachineEditor::CreateState(QPointF pos)
 {
     StateNode * node = new StateNode();
     node->setPos(pos);
 
-    AddNode(node);
+    AddState(node);
 }
 
-void FiniteStateMachineEditor::DeleteNode(StateNode *node)
+void FiniteStateMachineEditor::AddState(StateNode *state)
 {
-    auto inLinks = node->GetInLinks();
-    for( auto link : inLinks)
-        DeleteLink(link);
+    states.push_back(state);
+    scene->addItem(state);
 
-    auto outLinks = node->GetOutLinks();
-    for( auto link : outLinks)
-        DeleteLink(link);
-
-    if(rootNode == node)
-        rootNode = nullptr;
-    delete node;
+    if(rootState == nullptr)
+        SetRootState(state);
 }
 
-void FiniteStateMachineEditor::StartConnectingNode(StateNode *node)
+void FiniteStateMachineEditor::DeleteState(StateNode *state)
 {
-    connectionStartNode = node;
+    if(rootState == state)
+        rootState = nullptr;
+
+    states.removeAll(state);
+    scene->removeItem(state);
+    delete state;
 }
 
-void FiniteStateMachineEditor::FinishConnectingNode(StateNode *endNode)
+void FiniteStateMachineEditor::ConnectStates(StateNode *startState, StateNode *endState)
 {
-    if( connectionStartNode != endNode)
-        AddLink( new StateLink(connectionStartNode,endNode));
-
-    connectionStartNode = nullptr;
+    if( startState != endState)
+        AddTransition(new StateTransition(startState,endState));
 }
 
-void FiniteStateMachineEditor::CancelConnectingNode()
+StateNode *FiniteStateMachineEditor::GetRootState()
 {
-    connectionStartNode = nullptr;
+    return rootState;
 }
 
-void FiniteStateMachineEditor::SetRootNode(StateNode *node)
+void FiniteStateMachineEditor::SetRootState(StateNode *node)
 {
-    if(rootNode != nullptr)
-        rootNode->SetRootFlag(false);
+    if(rootState != nullptr)
+        rootState->SetRootFlag(false);
 
     node->SetRootFlag(true);
-    rootNode = node;
+    rootState = node;
 }
 
+void FiniteStateMachineEditor::AddTransition(StateTransition *transition)
+{
+    scene->addItem(transition);
+}
+
+void FiniteStateMachineEditor::DeleteTransition(StateTransition *transition)
+{
+    scene->removeItem(transition);
+    delete transition;
+}

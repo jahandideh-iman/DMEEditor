@@ -8,7 +8,7 @@
 
 using std::vector;
 
-class StateLink;
+class StateTransition;
 
 class StateNode : public QObject, public QGraphicsItem
 {
@@ -24,13 +24,13 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
 
-    void AddOutLink(StateLink* link);
-    void AddInLink(StateLink* link);
-    void RemoveOutLink(StateLink* link);
-    void RemoveInLink(StateLink* link);
+    void AddOutLink(StateTransition* link);
+    void AddInLink(StateTransition* link);
+    void RemoveOutLink(StateTransition* link);
+    void RemoveInLink(StateTransition* link);
 
-    QVector<StateLink*> & GetOutLinks();
-    QVector<StateLink*> & GetInLinks();
+    QVector<StateTransition*> & GetOutLinks();
+    QVector<StateTransition*> & GetInLinks();
 
     void SetRootFlag(bool flag);
     bool IsRoot();
@@ -53,8 +53,8 @@ private:
 private:
        QGraphicsEllipseItem* ellipse = nullptr;
 
-       QVector<StateLink*> outLinkes;
-       QVector<StateLink*> inLinkes;
+       QVector<StateTransition*> outLinks;
+       QVector<StateTransition*> inLinks;
 
        QString stateName;
        QString updateActionName;
