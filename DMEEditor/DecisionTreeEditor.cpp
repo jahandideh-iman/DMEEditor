@@ -84,6 +84,3 @@ void DecisionTreeEditor::ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTr
     scene->removeItem(undeterminedNode);
     delete undeterminedNode;
 }
-
-
-

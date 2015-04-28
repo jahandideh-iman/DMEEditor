@@ -89,8 +89,9 @@ void MainWindow::OpenFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"",
                                tr("Text (*.txt)"));
+    QString fileType = IOManager::ReadFileType(fileName);
     for(auto ioEditorPair : ioEditorPairs)
-        if (ioEditorPair.first->IsFileValid(fileName))
+        if (ioEditorPair.first->IsFileTypeValid(fileType))
         {
             SetEditor(ioEditorPair.second());
             ioEditorPair.first->ReadFromFile(fileName,editor);

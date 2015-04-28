@@ -17,6 +17,7 @@ public:
     void DeleteState(StateNode *state);
     void AddState(StateNode* state);
     void ConnectStates(StateNode *startState, StateNode *endState);
+    const QVector<StateNode *> &GetStates() const;
 
     void SetRootState(StateNode* node);
     StateNode *GetRootState();

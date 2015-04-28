@@ -13,60 +13,13 @@ DecisionTreeIOManager::~DecisionTreeIOManager()
 
 }
 
-void DecisionTreeIOManager::ReadFromFile(QString &fileName, Editor *editor_)
-{
-    editor = dynamic_cast<DecisionTreeEditor*> (editor_);
-    QFile file(fileName);
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QByteArray dataArray = file.readAll();
-        //QString data = file.readAll().toStdString();
-        xml_document<> xmlData;
-        xmlData.parse<0>(dataArray.data());
-        xml_node<char>* rootXMLNode = xmlData.first_node("DMEComponent");
-        if(rootXMLNode != nullptr )
-        {
-            editor->SetRoot(ExtractNode(rootXMLNode->first_node("Node")));
-        }
-
-    }
-    file.close();
-}
-
-bool DecisionTreeIOManager::IsFileValid(QString &fileName)
-{
-    QFile file(fileName);
-     xml_node<char>* rootXMLNode = nullptr;
-     QByteArray dataArray = nullptr;
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        dataArray = file.readAll();
-        //QString data = file.readAll().toStdString();
-        xml_document<> xmlData;
-        xmlData.parse<0>(dataArray.data());
-        rootXMLNode = xmlData.first_node("DMEComponent");
-    }
-    file.close();
-    if(rootXMLNode != nullptr)
-         return QString::compare(rootXMLNode->first_attribute("type")->value(),"DecisionTree") == 0;
-    return false;
-}
-
-
-void DecisionTreeIOManager::SaveToFile(QString &fileName, Editor *editor_)
+void DecisionTreeIOManager::Save(Editor *editor_)
 {
     this->editor = dynamic_cast<DecisionTreeEditor*> (editor_);
-    QFile file(fileName);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        file.write("<DMEComponent type=\"DecisionTree\" >\n" );
-        SaveNode(this->editor->GetRoot(), &file);
-        file.write("</DMEComponent>\n");
-        file.close();
-    }
+    SaveNode(this->editor->GetRoot());
 }
 
-void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, QFile *file, int depth)
+void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, int depth)
 {
     if(node == nullptr)
         return;
@@ -78,30 +31,31 @@ void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, QFile *file, int de
     if(dynamic_cast<DecisionNode*>(node) != nullptr)
     {
         DecisionNode* decisionNode = dynamic_cast<DecisionNode*>(node);
-        file->write( (tabs + "<Node type=\"DecisionNode\" " + xPos + yPos +" > \n").toStdString().c_str());
+        WriteToFile( tabs + "<Node type=\"DecisionNode\" " + xPos + yPos +" > \n");
 
-        file->write( (tabs + '\t' + "<Condition>" + decisionNode->GetConditionName() +"</Condition>" + "\n").toStdString().c_str());
-        file->write( (tabs + "\t" + "<TruePath>" + "\n").toStdString().c_str());
-        SaveNode(decisionNode->GetRightChild(),file, depth+2);
-        file->write( (tabs + "\t" + "</TruePath>" + "\n").toStdString().c_str());
-        file->write( (tabs + "\t" + "<FalsePath>" + "\n").toStdString().c_str());
-        SaveNode(decisionNode->GetLeftChild(),file, depth+2);
-        file->write( (tabs + "\t" + "</FalsePath>" + "\n").toStdString().c_str());
+        WriteToFile( tabs + '\t' + "<Condition>" + decisionNode->GetConditionName() +"</Condition>" + "\n");
+        WriteToFile( tabs + "\t" + "<TruePath>" + "\n");
+        SaveNode(decisionNode->GetRightChild(), depth+2);
+        WriteToFile( tabs + "\t" + "</TruePath>" + "\n");
+        WriteToFile( tabs + "\t" + "<FalsePath>" + "\n");
+        SaveNode(decisionNode->GetLeftChild(), depth+2);
+        WriteToFile( tabs + "\t" + "</FalsePath>" + "\n");
 
-        file->write( (tabs + "</Node> \n").toStdString().c_str());
+        WriteToFile( tabs + "</Node> \n");
     }
     else if(dynamic_cast<ActionNode*>(node)!= nullptr)
     {
         ActionNode* actionNode = dynamic_cast<ActionNode*>(node);
-        file->write( (tabs + "<Node type=\"ActionNode\" " + xPos + yPos + "> \n").toStdString().c_str());
-        file->write((tabs + "\t<Action>" + actionNode->GetActionName() + "</Action> \n").toStdString().c_str());
-        file->write( (tabs + "</Node> \n").toStdString().c_str());
+        WriteToFile( tabs + "<Node type=\"ActionNode\" " + xPos + yPos + "> \n");
+        WriteToFile(tabs + "\t<Action>" + actionNode->GetActionName() + "</Action> \n");
+        WriteToFile( tabs + "</Node> \n");
     }
 }
 
-bool DecisionTreeIOManager::IsCompatibleWith(Editor *editor)
+void DecisionTreeIOManager::Parse(DecisionTreeIOManager::XMLNode *rootXMLNode, Editor *editor_)
 {
-    return dynamic_cast<DecisionTreeEditor*> (editor) != nullptr ;
+        editor = dynamic_cast<DecisionTreeEditor*> (editor_);
+        editor->SetRoot(ExtractNode(rootXMLNode->first_node("Node")));
 }
 
 DecisionTreeNode *DecisionTreeIOManager::ExtractNode(DecisionTreeIOManager::XMLNode *xmlNode, DecisionTreeNode *parent)
@@ -133,7 +87,6 @@ DecisionTreeNode *DecisionTreeIOManager::ExtractActionNode(DecisionTreeIOManager
 
     ParseNodePosition(actionNode, xmlNode);
     return actionNode;
-
 }
 
 DecisionTreeNode *DecisionTreeIOManager::ExtractDecisionNode(DecisionTreeIOManager::XMLNode *xmlNode, DecisionTreeNode *parent)
@@ -153,7 +106,6 @@ void DecisionTreeIOManager::ParseNodePosition(DecisionTreeNode *node, DecisionTr
     float xPos = QString(xmlNode->first_attribute("XPos")->value()).toFloat();
     float yPos = QString(xmlNode->first_attribute("YPos")->value()).toFloat();
     node->setPos(xPos,yPos);
-
 }
 
 void DecisionTreeIOManager::ParseDecisionNodeFalsePathNode(DecisionNode *decisionNode, DecisionTreeIOManager::XMLNode *xmlNode)
@@ -175,5 +127,15 @@ void DecisionTreeIOManager::ParseDecisionNodeCondition(DecisionNode *decisionNod
     XMLNode* conditionXMLNode = xmlNode->first_node("Condition");
     if (conditionXMLNode != nullptr)
         decisionNode->SetConditionName(conditionXMLNode->value());
+}
+
+bool DecisionTreeIOManager::IsCompatibleWith(Editor *editor)
+{
+    return dynamic_cast<DecisionTreeEditor*> (editor) != nullptr ;
+}
+
+QString DecisionTreeIOManager::GetType()
+{
+    return "DecisionTree";
 }
 

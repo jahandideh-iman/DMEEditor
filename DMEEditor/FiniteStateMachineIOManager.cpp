@@ -3,13 +3,9 @@
 #include "StateNode.h"
 #include "StateTransition.h"
 #include "FiniteStateMachineEditor.h"
-#include <QQueue>
-
-
 
 FiniteStateMachineIOManager::FiniteStateMachineIOManager()
 {
-    this->editor = editor;
 }
 
 FiniteStateMachineIOManager::~FiniteStateMachineIOManager()
@@ -17,144 +13,67 @@ FiniteStateMachineIOManager::~FiniteStateMachineIOManager()
 
 }
 
-void FiniteStateMachineIOManager::SaveToFile(QString &fileName, Editor *editor)
+void FiniteStateMachineIOManager::Save(Editor *editor_)
 {
-    this->editor = dynamic_cast<FiniteStateMachineEditor*>(editor);
-    QFile file(fileName);
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        file.write("<DMEComponent type=\"FiniteStateMachine\" >\n" );
-        SaveStates(&file);
-        SaveTransitions(&file);
-        SaveRoot(&file);
-        file.write("</DMEComponent>\n");
-        file.close();
-    }
+    this->editor = dynamic_cast<FiniteStateMachineEditor*>(editor_);
+
+    SaveStates();
+    SaveTransitions();
+    SaveRoot();
 }
 
-
-void FiniteStateMachineIOManager::SaveStates(QFile *file)
+void FiniteStateMachineIOManager::SaveStates()
 {
-    file->write("   <States>\n");
+    WriteToFile("   <States>\n");
 
-    auto traversal = GetBreadthFirstTraversal();
-    for(StateNode* state : traversal)
+    auto states = editor->GetStates();
+    for(StateNode* state : states)
     {
         QString xPos = "XPos=\"" +QString::number(state->pos().x()) + "\"";
         QString yPos = "YPos=\"" +QString::number(state->pos().y()) + "\"";
-        file->write(("       <State " + xPos +" "+ yPos + " >\n").toStdString().c_str());
-        file->write(("           <Name>" + state->GetStateName()+"</Name>\n").toStdString().c_str());
-        file->write(("           <UpdateAction>" + state->GetUpdateActionName()+"</UpdateAction>\n").toStdString().c_str());
-        file->write(("           <EntryAction>" + state->GetEntryActionName()+"</EntryAction>\n").toStdString().c_str());
-        file->write(("           <ExitAction>" + state->GetExitActionName()+"</ExitAction>\n").toStdString().c_str());
-        file->write("       </State>\n");
+        WriteToFile("       <State " + xPos +" "+ yPos + " >\n");
+        WriteToFile("           <Name>" + state->GetStateName()+"</Name>\n");
+        WriteToFile("           <UpdateAction>" + state->GetUpdateActionName()+"</UpdateAction>\n");
+        WriteToFile("           <EntryAction>" + state->GetEntryActionName()+"</EntryAction>\n");
+        WriteToFile("           <ExitAction>" + state->GetExitActionName()+"</ExitAction>\n");
+        WriteToFile("       </State>\n");
     }
-
-    file->write("   </States>\n");
-
+    WriteToFile("   </States>\n");
 }
 
-void FiniteStateMachineIOManager::SaveTransitions(QFile *file)
+void FiniteStateMachineIOManager::SaveTransitions()
 {
-    file->write("   <Transitions>\n");
+    WriteToFile("   <Transitions>\n");
 
-    auto traversal = GetBreadthFirstTraversal();
+    auto traversal = editor->GetStates();
     for(auto state : traversal)
     {
         for(auto l : state->GetOutLinks())
         {
-            file->write("       <Transition>\n");
-            file->write(("           <From>" + l->GetStartNode()->GetStateName()+"</From>\n").toStdString().c_str());
-            file->write(("           <To>" + l->GetEndNode()->GetStateName()+"</To>\n").toStdString().c_str());
-            file->write(("           <Condition>" + l->GetConditionName()+"</Condition>\n").toStdString().c_str());
-            file->write("       </Transition>\n");
+            WriteToFile("       <Transition>\n");
+            WriteToFile("           <From>" + l->GetStartNode()->GetStateName()+"</From>\n");
+            WriteToFile("           <To>" + l->GetEndNode()->GetStateName()+"</To>\n");
+            WriteToFile("           <Condition>" + l->GetConditionName()+"</Condition>\n");
+            WriteToFile("       </Transition>\n");
         }
     }
-    file->write("    </Transitions>\n");
+    WriteToFile("    </Transitions>\n");
 }
 
-void FiniteStateMachineIOManager::SaveRoot(QFile *file)
+void FiniteStateMachineIOManager::SaveRoot()
 {
     if(editor->GetRootState() == nullptr)
         return;
-    file->write(("  <InitialState>" + editor->GetRootState()->GetStateName()+"</InitialState>\n").toStdString().c_str());
+    WriteToFile(("  <InitialState>" + editor->GetRootState()->GetStateName()+"</InitialState>\n").toStdString().c_str());
 }
 
-QVector<StateNode *> FiniteStateMachineIOManager::GetBreadthFirstTraversal()
-{
-    QVector<StateNode*> traversal;
-    QQueue<StateNode*> queue;
-    QVector<StateNode*> discovered;
-    queue.enqueue(editor->GetRootState());
-    discovered.push_back(editor->GetRootState());
-    while(!queue.empty())
-    {
-        StateNode* state = queue.dequeue();
-        traversal.push_back(state);
-
-        for(auto l : state->GetOutLinks())
-        {
-            if( !discovered.contains(l->GetEndNode()))
-            {
-                queue.enqueue(l->GetEndNode());
-                discovered.push_back(l->GetEndNode());
-            }
-        }
-
-        for(auto l : state->GetInLinks())
-        {
-            if( !discovered.contains(l->GetEndNode()))
-            {
-                queue.enqueue(l->GetEndNode());
-                discovered.push_back(l->GetEndNode());
-            }
-        }
-
-    }
-
-    return traversal;
-}
-
-void FiniteStateMachineIOManager::ReadFromFile(QString &fileName, Editor *editor)
+void FiniteStateMachineIOManager::Parse(IOManager::XMLNode *rootXMLNode, Editor *editor)
 {
     this->editor = dynamic_cast<FiniteStateMachineEditor*> (editor);
-    QFile file(fileName);
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QByteArray dataArray = file.readAll();
-        //QString data = file.readAll().toStdString();
-        xml_document<> xmlData;
-        xmlData.parse<0>(dataArray.data());
-        xml_node<char>* rootXMLNode = xmlData.first_node("DMEComponent");
-        if(rootXMLNode != nullptr )
-        {
-            ParseStates(rootXMLNode->first_node("States"));
-            ParseTransitions(rootXMLNode->first_node("Transitions"));
-            ParseInitialState(rootXMLNode->first_node("InitialState"));
-        }
 
-    }
-    file.close();
-}
-
-bool FiniteStateMachineIOManager::IsFileValid(QString &fileName)
-{
-    QFile file(fileName);
-     xml_node<char>* rootXMLNode = nullptr;
-     QByteArray dataArray = nullptr;
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        dataArray = file.readAll();
-        //QString data = file.readAll().toStdString();
-        xml_document<> xmlData;
-        xmlData.parse<0>(dataArray.data());
-        rootXMLNode = xmlData.first_node("DMEComponent");
-    }
-    file.close();
-    if(rootXMLNode != nullptr)
-        return QString::compare(rootXMLNode->first_attribute("type")->value(),"FiniteStateMachine") == 0;
-
-    return false;
+    ParseStates(rootXMLNode->first_node("States"));
+    ParseTransitions(rootXMLNode->first_node("Transitions"));
+    ParseInitialState(rootXMLNode->first_node("InitialState"));
 }
 
 void FiniteStateMachineIOManager::ParseStates(FiniteStateMachineIOManager::XMLNode *statesXMLNode)
@@ -237,5 +156,7 @@ bool FiniteStateMachineIOManager::IsCompatibleWith(Editor *editor)
     return dynamic_cast<FiniteStateMachineEditor*> (editor) != nullptr ;
 }
 
-
-
+QString FiniteStateMachineIOManager::GetType()
+{
+    return "FiniteStateMachine";
+}

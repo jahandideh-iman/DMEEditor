@@ -13,7 +13,8 @@ FiniteStateMachineEditor::FiniteStateMachineEditor()
 
 FiniteStateMachineEditor::~FiniteStateMachineEditor()
 {
-    for(auto state : states)
+    auto statesCopy(states);
+    for(auto state : statesCopy)
         DeleteState(state);
 }
 
@@ -48,6 +49,11 @@ void FiniteStateMachineEditor::ConnectStates(StateNode *startState, StateNode *e
 {
     if( startState != endState)
         AddTransition(new StateTransition(startState,endState));
+}
+
+const QVector<StateNode *> &FiniteStateMachineEditor::GetStates() const
+{
+    return states;
 }
 
 StateNode *FiniteStateMachineEditor::GetRootState()

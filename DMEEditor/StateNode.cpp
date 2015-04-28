@@ -38,6 +38,11 @@ StateNode::~StateNode()
     auto outLinksCopy (outLinks);
     for(auto l : outLinksCopy)
         delete l;
+
+    delete ellipse;
+    delete stateNameTextItem;
+    ellipse = nullptr;
+    stateNameTextItem = nullptr;
 }
 
 void StateNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

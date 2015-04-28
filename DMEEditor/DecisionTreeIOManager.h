@@ -21,23 +21,23 @@ public:
     DecisionTreeIOManager();
     ~DecisionTreeIOManager();
 
-    void ReadFromFile(QString &fileName, Editor *editor_) override;
-    void SaveToFile(QString &fileName, Editor *editor_) override;
     bool IsCompatibleWith(Editor *editor) override;
-    bool IsFileValid(QString &fileName) override;
+
+protected:
+    void Parse(XMLNode *rootXMLNode, Editor *editor) override;
+    void Save(Editor *editor_) override;
+    QString GetType() override;
 
 private:
-    void SaveNode(DecisionTreeNode* node, QFile* file, int depth = 1);
+    void SaveNode(DecisionTreeNode* node, int depth = 1);
 
 
     DecisionTreeNode *ExtractNode(XMLNode* xmlNode, DecisionTreeNode *parent = 0);
-    QString GetNodeType(XMLNode* xmlNode);
-
     DecisionTreeNode *ExtractActionNode(XMLNode *xmlNode, DecisionTreeNode *parent);
     DecisionTreeNode *ExtractDecisionNode(XMLNode *xmlNode, DecisionTreeNode *parent);
+    QString GetNodeType(XMLNode* xmlNode);
 
     void ParseNodePosition(DecisionTreeNode *node, XMLNode *xmlNode);
-
     void ParseDecisionNodeFalsePathNode(DecisionNode* decisionNode, XMLNode* xmlNode);
     void ParseDecisionNodeTruePathNode(DecisionNode* decisionNode,  XMLNode* xmlNode);
     void ParseDecisionNodeCondition(DecisionNode* decisionNode, XMLNode* xmlNode);

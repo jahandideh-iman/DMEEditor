@@ -1,12 +1,11 @@
 #ifndef FINITESTATEMACHINEIOMANAGER_H
 #define FINITESTATEMACHINEIOMANAGER_H
 
-#include <QVector>
-#include <rapidxml.hpp>
+
 #include "IOManager.h"
 #include <QMap>
 
-using namespace rapidxml;
+
 
 class StateNode;
 class FiniteStateMachineEditor;
@@ -14,21 +13,25 @@ class QFile;
 
 class FiniteStateMachineIOManager : public IOManager
 {
-    typedef  xml_node<char> XMLNode;
+
 public:
     FiniteStateMachineIOManager();
     ~FiniteStateMachineIOManager();
 
-    void SaveToFile(QString &fileName, Editor *editor) override;
-    void ReadFromFile(QString &fileName, Editor *editor)override;
     bool IsCompatibleWith(Editor *editor) override;
-    bool IsFileValid(QString &fileName) override;
+
+protected:
+    void Save(Editor *editor_) override;
+    void Parse(XMLNode* rootXMLNode, Editor* editor) override;
+
+    QString GetType() override;
 
 private:
-    void SaveStates(QFile* file);
-    void SaveTransitions(QFile* file);
-    void SaveRoot(QFile* file);
+    void SaveStates();
+    void SaveTransitions();
+    void SaveRoot();
     QVector<StateNode *> GetBreadthFirstTraversal();
+
 
     void ParseStates(XMLNode* statesXMLNode);
     void ParseState(XMLNode * stateXMLNode);
@@ -42,7 +45,7 @@ private:
     void ParseInitialState(XMLNode *initalStateXMLNode);
 
 private:
-    FiniteStateMachineEditor *editor;
+    FiniteStateMachineEditor *editor = nullptr;
 
     QMap<QString, StateNode* > parsedStatesMap;
 
