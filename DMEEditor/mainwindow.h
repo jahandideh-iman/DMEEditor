@@ -26,6 +26,7 @@ public:
 public slots:
     void CreateNewDecisionTreeEditor();
     void CreateNewFiniteStateMachine();
+    void CreateNewBehaviorTree();
     void SaveToFile();
     void OpenFile();
 

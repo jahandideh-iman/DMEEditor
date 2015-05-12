@@ -4,6 +4,7 @@
 #include "DecisionTreeIOManager.h"
 #include "FiniteStateMachineEditor.h"
 #include "FiniteStateMachineIOManager.h"
+#include "BehaviorTreeEditor.h"
 #include <QFileDialog>
 
 PropertyPanel* MainWindow::propertyPanel = nullptr;
@@ -28,6 +29,7 @@ void MainWindow::ConfigUIEvents()
 {
     QObject::connect(ui->actionNew_Decision_Tree,SIGNAL(triggered()),this,SLOT(CreateNewDecisionTreeEditor()));
     QObject::connect(ui->actionNew_Finite_State_Machine,SIGNAL(triggered()),this, SLOT(CreateNewFiniteStateMachine()));
+    QObject::connect(ui->actionNew_Behavior_Tree,SIGNAL(triggered()),this, SLOT(CreateNewBehaviorTree()));
     QObject::connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(SaveToFile()));
     QObject::connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(OpenFile()));
     QObject::connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(close()));
@@ -54,6 +56,11 @@ void MainWindow::CreateNewDecisionTreeEditor()
 void MainWindow::CreateNewFiniteStateMachine()
 {
     SetEditor(new FiniteStateMachineEditor());
+}
+
+void MainWindow::CreateNewBehaviorTree()
+{
+    SetEditor(new BehaviorTreeEditor());
 }
 
 void MainWindow::SetEditor(Editor *editor)

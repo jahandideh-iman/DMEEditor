@@ -34,6 +34,7 @@
      <string>File</string>
     </property>
     <addaction name="separator"/>
+    <addaction name="actionNew_Behavior_Tree"/>
     <addaction name="actionNew_Finite_State_Machine"/>
     <addaction name="actionNew_Decision_Tree"/>
     <addaction name="actionNew"/>
@@ -86,6 +87,11 @@
   <action name="actionNew_Finite_State_Machine">
    <property name="text">
     <string>New Finite State Machine</string>
+   </property>
+  </action>
+  <action name="actionNew_Behavior_Tree">
+   <property name="text">
+    <string>New Behavior Tree</string>
    </property>
   </action>
  </widget>

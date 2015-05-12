@@ -29,7 +29,13 @@ SOURCES += main.cpp\
     Editor.cpp \
     IOManager.cpp \
     MainWindow.cpp \
-    StateTransition.cpp
+    StateTransition.cpp \
+    BehaviorTreeEditor.cpp \
+    BehaviorTreeGraphicsScene.cpp \
+    ActionTask.cpp \
+    BehaviorTask.cpp \
+    AttachBox.cpp \
+    Attachment.cpp
 
 HEADERS  += \
     UndeterminedDecisionTreeNode.h \
@@ -49,6 +55,12 @@ HEADERS  += \
     Editor.h \
     IOManager.h \
     MainWindow.h \
-    StateTransition.h
+    StateTransition.h \
+    BehaviorTreeEditor.h \
+    BehaviorTreeGraphicsScene.h \
+    ActionTask.h \
+    BehaviorTask.h \
+    AttachBox.h \
+    Attachment.h
 
 FORMS    += mainwindow.ui
