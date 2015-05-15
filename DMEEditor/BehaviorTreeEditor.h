@@ -14,9 +14,10 @@ class BehaviorTreeEditor : public Editor
         RootTask()
         {
             rect->setBrush(QBrush(Qt::yellow));
-            childAttachBox = new AttachBox(AttachBox::Role_Child,this);
-            childAttachBox->setY(30);
+            AddChildAttachBox();
         }
+
+        void ContributeToMenu(QMenu *menu){}
     };
 
 public:
@@ -24,10 +25,27 @@ public:
     ~BehaviorTreeEditor();
 
     void CreateActionTask(QPoint pos);
-    void AttachTasks(AttachBox *box1, AttachBox *box2);
+    void CreateSequenceTask(QPoint pos);
+    void CreateSelectorTask(QPoint pos);
+    void RemoveTask(BehaviorTask *task);
+
+    void AttachBoxSelected(AttachBox* attachBox);
+    void CancelAttachment();
+
+    void AttachTasks(AttachBox *start, AttachBox *end);
+    void Detach(Attachment* attachment);
+
+private:
+    void SetInAttachingState(bool flag);
+
+    void AddTask(BehaviorTask *task, QPoint pos);
 
 private:
     RootTask *root = nullptr;
+
+    AttachBox* lastAttachBox = nullptr;
+
+    QVector<BehaviorTask*> tasks;
 };
 
 #endif // BEHAVIORTREEEDITOR_H

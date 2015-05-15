@@ -1,5 +1,5 @@
 #include "ActionNode.h"
-#include "MainWindow.h"
+#include "Application.h"
 
 ActionNode::ActionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
@@ -20,7 +20,7 @@ QString ActionNode::GetActionName()
 void ActionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(SetActionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(SetActionName(const QString& ))));
 }
 
 

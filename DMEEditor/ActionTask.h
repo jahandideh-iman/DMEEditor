@@ -5,9 +5,22 @@
 
 class ActionTask : public BehaviorTask
 {
+    Q_OBJECT
 public:
     ActionTask();
     ~ActionTask();
+
+    QString GetActionName();
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+public slots:
+    void SetActionName(const QString &name);
+
+private:
+    void InitialProperties();
+
+private:
+    QGraphicsTextItem* actionName;
 
 };
 

@@ -10,6 +10,7 @@ public:
     virtual ~Editor();
 
     QGraphicsView *GetView();
+    QGraphicsScene *GetScene();
 
 protected:
     QGraphicsView *view = nullptr;

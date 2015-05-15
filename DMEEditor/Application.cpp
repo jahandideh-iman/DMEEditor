@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "Application.h"
 #include "ui_mainwindow.h"
 #include "DecisionTreeEditor.h"
 #include "DecisionTreeIOManager.h"
@@ -7,25 +7,33 @@
 #include "BehaviorTreeEditor.h"
 #include <QFileDialog>
 
-PropertyPanel* MainWindow::propertyPanel = nullptr;
+PropertyPanel* Application::propertyPanel = nullptr;
+Application* Application::app = nullptr;
 
-MainWindow::MainWindow(QWidget *parent) :
+Application::Application(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ConfigUIEvents();
     ConfigIOManagerEditorPairs();
+
+    app = this;
 }
 
-MainWindow::~MainWindow()
+Application::~Application()
 {
     DestoryEditor();
     delete ui;
     delete propertyPanel;
 }
 
-void MainWindow::ConfigUIEvents()
+Application *Application::Get()
+{
+    return app;
+}
+
+void Application::ConfigUIEvents()
 {
     QObject::connect(ui->actionNew_Decision_Tree,SIGNAL(triggered()),this,SLOT(CreateNewDecisionTreeEditor()));
     QObject::connect(ui->actionNew_Finite_State_Machine,SIGNAL(triggered()),this, SLOT(CreateNewFiniteStateMachine()));
@@ -35,35 +43,40 @@ void MainWindow::ConfigUIEvents()
     QObject::connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(close()));
 }
 
-void MainWindow::ConfigIOManagerEditorPairs()
+void Application::ConfigIOManagerEditorPairs()
 {
     ioEditorPairs.push_back(IOEditorPair(new DecisionTreeIOManager(), []()->Editor*{return new DecisionTreeEditor();}));
     ioEditorPairs.push_back(IOEditorPair(new FiniteStateMachineIOManager(), []()->Editor*{return new FiniteStateMachineEditor();}));
 }
 
-PropertyPanel *MainWindow::GetPropertyPanel()
+PropertyPanel *Application::GetPropertyPanel()
 {
     if(propertyPanel == nullptr)
         propertyPanel = new PropertyPanel();
     return propertyPanel;
 }
 
-void MainWindow::CreateNewDecisionTreeEditor()
+Editor *Application::GetEditor()
+{
+    return editor;
+}
+
+void Application::CreateNewDecisionTreeEditor()
 {
     SetEditor(new DecisionTreeEditor());
 }
 
-void MainWindow::CreateNewFiniteStateMachine()
+void Application::CreateNewFiniteStateMachine()
 {
     SetEditor(new FiniteStateMachineEditor());
 }
 
-void MainWindow::CreateNewBehaviorTree()
+void Application::CreateNewBehaviorTree()
 {
     SetEditor(new BehaviorTreeEditor());
 }
 
-void MainWindow::SetEditor(Editor *editor)
+void Application::SetEditor(Editor *editor)
 {
     DestoryEditor();
 
@@ -72,7 +85,7 @@ void MainWindow::SetEditor(Editor *editor)
     ui->viewLayout->addWidget(GetPropertyPanel(),0,3,1,1, Qt::AlignLeft);
 }
 
-void MainWindow::DestoryEditor()
+void Application::DestoryEditor()
 {
     if(editor == nullptr)
         return;
@@ -81,7 +94,7 @@ void MainWindow::DestoryEditor()
     delete editor;
 }
 
-void MainWindow::SaveToFile()
+void Application::SaveToFile()
 {
     if(editor == nullptr)
         return;
@@ -92,7 +105,7 @@ void MainWindow::SaveToFile()
             ioEditorPair.first->SaveToFile(fileName,editor);
 }
 
-void MainWindow::OpenFile()
+void Application::OpenFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"",
                                tr("Text (*.txt)"));

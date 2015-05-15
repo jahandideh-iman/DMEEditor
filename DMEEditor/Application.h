@@ -11,17 +11,20 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class Application : public QMainWindow
 {
     Q_OBJECT
 
     typedef QPair<IOManager *, std::function<Editor*()>> IOEditorPair;
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit Application(QWidget *parent = 0);
+    ~Application();
 
+    static Application *Get();
     static PropertyPanel* GetPropertyPanel();
+
+    Editor *GetEditor();
 
 public slots:
     void CreateNewDecisionTreeEditor();
@@ -45,6 +48,7 @@ private:
     QVector<IOEditorPair> ioEditorPairs;
 
     static PropertyPanel *propertyPanel;
+    static Application * app;
 };
 
 #endif // MAINWINDOW_H

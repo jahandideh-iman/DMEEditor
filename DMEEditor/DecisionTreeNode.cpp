@@ -1,5 +1,5 @@
 #include "DecisionTreeNode.h"
-#include "MainWindow.h"
+#include "Application.h"
 
 DecisionTreeNode::DecisionTreeNode(QGraphicsItem *parent) : QGraphicsItem(parent)
 {
@@ -36,6 +36,6 @@ void DecisionTreeNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void DecisionTreeNode::InitialPropertyWidgets()
 {
-    MainWindow::GetPropertyPanel()->Clear();
+    Application::GetPropertyPanel()->Clear();
 }
 

@@ -4,6 +4,8 @@
 #include "BehaviorTreeEditor.h"
 #include "AttachBox.h"
 #include "ActionTask.h"
+#include "Application.h"
+#include "MenuContributer.h"
 
 BehaviorTreeGraphicsScene::BehaviorTreeGraphicsScene(BehaviorTreeEditor *editor)
 {
@@ -22,77 +24,74 @@ BehaviorTreeGraphicsScene::~BehaviorTreeGraphicsScene()
 void BehaviorTreeGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QGraphicsScene::mouseMoveEvent(mouseEvent);
-    if(isInAttachingState)
+    if(trackedItem != nullptr)
     {
-        attachmentPlaceHolder->setLine(QLineF(selectedAttachBox->mapToScene(0,0), mouseEvent->scenePos()));
+        attachmentPlaceHolder->setLine(QLineF(trackedItem->mapToScene(0,0), mouseEvent->scenePos()));
     }
+}
+
+void BehaviorTreeGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Application::GetPropertyPanel()->Clear();
+    QGraphicsScene::mouseDoubleClickEvent(event);
+}
+
+void BehaviorTreeGraphicsScene::StartTracking(QGraphicsItem* item)
+{
+    trackedItem = item;
+    attachmentPlaceHolder->setVisible(true);
+}
+
+void BehaviorTreeGraphicsScene::StopTracking()
+{
+    trackedItem = nullptr;
+    attachmentPlaceHolder->setVisible(false);
 }
 
 
 void BehaviorTreeGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     QGraphicsScene::contextMenuEvent(event);
+    auto item = itemAt(event->scenePos(),QTransform());
+    QMenu menu;
 
-    QGraphicsItem *item =itemAt(event->scenePos(),QTransform());
-    if( dynamic_cast<AttachBox*> (item) != nullptr)
+    if (dynamic_cast<MenuContributer*> (item) != nullptr)
     {
-        selectedAttachBox = dynamic_cast<AttachBox*> (item);
-        QMenu *menu = new QMenu();
-        menu->addAction("Attach", this, SLOT(StartAttachingHelper()));
-        menu->exec(event->screenPos());
+        dynamic_cast<MenuContributer*> (item)->ContributeToMenu(&menu);
     }
     else
     {
-        QMenu *menu=new QMenu();
-        menu->addAction("Create Action Node",this, SLOT(CreateActionTaskHelper()));
-        menu->addAction("Create Sequence Node");
-        menu->addAction("Create Selector Node");
-        menu->exec(event->screenPos());
-    }
+        clickPosition = event->scenePos().toPoint();
 
+        menu.addAction("Create Action Node",this, SLOT(CreateActionTaskHelper()));
+        menu.addAction("Create Sequence Node", this, SLOT(CreateSequenceTaskHelper()));
+        menu.addAction("Create Selector Node", this, SLOT(CreateSelectorTaskHelper()));
+    }
+    if(menu.actions().isEmpty() == false)
+        menu.exec(event->screenPos());
 }
 
 void BehaviorTreeGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QGraphicsScene::mousePressEvent(mouseEvent);
-    if(mouseEvent->button() == Qt::LeftButton)
-    {
-        if(isInAttachingState)
-        {
-            AttachBox* box  = dynamic_cast<AttachBox*> (itemAt(mouseEvent->scenePos(),QTransform()));
-            if(box != nullptr)
-                FinishAttachingHelper(box);
-        }
-    }
-    else if( mouseEvent->button() == Qt::RightButton)
-        if(isInAttachingState)
-            CancelAttachingHelper();
 
+    if( mouseEvent->button() == Qt::RightButton)
+        editor->CancelAttachment();
 }
 
 void BehaviorTreeGraphicsScene::CreateActionTaskHelper()
 {
-    editor->CreateActionTask(QPoint(100,100));
+    editor->CreateActionTask(clickPosition);
 }
 
-void BehaviorTreeGraphicsScene::StartAttachingHelper()
+void BehaviorTreeGraphicsScene::CreateSelectorTaskHelper()
 {
-    isInAttachingState = true;
-    attachmentPlaceHolder->setVisible(true);
-    attachmentPlaceHolder->setLine(QLineF(selectedAttachBox->mapToScene(0,0),selectedAttachBox->mapToScene(0,0)));
+    editor->CreateSelectorTask(clickPosition);
 }
 
-void BehaviorTreeGraphicsScene::CancelAttachingHelper()
+void BehaviorTreeGraphicsScene::CreateSequenceTaskHelper()
 {
-    isInAttachingState = false;
-    attachmentPlaceHolder->setVisible(false);
-}
-
-void BehaviorTreeGraphicsScene::FinishAttachingHelper(AttachBox *box)
-{
-    editor->AttachTasks(selectedAttachBox, box);
-    isInAttachingState = false;
-    attachmentPlaceHolder->setVisible(false);
+    editor->CreateSequenceTask(clickPosition);
 }
 
 

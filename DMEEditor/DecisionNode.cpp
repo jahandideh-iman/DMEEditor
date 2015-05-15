@@ -1,6 +1,6 @@
 #include "DecisionNode.h"
 #include <QPainter>
-#include "MainWindow.h"
+#include "Application.h"
 
 
 DecisionNode::DecisionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
@@ -65,7 +65,7 @@ void DecisionNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 void DecisionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(SetConditionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(SetConditionName(const QString& ))));
 }
 
 

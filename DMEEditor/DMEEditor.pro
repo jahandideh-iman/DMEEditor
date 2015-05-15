@@ -28,14 +28,15 @@ SOURCES += main.cpp\
     DecisionTreeIOManager.cpp \
     Editor.cpp \
     IOManager.cpp \
-    MainWindow.cpp \
     StateTransition.cpp \
     BehaviorTreeEditor.cpp \
     BehaviorTreeGraphicsScene.cpp \
     ActionTask.cpp \
     BehaviorTask.cpp \
     AttachBox.cpp \
-    Attachment.cpp
+    Attachment.cpp \
+    CompoundTask.cpp \
+    Application.cpp
 
 HEADERS  += \
     UndeterminedDecisionTreeNode.h \
@@ -54,13 +55,15 @@ HEADERS  += \
     DecisionTreeIOManager.h \
     Editor.h \
     IOManager.h \
-    MainWindow.h \
     StateTransition.h \
     BehaviorTreeEditor.h \
     BehaviorTreeGraphicsScene.h \
     ActionTask.h \
     BehaviorTask.h \
     AttachBox.h \
-    Attachment.h
+    Attachment.h \
+    CompoundTask.h \
+    Application.h \
+    MenuContributer.h
 
 FORMS    += mainwindow.ui

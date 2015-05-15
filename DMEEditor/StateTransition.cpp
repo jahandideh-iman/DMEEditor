@@ -2,7 +2,7 @@
 #include "StateNode.h"
 #include <QDebug>
 #include <QGraphicsScene>
-#include "MainWindow.h"
+#include "Application.h"
 #include "StringProperty.h"
 
 StateTransition::StateTransition(StateNode *startNode, StateNode *endNode, QString condition)
@@ -49,8 +49,8 @@ void StateTransition::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void StateTransition::InitialPropertyWidgets()
 {
-    MainWindow::GetPropertyPanel()->Clear();
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("Condtion", conditionName,this,SLOT(SetConditionName(const QString& ))));
+    Application::GetPropertyPanel()->Clear();
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Condtion", conditionName,this,SLOT(SetConditionName(const QString& ))));
 
 }
 

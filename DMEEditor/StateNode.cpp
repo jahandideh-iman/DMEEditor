@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include "StateTransition.h"
-#include "MainWindow.h"
+#include "Application.h"
 #include "StringProperty.h"
 
 
@@ -154,11 +154,11 @@ void StateNode::SetExitActionName(const QString &value)
 
 void StateNode::InitialPropertyWidgets()
 {
-    MainWindow::GetPropertyPanel()->Clear();
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("Name", stateName,this,SLOT(SetStateName(const QString& ))));
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("State Action", updateActionName,this,SLOT(SetUpdateActionName(const QString& ))));
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("Exit Action", exitActionName,this,SLOT(SetExitActionName(const QString& ))));
-    MainWindow::GetPropertyPanel()->AddProperty(new StringProperty("Entry Action", entryActionName,this,SLOT(SetEntryActionName(const QString& ))));
+    Application::GetPropertyPanel()->Clear();
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Name", stateName,this,SLOT(SetStateName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("State Action", updateActionName,this,SLOT(SetUpdateActionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Exit Action", exitActionName,this,SLOT(SetExitActionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Entry Action", entryActionName,this,SLOT(SetEntryActionName(const QString& ))));
 
 }
 
