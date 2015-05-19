@@ -5,6 +5,7 @@
 #include "FiniteStateMachineEditor.h"
 #include "FiniteStateMachineIOManager.h"
 #include "BehaviorTreeEditor.h"
+#include "BehaviorTreeIOManager.h"
 #include <QFileDialog>
 
 PropertyPanel* Application::propertyPanel = nullptr;
@@ -47,6 +48,7 @@ void Application::ConfigIOManagerEditorPairs()
 {
     ioEditorPairs.push_back(IOEditorPair(new DecisionTreeIOManager(), []()->Editor*{return new DecisionTreeEditor();}));
     ioEditorPairs.push_back(IOEditorPair(new FiniteStateMachineIOManager(), []()->Editor*{return new FiniteStateMachineEditor();}));
+    ioEditorPairs.push_back(IOEditorPair(new BehaviorTreeIOManager(), []()->Editor*{return new BehaviorTreeEditor();}));
 }
 
 PropertyPanel *Application::GetPropertyPanel()

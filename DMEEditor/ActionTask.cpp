@@ -5,8 +5,8 @@
 
 ActionTask::ActionTask()
 {
-    parrentAttachBox = new AttachBox(AttachBox::Role_Parent,this);
-    parrentAttachBox->setY(-30);
+    toParentAttachBox = new AttachBox(AttachBox::Role_ToParent,this);
+    toParentAttachBox->setY(-30);
 
     actionName = new QGraphicsTextItem(this);
     InitialProperties();
@@ -39,6 +39,11 @@ void ActionTask::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     BehaviorTask::mouseDoubleClickEvent(event);
     InitialProperties();
+}
+
+AttachBox *ActionTask::GetAnEmptyToChildAttachBox()
+{
+    return nullptr;
 }
 
 

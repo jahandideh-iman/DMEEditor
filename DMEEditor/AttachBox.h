@@ -11,9 +11,9 @@ class AttachBox : public QGraphicsObject, public MenuContributer
 {
     Q_OBJECT
 public:
-    enum Role{Role_Parent, Role_Child};
+    enum Role{Role_ToParent, Role_ToChild};
 public:
-    AttachBox(Role role,BehaviorTask *parent = 0);
+    AttachBox(Role role, BehaviorTask *owner = 0);
     ~AttachBox();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -29,6 +29,8 @@ public:
     void SetRemoveable(bool isRemoveable);
 
     BehaviorTask *GetChildTask();
+    BehaviorTask *GetParentTask();
+    bool IsAttached();
 
 public slots:
     void AttachBoxSelected();
@@ -37,7 +39,7 @@ public slots:
     void Remove();
 
 private:
-    bool IsAttached();
+
 
 private:
     Role role;
@@ -45,7 +47,7 @@ private:
 
     Attachment* attachment = nullptr;
 
-    BehaviorTask *parentTask;
+    BehaviorTask *ownerTask;
 
     bool isRemoveable = false;
 };

@@ -38,6 +38,11 @@ void Attachment::ContributeToMenu(QMenu *menu)
     menu->addAction("Detach", this, SLOT(Dettach()));
 }
 
+AttachBox *Attachment::GetChildAttachBox()
+{
+    return child;
+}
+
 void Attachment::Dettach()
 {
     ((BehaviorTreeEditor*) Application::Get()->GetEditor())->Detach(this);

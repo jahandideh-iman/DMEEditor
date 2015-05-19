@@ -28,30 +28,31 @@ QRectF BehaviorTask::boundingRect() const
     return rect->boundingRect();
 }
 
-void BehaviorTask::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
-{
-
-}
 
 void BehaviorTask::ContributeToMenu(QMenu *menu)
 {
     menu->addAction("Remove",this, SLOT(Remove()));
 }
 
-void BehaviorTask::AddChildAttachBox(bool isRemoveable)
+AttachBox *BehaviorTask::GetToParentAttachBox()
 {
-    auto box = new AttachBox(AttachBox::Role_Child,this);
-    box->SetRemoveable(isRemoveable);
-    childAttachBoxes.push_back(box);
-
-    RearrangeChildAttachBoxes();
+    return toParentAttachBox;
 }
 
-void BehaviorTask::RemoveChildAttachBox(AttachBox *box)
+void BehaviorTask::AddToChildAttachBox(bool isRemoveable)
 {
-    childAttachBoxes.removeOne(box);
+    auto box = new AttachBox(AttachBox::Role_ToChild,this);
+    box->SetRemoveable(isRemoveable);
+    toChildAttachBoxes.push_back(box);
+
+    RearrangeToChildAttachBoxes();
+}
+
+void BehaviorTask::RemoveToChildAttachBox(AttachBox *box)
+{
+    toChildAttachBoxes.removeOne(box);
     delete box;
-    RearrangeChildAttachBoxes();
+    RearrangeToChildAttachBoxes();
 }
 
 void BehaviorTask::Remove()
@@ -59,8 +60,8 @@ void BehaviorTask::Remove()
     ((BehaviorTreeEditor*) Application::Get()->GetEditor())->RemoveTask(this);
 }
 
-void BehaviorTask::RearrangeChildAttachBoxes()
+void BehaviorTask::RearrangeToChildAttachBoxes()
 {
-    for(int i = 0 ; i < childAttachBoxes.size() ; ++i)
-        childAttachBoxes[i]->setPos(i*15, 30);
+    for(int i = 0 ; i < toChildAttachBoxes.size() ; ++i)
+        toChildAttachBoxes[i]->setPos(i*15, 30);
 }

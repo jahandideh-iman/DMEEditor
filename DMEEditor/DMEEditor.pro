@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     AttachBox.cpp \
     Attachment.cpp \
     CompoundTask.cpp \
-    Application.cpp
+    Application.cpp \
+    BehaviorTreeIOManager.cpp
 
 HEADERS  += \
     UndeterminedDecisionTreeNode.h \
@@ -64,6 +65,7 @@ HEADERS  += \
     Attachment.h \
     CompoundTask.h \
     Application.h \
-    MenuContributer.h
+    MenuContributer.h \
+    BehaviorTreeIOManager.h
 
 FORMS    += mainwindow.ui

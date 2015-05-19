@@ -13,6 +13,8 @@ public:
     QString GetActionName();
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+    AttachBox *GetAnEmptyToChildAttachBox() override;
+
 public slots:
     void SetActionName(const QString &name);
 

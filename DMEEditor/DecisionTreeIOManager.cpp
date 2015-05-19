@@ -17,6 +17,8 @@ void DecisionTreeIOManager::Save(Editor *editor_)
 {
     this->editor = dynamic_cast<DecisionTreeEditor*> (editor_);
     SaveNode(this->editor->GetRoot());
+
+
 }
 
 void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, int depth)
@@ -54,8 +56,8 @@ void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, int depth)
 
 void DecisionTreeIOManager::Parse(DecisionTreeIOManager::XMLNode *rootXMLNode, Editor *editor_)
 {
-        editor = dynamic_cast<DecisionTreeEditor*> (editor_);
-        editor->SetRoot(ExtractNode(rootXMLNode->first_node("Node")));
+    editor = dynamic_cast<DecisionTreeEditor*> (editor_);
+    editor->SetRoot(ExtractNode(rootXMLNode->first_node("Node")));
 }
 
 DecisionTreeNode *DecisionTreeIOManager::ExtractNode(DecisionTreeIOManager::XMLNode *xmlNode, DecisionTreeNode *parent)

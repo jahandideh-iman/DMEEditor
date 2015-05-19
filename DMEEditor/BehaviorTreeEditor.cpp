@@ -12,10 +12,9 @@ BehaviorTreeEditor::BehaviorTreeEditor()
     view->setSceneRect(0,0,1000,1000);
     view->setMouseTracking(true);
 
-    root = new RootTask();
-    root->setPos(500,50);
-    scene->addItem(root);
-
+    dummyRoot = new RootTask();
+    dummyRoot->setPos(500,50);
+    scene->addItem(dummyRoot);
 }
 
 BehaviorTreeEditor::~BehaviorTreeEditor()
@@ -32,12 +31,12 @@ void BehaviorTreeEditor::CreateActionTask(QPoint pos)
 
 void BehaviorTreeEditor::CreateSequenceTask(QPoint pos)
 {
-    AddTask(new CompoundTask(), pos);
+    AddTask(new CompoundTask(t_SequenceTask), pos);
 }
 
 void BehaviorTreeEditor::CreateSelectorTask(QPoint pos)
 {
-    AddTask(new CompoundTask(), pos);
+    AddTask(new CompoundTask(t_SelectorTask), pos);
 }
 
 
@@ -77,10 +76,10 @@ void BehaviorTreeEditor::CancelAttachment()
 void BehaviorTreeEditor::AttachTasks(AttachBox *start, AttachBox *end)
 {
     Attachment *attachment;
-    if(start->GetRole() == AttachBox::Role_Parent && end->GetRole() == AttachBox::Role_Child )
-        attachment = new Attachment(start, end);
-    else if(end->GetRole() == AttachBox::Role_Parent && start->GetRole() == AttachBox::Role_Child )
+    if(start->GetRole() == AttachBox::Role_ToParent && end->GetRole() == AttachBox::Role_ToChild )
         attachment = new Attachment(end, start);
+    else if(end->GetRole() == AttachBox::Role_ToParent && start->GetRole() == AttachBox::Role_ToChild )
+        attachment = new Attachment(start, end);
     else
         return;
 
@@ -88,10 +87,25 @@ void BehaviorTreeEditor::AttachTasks(AttachBox *start, AttachBox *end)
     scene->addItem(attachment);
 }
 
+void BehaviorTreeEditor::AttachTasks(BehaviorTask *parent, BehaviorTask *child)
+{
+    AttachTasks(parent->GetAnEmptyToChildAttachBox(), child->GetToParentAttachBox());
+}
+
 void BehaviorTreeEditor::Detach(Attachment *attachment)
 {
     scene->removeItem(attachment);
     delete attachment;
+}
+
+BehaviorTask *BehaviorTreeEditor::GetRoot()
+{
+    return dummyRoot->GetToChildAttachBox()->GetChildTask();
+}
+
+void BehaviorTreeEditor::SetRoot(BehaviorTask *root)
+{
+    AttachTasks(dummyRoot->GetToChildAttachBox(), root->GetToParentAttachBox());
 }
 
 void BehaviorTreeEditor::SetInAttachingState(bool flag)

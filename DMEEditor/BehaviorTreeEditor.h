@@ -14,10 +14,18 @@ class BehaviorTreeEditor : public Editor
         RootTask()
         {
             rect->setBrush(QBrush(Qt::yellow));
-            AddChildAttachBox();
+            AddToChildAttachBox(false);
         }
 
-        void ContributeToMenu(QMenu *menu){}
+        AttachBox *GetToChildAttachBox() { return toChildAttachBoxes[0];}
+        AttachBox *GetAnEmptyToChildAttachBox() override
+        {
+            if(toChildAttachBoxes[0]->IsAttached())
+                return nullptr;
+            return toChildAttachBoxes[0];
+        }
+
+        void ContributeToMenu(QMenu *menu){menu;}
     };
 
 public:
@@ -28,20 +36,25 @@ public:
     void CreateSequenceTask(QPoint pos);
     void CreateSelectorTask(QPoint pos);
     void RemoveTask(BehaviorTask *task);
+    void AddTask(BehaviorTask *task, QPoint pos);
 
     void AttachBoxSelected(AttachBox* attachBox);
     void CancelAttachment();
 
     void AttachTasks(AttachBox *start, AttachBox *end);
+    void AttachTasks(BehaviorTask *parent, BehaviorTask* child);
     void Detach(Attachment* attachment);
+
+    BehaviorTask *GetRoot();
+    void SetRoot(BehaviorTask *root);
 
 private:
     void SetInAttachingState(bool flag);
 
-    void AddTask(BehaviorTask *task, QPoint pos);
+
 
 private:
-    RootTask *root = nullptr;
+    RootTask *dummyRoot = nullptr;
 
     AttachBox* lastAttachBox = nullptr;
 

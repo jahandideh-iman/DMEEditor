@@ -8,9 +8,9 @@
 #include "Attachment.h"
 
 
-AttachBox::AttachBox(Role role, BehaviorTask *parent) : QGraphicsObject( parent)
+AttachBox::AttachBox(Role role, BehaviorTask *owner) : QGraphicsObject( owner)
 {
-    parentTask = parent;
+    ownerTask = owner;
     rect.setParentItem(this);
     rect.setRect(QRect(QPoint(-5,-5), QPoint(5,5)));
     rect.setBrush(QBrush(Qt::red));
@@ -67,6 +67,19 @@ void AttachBox::SetRemoveable(bool isRemoveable)
     this->isRemoveable = isRemoveable;
 }
 
+BehaviorTask *AttachBox::GetChildTask()
+{
+    if(role == Role_ToParent || attachment == nullptr)
+        return nullptr;
+
+    attachment->GetChildAttachBox()->GetParentTask();
+}
+
+BehaviorTask *AttachBox::GetParentTask()
+{
+    return ownerTask;
+}
+
 void AttachBox::AttachBoxSelected()
 {
     ((BehaviorTreeEditor*) Application::Get()->GetEditor())->AttachBoxSelected(this);
@@ -79,8 +92,8 @@ void AttachBox::DettachAttachment()
 
 void AttachBox::Remove()
 {
-    if(role == Role_Child)
-        parentTask->RemoveChildAttachBox(this);
+    if(role == Role_ToChild)
+        ownerTask->RemoveToChildAttachBox(this);
 }
 
 bool AttachBox::IsAttached()

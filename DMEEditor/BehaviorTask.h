@@ -15,24 +15,25 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
 
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-
     void ContributeToMenu(QMenu *menu);
 
+    AttachBox *GetToParentAttachBox();
+    virtual AttachBox *GetAnEmptyToChildAttachBox() = 0;
+
 public slots:
-    void AddChildAttachBox(bool isRemoveable = false);
-    void RemoveChildAttachBox(AttachBox *box);
+    void AddToChildAttachBox(bool isRemoveable = false);
+    void RemoveToChildAttachBox(AttachBox *box);
     void Remove();
 
 private:
-    void RearrangeChildAttachBoxes();
+    void RearrangeToChildAttachBoxes();
 
 protected:
     QGraphicsRectItem *rect = nullptr;
 
-    AttachBox *parrentAttachBox = nullptr;
+    AttachBox *toParentAttachBox = nullptr;
 
-    QVector<AttachBox *> childAttachBoxes;
+    QVector<AttachBox *> toChildAttachBoxes;
 
 
 };
