@@ -2,7 +2,7 @@
 #define ATTACHBOX_H
 
 #include <QGraphicsRectItem>
-#include "MenuContributer.h"
+#include "Utilities/MenuContributer.h"
 
 class Attachment;
 class BehaviorTask;

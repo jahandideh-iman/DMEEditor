@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "Core/Application.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

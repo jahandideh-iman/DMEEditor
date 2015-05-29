@@ -2,9 +2,8 @@
 #include "AttachBox.h"
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
-#include "Application.h"
+#include "Core/Application.h"
 #include "BehaviorTreeGraphicsScene.h"
-#include "Application.h"
 #include "BehaviorTreeEditor.h"
 
 Attachment::Attachment(AttachBox *parent, AttachBox *child)
@@ -25,6 +24,7 @@ Attachment::~Attachment()
 
 void Attachment::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter;option;widget;
     line->setLine(QLineF(parent->mapToScene(0,0),child->mapToScene(0,0)));
 }
 

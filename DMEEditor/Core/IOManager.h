@@ -2,7 +2,7 @@
 #define IOMANAGER_H
 
 #include "QString"
-#include <rapidxml.hpp>
+#include <Utilities/rapidxml.hpp>
 
 class Editor;
 class QFile;

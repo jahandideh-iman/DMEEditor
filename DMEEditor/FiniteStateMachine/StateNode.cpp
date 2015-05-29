@@ -4,8 +4,8 @@
 #include <QDebug>
 #include <QGraphicsScene>
 #include "StateTransition.h"
-#include "Application.h"
-#include "StringProperty.h"
+#include "Core/Application.h"
+#include "Utilities/StringProperty.h"
 
 
 

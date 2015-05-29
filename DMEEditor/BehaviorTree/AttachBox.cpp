@@ -1,6 +1,6 @@
 #include "AttachBox.h"
 #include <QBrush>
-#include "Application.h"
+#include "Core/Application.h"
 #include "BehaviorTreeEditor.h"
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
@@ -72,7 +72,7 @@ BehaviorTask *AttachBox::GetChildTask()
     if(role == Role_ToParent || attachment == nullptr)
         return nullptr;
 
-    attachment->GetChildAttachBox()->GetParentTask();
+    return attachment->GetChildAttachBox()->GetParentTask();
 }
 
 BehaviorTask *AttachBox::GetParentTask()

@@ -1,5 +1,4 @@
 #include "PropertyPanel.h"
-#include "DecisionTreeEditor.h"
 
 PropertyPanel::PropertyPanel(QWidget *parent) : QWidget(parent)
 {

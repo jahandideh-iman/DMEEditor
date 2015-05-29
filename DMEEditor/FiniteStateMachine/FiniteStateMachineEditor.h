@@ -1,7 +1,7 @@
 #ifndef FINITESTATEMACHINEEDITOR_H
 #define FINITESTATEMACHINEEDITOR_H
 
-#include "Editor.h"
+#include "Core/Editor.h"
 
 class StateNode;
 class StateTransition;

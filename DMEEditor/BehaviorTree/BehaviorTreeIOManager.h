@@ -1,7 +1,7 @@
 #ifndef BEHAVIORTREEIOMANAGER_H
 #define BEHAVIORTREEIOMANAGER_H
 
-#include "IOManager.h"
+#include "Core/IOManager.h"
 
 class BehaviorTreeEditor;
 class BehaviorTask;

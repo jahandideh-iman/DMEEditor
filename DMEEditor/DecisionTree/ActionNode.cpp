@@ -1,5 +1,5 @@
 #include "ActionNode.h"
-#include "Application.h"
+#include "Core/Application.h"
 
 ActionNode::ActionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {

@@ -2,8 +2,8 @@
 #include "StateNode.h"
 #include <QDebug>
 #include <QGraphicsScene>
-#include "Application.h"
-#include "StringProperty.h"
+#include "Core/Application.h"
+#include "Utilities/StringProperty.h"
 
 StateTransition::StateTransition(StateNode *startNode, StateNode *endNode, QString condition)
 {

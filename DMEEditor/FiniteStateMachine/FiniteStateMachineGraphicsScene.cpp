@@ -1,7 +1,7 @@
 #include "FiniteStateMachineGraphicsScene.h"
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
-#include <FiniteStateMachineEditor.h>
+#include <FiniteStateMachine/FiniteStateMachineEditor.h>
 #include "StateNode.h"
 #include "StateTransition.h"
 #include <QGraphicsEllipseItem>

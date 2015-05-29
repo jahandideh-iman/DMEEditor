@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "PropertyPanel.h"
+#include "Utilities/PropertyPanel.h"
 #include "Editor.h"
 #include "IOManager.h"
 #include <functional>

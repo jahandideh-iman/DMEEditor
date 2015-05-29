@@ -7,7 +7,7 @@
 
 class StateNode;
 
-class StateTransition : public QObject, public QGraphicsItem
+class StateTransition : public QGraphicsObject
 {
     Q_OBJECT
 public:

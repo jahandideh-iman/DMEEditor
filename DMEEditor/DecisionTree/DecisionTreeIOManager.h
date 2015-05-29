@@ -2,8 +2,8 @@
 #define DECISIONTREEIOMANAGER_H
 
 #include <QVector>
-#include <rapidxml.hpp>
-#include "IOManager.h"
+#include <Utilities/rapidxml.hpp>
+#include "Core/IOManager.h"
 #include <QMap>
 
 using namespace rapidxml;

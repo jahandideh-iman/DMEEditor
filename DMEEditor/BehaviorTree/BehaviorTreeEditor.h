@@ -1,7 +1,7 @@
 #ifndef BEHAVIORTREEEDITOR_H
 #define BEHAVIORTREEEDITOR_H
 
-#include "Editor.h"
+#include "Core/Editor.h"
 #include "BehaviorTask.h"
 
 class AttachBox;

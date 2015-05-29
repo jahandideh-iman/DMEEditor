@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 #include "AttachBox.h"
-#include "MenuContributer.h"
+#include "Utilities/MenuContributer.h"
 
 class BehaviorTask : public QGraphicsObject, public MenuContributer
 {

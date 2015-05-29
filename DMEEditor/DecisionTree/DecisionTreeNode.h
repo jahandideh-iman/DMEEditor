@@ -4,7 +4,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsEllipseItem>
 #include <QBrush>
-#include "PropertyPanel.h"
+#include "Utilities/PropertyPanel.h"
 
 class DecisionTreeNode :  public QObject ,public QGraphicsItem
 {

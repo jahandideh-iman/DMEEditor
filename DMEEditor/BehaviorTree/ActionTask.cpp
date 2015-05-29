@@ -1,7 +1,7 @@
 #include "ActionTask.h"
-#include "Application.h"
-#include "PropertyPanel.h"
-#include "StringProperty.h"
+#include "Core/Application.h"
+#include "Utilities/PropertyPanel.h"
+#include "Utilities/StringProperty.h"
 
 ActionTask::ActionTask()
 {

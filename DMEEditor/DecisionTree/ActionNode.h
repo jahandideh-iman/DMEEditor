@@ -2,7 +2,7 @@
 #define ACTIONNODE_H
 
 #include "DecisionTreeNode.h"
-#include "StringProperty.h"
+#include "Utilities/StringProperty.h"
 
 class ActionNode : public DecisionTreeNode
 {

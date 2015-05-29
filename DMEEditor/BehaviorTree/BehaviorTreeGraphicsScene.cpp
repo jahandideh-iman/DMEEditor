@@ -4,8 +4,8 @@
 #include "BehaviorTreeEditor.h"
 #include "AttachBox.h"
 #include "ActionTask.h"
-#include "Application.h"
-#include "MenuContributer.h"
+#include "Core/Application.h"
+#include "Utilities/MenuContributer.h"
 
 BehaviorTreeGraphicsScene::BehaviorTreeGraphicsScene(BehaviorTreeEditor *editor)
 {

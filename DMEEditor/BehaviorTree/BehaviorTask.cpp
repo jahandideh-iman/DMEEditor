@@ -1,5 +1,5 @@
 #include "BehaviorTask.h"
-#include "Application.h"
+#include "Core/Application.h"
 #include "BehaviorTreeEditor.h"
 
 BehaviorTask::BehaviorTask()

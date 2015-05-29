@@ -10,7 +10,7 @@ using std::vector;
 
 class StateTransition;
 
-class StateNode : public QObject, public QGraphicsItem
+class StateNode : public QGraphicsObject
 {
     Q_OBJECT
 public:

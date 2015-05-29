@@ -1,11 +1,11 @@
 #include "Application.h"
 #include "ui_mainwindow.h"
-#include "DecisionTreeEditor.h"
-#include "DecisionTreeIOManager.h"
-#include "FiniteStateMachineEditor.h"
-#include "FiniteStateMachineIOManager.h"
-#include "BehaviorTreeEditor.h"
-#include "BehaviorTreeIOManager.h"
+#include "DecisionTree/DecisionTreeEditor.h"
+#include "DecisionTree/DecisionTreeIOManager.h"
+#include "FiniteStateMachine/FiniteStateMachineEditor.h"
+#include "FiniteStateMachine/FiniteStateMachineIOManager.h"
+#include "BehaviorTree/BehaviorTreeEditor.h"
+#include "BehaviorTree/BehaviorTreeIOManager.h"
 #include <QFileDialog>
 
 PropertyPanel* Application::propertyPanel = nullptr;

@@ -1,7 +1,7 @@
 #ifndef DECISIONTREEEDITOR_H
 #define DECISIONTREEEDITOR_H
 
-#include "Editor.h"
+#include "Core/Editor.h"
 
 class DecisionNode;
 class UndeterminedDecisionTreeNode;
