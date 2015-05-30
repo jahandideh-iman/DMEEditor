@@ -2,11 +2,10 @@
 #define DECISIONTREEEDITOR_H
 
 #include "Core/Editor.h"
+#include "TreeUtilities/TreeNode.h"
+#include "DecisionTreeNode.h"
 
 class DecisionNode;
-class UndeterminedDecisionTreeNode;
-class DecisionTreeNode;
-
 
 class DecisionTreeEditor : public Editor
 {
@@ -14,24 +13,66 @@ public:
     DecisionTreeEditor();
     ~DecisionTreeEditor();
 
+    class DummyRootNode : public DecisionTreeNode
+    {
+    public:
+        DummyRootNode()
+        {
+            AddAUnremoveableToChildLinkBox();
 
-    QGraphicsView *GetView() const;
+            QPolygonF polygon;
+            polygon << QPointF(0, 30) << QPointF(30, -30) << QPointF(-30, -30);
+            QGraphicsPolygonItem *triangle = new QGraphicsPolygonItem(polygon);
+            triangle->setBrush(QBrush(Qt::yellow));
+            SetShape(triangle);
+            SetLinkBoxesLock(true);
+        }
 
-    void ConvertToActionNode(UndeterminedDecisionTreeNode* undeterminedNode);
-    void ConvertToDecisionNode(UndeterminedDecisionTreeNode* undeterminedNode);
+        DecisionTreeNode *GetChild()
+        {
+            return  dynamic_cast<DecisionTreeNode *> (GetToChildLinkBox()->GetChildNode());
+        }
+
+        LinkBox *GetToChildLinkBox()
+        {
+            return DecisionTreeNode::GetToChildLinkBox(0);
+        }
+
+        void ContributeToMenu(QMenu *menu) override { menu;}
+
+    protected:
+        void RearrangeToChildLinkBoxes() override
+        {
+            GetToChildLinkBox()->setPos(0,30);
+        }
+    };
+
+    void CreateActionNode(QPointF position);
+    void CreateDecisionNode(QPointF position);
+    void AddNode(DecisionTreeNode *node, QPointF pos);
 
     void SetRoot(DecisionTreeNode *node);
     DecisionTreeNode *GetRoot();
 
+    void OnLinkBoxSelected(LinkBox *selected);
+    void CancelLinking();
+
+    void LinkNodes(LinkBox *box1, LinkBox *box2);
+    void LinkDecisionNodeTrueChild(DecisionNode *parent, DecisionTreeNode *child);
+    void LinkDecisionNodeFalseChild(DecisionNode *parent, DecisionTreeNode *child);
+
 private:
-    DecisionTreeNode* CreateActionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
-    DecisionTreeNode* CreateDecisionNodeFrom(UndeterminedDecisionTreeNode* undeterminedNode);
+    void SetLinkingState(bool state);
 
-    void ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTreeNode *undeterminedNode, DecisionTreeNode *newNode);
+    void InitialDummyRoot();
 
 
 private:
-    DecisionTreeNode* root = nullptr;
+    DummyRootNode *dummyRoot = nullptr;
+
+    LinkBox *lastSelectedLinkBox = nullptr;
+
+    QVector<DecisionTreeNode *> nodes;
 
 };
 

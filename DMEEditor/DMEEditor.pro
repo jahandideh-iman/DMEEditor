@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     DecisionTree/DecisionTreeEditor.cpp \
     DecisionTree/DecisionTreeIOManager.cpp \
     DecisionTree/DecisionTreeNode.cpp \
-    DecisionTree/UndeterminedDecisionTreeNode.cpp \
     FiniteStateMachine/FiniteStateMachineEditor.cpp \
     FiniteStateMachine/FiniteStateMachineGraphicsScene.cpp \
     FiniteStateMachine/FiniteStateMachineIOManager.cpp \
@@ -37,7 +36,11 @@ SOURCES += main.cpp\
     FiniteStateMachine/StateTransition.cpp \
     Utilities/PropertyPanel.cpp \
     Utilities/PropertyWidget.cpp \
-    Utilities/StringProperty.cpp
+    Utilities/StringProperty.cpp \
+    DecisionTree/DecisionTreeGraphicsScene.cpp \
+    TreeUtilities/Link.cpp \
+    TreeUtilities/LinkBox.cpp \
+    TreeUtilities/TreeNode.cpp
 
 HEADERS  += \
     BehaviorTree/ActionTask.h \
@@ -56,7 +59,6 @@ HEADERS  += \
     DecisionTree/DecisionTreeEditor.h \
     DecisionTree/DecisionTreeIOManager.h \
     DecisionTree/DecisionTreeNode.h \
-    DecisionTree/UndeterminedDecisionTreeNode.h \
     FiniteStateMachine/FiniteStateMachineEditor.h \
     FiniteStateMachine/FiniteStateMachineGraphicsScene.h \
     FiniteStateMachine/FiniteStateMachineIOManager.h \
@@ -66,6 +68,10 @@ HEADERS  += \
     Utilities/PropertyPanel.h \
     Utilities/PropertyWidget.h \
     Utilities/rapidxml.hpp \
-    Utilities/StringProperty.h
+    Utilities/StringProperty.h \
+    DecisionTree/DecisionTreeGraphicsScene.h \
+    TreeUtilities/Link.h \
+    TreeUtilities/LinkBox.h \
+    TreeUtilities/TreeNode.h
 
 FORMS    += mainwindow.ui

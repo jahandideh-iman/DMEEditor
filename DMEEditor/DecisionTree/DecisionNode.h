@@ -12,29 +12,34 @@ public:
     DecisionNode(QGraphicsItem *parent = 0);
     ~DecisionNode();
 
-    void SetLeftChild(DecisionTreeNode* leftChild);
-    void SetRightChild(DecisionTreeNode* rightChild);
-
     DecisionTreeNode *GetLeftChild();
     DecisionTreeNode *GetRightChild();
 
     QString GetConditionName();
 
-    void ReplaceChild(DecisionTreeNode* child, DecisionTreeNode* newNode);
+    void OnLinkBoxLinked(LinkBox *box, Link *link);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+
+    LinkBox *GetLeftChildBox();
+    LinkBox *GetRightChildBox();
 
 protected:
     void InitialPropertyWidgets() override;
+
+    void RearrangeToChildLinkBoxes() override;
+    void RearrangeToParentLinkBox() override;
 
 public slots:
     void SetConditionName(const QString& value);
 
 private:
+
+
+private:
     QString conditionName;
 
-    DecisionTreeNode* leftChild = nullptr;
-    DecisionTreeNode* rightChild = nullptr;
+    const int shapeWidth = 40;
+    const int shapeHeight = 40;
 };
 
 #endif // DECISIONNODE_H

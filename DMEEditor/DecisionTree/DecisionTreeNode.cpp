@@ -1,37 +1,27 @@
 #include "DecisionTreeNode.h"
-#include "Core/Application.h"
 
-DecisionTreeNode::DecisionTreeNode(QGraphicsItem *parent) : QGraphicsItem(parent)
+#include "Core/Application.h"
+#include "DecisionTreeEditor.h"
+
+DecisionTreeNode::DecisionTreeNode(QGraphicsItem *parent) : TreeNode(parent)
 {
-    ellipse = new QGraphicsEllipseItem(this);
-    ellipse->setRect(QRect(-25,-25,50,50));
-    textItem = new QGraphicsTextItem("?",this);
-    textItem->setScale(1.5);
 
 }
-
 
 DecisionTreeNode::~DecisionTreeNode()
 {
 
 }
 
-void DecisionTreeNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    painter;
-    option;
-    widget;
-}
-
-QRectF DecisionTreeNode::boundingRect() const
-{
-    return ellipse->boundingRect();
-}
-
 void DecisionTreeNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mouseDoubleClickEvent(event);
     InitialPropertyWidgets();
+}
+
+void DecisionTreeNode::OnLinkBoxSelected(LinkBox *selected)
+{
+    ((DecisionTreeEditor*) Application::Get()->GetEditor())->OnLinkBoxSelected(selected);
 }
 
 void DecisionTreeNode::InitialPropertyWidgets()

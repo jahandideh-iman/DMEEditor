@@ -17,8 +17,6 @@ void DecisionTreeIOManager::Save(Editor *editor_)
 {
     this->editor = dynamic_cast<DecisionTreeEditor*> (editor_);
     SaveNode(this->editor->GetRoot());
-
-
 }
 
 void DecisionTreeIOManager::SaveNode(DecisionTreeNode *node, int depth)
@@ -88,6 +86,7 @@ DecisionTreeNode *DecisionTreeIOManager::ExtractActionNode(DecisionTreeIOManager
         actionNode->SetActionName(actionXMLNode->value());
 
     ParseNodePosition(actionNode, xmlNode);
+    editor->AddNode(actionNode, actionNode->pos());
     return actionNode;
 }
 
@@ -100,6 +99,7 @@ DecisionTreeNode *DecisionTreeIOManager::ExtractDecisionNode(DecisionTreeIOManag
     ParseDecisionNodeTruePathNode(decisionNode, xmlNode);
     ParseDecisionNodeFalsePathNode(decisionNode, xmlNode);
 
+    editor->AddNode(decisionNode, decisionNode->pos());
     return decisionNode;
 }
 
@@ -114,14 +114,14 @@ void DecisionTreeIOManager::ParseDecisionNodeFalsePathNode(DecisionNode *decisio
 {
     XMLNode* falsePathNode = xmlNode->first_node("FalsePath");
     if (falsePathNode != nullptr)
-        decisionNode->SetLeftChild(ExtractNode(falsePathNode->first_node("Node"), decisionNode));
+        editor->LinkDecisionNodeFalseChild(decisionNode, ExtractNode(falsePathNode->first_node("Node")));
 }
 
 void DecisionTreeIOManager::ParseDecisionNodeTruePathNode(DecisionNode *decisionNode, DecisionTreeIOManager::XMLNode *xmlNode)
 {
     XMLNode* truePathNode = xmlNode->first_node("TruePath");
     if (truePathNode != nullptr)
-        decisionNode->SetRightChild(ExtractNode(truePathNode->first_node("Node"),decisionNode));
+        editor->LinkDecisionNodeTrueChild(decisionNode, ExtractNode(truePathNode->first_node("Node")));
 }
 
 void DecisionTreeIOManager::ParseDecisionNodeCondition(DecisionNode *decisionNode, DecisionTreeIOManager::XMLNode *xmlNode)

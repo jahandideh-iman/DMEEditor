@@ -19,6 +19,7 @@ Application::Application(QWidget *parent) :
     ConfigUIEvents();
     ConfigIOManagerEditorPairs();
 
+    showMaximized();
     app = this;
 }
 

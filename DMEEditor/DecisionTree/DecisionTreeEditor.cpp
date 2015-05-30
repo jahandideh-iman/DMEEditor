@@ -1,86 +1,110 @@
 #include "DecisionTreeEditor.h"
 #include "DecisionNode.h"
 #include "ActionNode.h"
-#include "UndeterminedDecisionTreeNode.h"
+#include "DecisionTreeGraphicsScene.h"
+
 
 DecisionTreeEditor::DecisionTreeEditor()
 {
-    scene = new QGraphicsScene();
+    scene = new DecisionTreeGraphicsScene(this);
     view = new QGraphicsView(scene);
+    view->setSceneRect(0,0,1000,1000);
+    view->setMouseTracking(true);
+    view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    view->setDragMode(QGraphicsView::RubberBandDrag);
 
-    SetRoot(new UndeterminedDecisionTreeNode(this,nullptr));
+    InitialDummyRoot();
 }
 
 DecisionTreeEditor::~DecisionTreeEditor()
 {
-    delete root;
+    for(auto node : nodes)
+        delete node;
 }
 
- QGraphicsView *DecisionTreeEditor::GetView() const
+void DecisionTreeEditor::CreateActionNode(QPointF position)
 {
-     return view;
+    AddNode(new ActionNode(), position);
 }
 
-void DecisionTreeEditor::ConvertToActionNode(UndeterminedDecisionTreeNode *undeterminedNode)
+void DecisionTreeEditor::CreateDecisionNode(QPointF position)
 {
-    DecisionTreeNode* newNode = CreateActionNodeFrom(undeterminedNode);
-    ReplaceAndDeleteUndeterminedNode(undeterminedNode, newNode);
-}
-
-void DecisionTreeEditor::ConvertToDecisionNode(UndeterminedDecisionTreeNode *undeterminedNode)
-{
-    DecisionTreeNode* newNode = CreateDecisionNodeFrom(undeterminedNode);
-    ReplaceAndDeleteUndeterminedNode(undeterminedNode, newNode);
+    AddNode(new DecisionNode(), position);
 }
 
 void DecisionTreeEditor::SetRoot(DecisionTreeNode *node)
 {
-    root = node;
-    scene->addItem(root);
+    LinkNodes(dummyRoot->GetToChildLinkBox(), node->GetToParentLinkBox());
 }
 
 DecisionTreeNode *DecisionTreeEditor::GetRoot()
 {
-    return root;
+    return dummyRoot->GetChild();
 }
 
-DecisionTreeNode *DecisionTreeEditor::CreateActionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
+void DecisionTreeEditor::OnLinkBoxSelected(LinkBox *selected)
 {
-    DecisionTreeNode* newNode = new ActionNode();
-    scene->addItem(newNode);
-    newNode->setPos(undeterminedNode->pos());
-
-    return newNode;
+    if(lastSelectedLinkBox != nullptr && lastSelectedLinkBox != selected)
+    {
+        LinkNodes(lastSelectedLinkBox, selected);
+        SetLinkingState(false);
+    }
+    else
+    {
+        lastSelectedLinkBox = selected;
+        SetLinkingState(true);
+    }
 }
 
-DecisionTreeNode *DecisionTreeEditor::CreateDecisionNodeFrom(UndeterminedDecisionTreeNode *undeterminedNode)
+void DecisionTreeEditor::CancelLinking()
 {
-    DecisionNode* newNode = new DecisionNode();
-    DecisionTreeNode* rightChild = new UndeterminedDecisionTreeNode(this, newNode);
-    DecisionTreeNode* leftChild = new UndeterminedDecisionTreeNode(this, newNode);
-
-    newNode->SetRightChild(rightChild);
-    newNode->SetLeftChild(leftChild);
-
-    newNode->setPos(undeterminedNode->pos());
-    rightChild->setPos(newNode->pos()+ QPoint(100,100));
-    leftChild->setPos(newNode->pos()+ QPoint(-100,100));
-
-    scene->addItem(rightChild);
-    scene->addItem(leftChild);
-    scene->addItem(newNode);
-
-    return newNode;
+    SetLinkingState(false);
 }
 
-void DecisionTreeEditor::ReplaceAndDeleteUndeterminedNode(UndeterminedDecisionTreeNode *undeterminedNode, DecisionTreeNode *newNode)
+void DecisionTreeEditor::LinkNodes(LinkBox *box1, LinkBox *box2)
 {
-    DecisionNode* parentNode = undeterminedNode->getParentNode();
-    if(parentNode != nullptr)
-        parentNode->ReplaceChild(undeterminedNode, newNode);
-    else // if it is root
-        root = newNode;
+    Link *link;
 
-    scene->removeItem(undeterminedNode);
-    delete undeterminedNode;
+    if(box1->IsParent() && box2->IsChild())
+        link = new Link(box1, box2);
+    else if(box2->IsParent() && box1->IsChild())
+        link = new Link(box2, box1);
+    else
+        return;
+
+    scene->addItem(link);
+}
+
+void DecisionTreeEditor::LinkDecisionNodeTrueChild(DecisionNode *parent, DecisionTreeNode *child)
+{
+    LinkNodes(parent->GetRightChildBox(), child->GetToParentLinkBox());
+}
+
+void DecisionTreeEditor::LinkDecisionNodeFalseChild(DecisionNode *parent, DecisionTreeNode *child)
+{
+    LinkNodes(parent->GetLeftChildBox(), child->GetToParentLinkBox());
+}
+
+void DecisionTreeEditor::SetLinkingState(bool state)
+{
+    if(state == false)
+    {
+        lastSelectedLinkBox = nullptr;
+        ((DecisionTreeGraphicsScene*) scene)->StopMouseTracking();
+    }
+    else
+        ((DecisionTreeGraphicsScene*) scene)->StartMouseTracking(lastSelectedLinkBox);
+}
+
+void DecisionTreeEditor::InitialDummyRoot()
+{
+    dummyRoot = new DummyRootNode();
+    AddNode(dummyRoot, QPointF(view->sceneRect().width()/2, 50));
+}
+
+void DecisionTreeEditor::AddNode(DecisionTreeNode *node, QPointF pos)
+{
+    scene->addItem(node);
+    nodes.push_back(node);
+    node->setPos(pos);
 }

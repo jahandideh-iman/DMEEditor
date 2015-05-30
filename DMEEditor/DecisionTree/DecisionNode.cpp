@@ -5,34 +5,32 @@
 
 DecisionNode::DecisionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
-    SetConditionName("DefaultCondition");
-    ellipse->setBrush(QBrush(Qt::gray));
+    SetConditionName("Condition");
+
+    QPolygonF polygon;
+    polygon << QPointF(-shapeWidth, 0) << QPointF(0, -shapeHeight) << QPointF(shapeWidth, 0) << QPointF(0,shapeHeight);
+    QGraphicsPolygonItem *diamond = new QGraphicsPolygonItem(polygon);
+
+    SetShape(diamond);
+
+    CreateToParentLinkBox();
+    AddAUnremoveableToChildLinkBox();
+    AddAUnremoveableToChildLinkBox();
+    SetLinkBoxesLock(true);
 }
 
 DecisionNode::~DecisionNode()
 {
-    delete rightChild;
-    delete leftChild;
-}
-
-void DecisionNode::SetLeftChild(DecisionTreeNode *leftChild)
-{
-    this->leftChild = leftChild;
-}
-
-void DecisionNode::SetRightChild(DecisionTreeNode *rightChild)
-{
-    this->rightChild = rightChild;
 }
 
 DecisionTreeNode *DecisionNode::GetLeftChild()
 {
-    return leftChild;
+    return dynamic_cast<DecisionTreeNode*> (GetLeftChildBox()->GetChildNode());
 }
 
 DecisionTreeNode *DecisionNode::GetRightChild()
 {
-    return rightChild;
+    return dynamic_cast<DecisionTreeNode*> (GetRightChildBox()->GetChildNode());
 }
 
 QString DecisionNode::GetConditionName()
@@ -40,26 +38,12 @@ QString DecisionNode::GetConditionName()
     return conditionName;
 }
 
-void DecisionNode::ReplaceChild(DecisionTreeNode *child, DecisionTreeNode *newNode)
+void DecisionNode::OnLinkBoxLinked(LinkBox *box, Link *link)
 {
-    if(rightChild == child)
-        SetRightChild(newNode);
-    else if( leftChild == child)
-        SetLeftChild(newNode);
-}
-
-void DecisionNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    DecisionTreeNode::paint(painter,option,widget);
-
-    QPointF leftChildRelativePos = leftChild->pos() - pos();
-    QPointF rightChildRelativePos = rightChild->pos() - pos();
-
-    painter->drawLine(QPoint(0,0), leftChildRelativePos);
-    painter->drawLine(QPoint(0,0), rightChildRelativePos);
-
-    painter->drawText(leftChildRelativePos/2,"False");
-    painter->drawText(rightChildRelativePos/2,"True");
+    if(box == GetLeftChildBox())
+        link->SetLabel("False");
+    else if(box == GetRightChildBox())
+        link->SetLabel("True");
 }
 
 void DecisionNode::InitialPropertyWidgets()
@@ -68,10 +52,34 @@ void DecisionNode::InitialPropertyWidgets()
     Application::GetPropertyPanel()->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(SetConditionName(const QString& ))));
 }
 
+void DecisionNode::RearrangeToChildLinkBoxes()
+{
+    if(GetLeftChildBox() != nullptr)
+        GetLeftChildBox()->setPos(-shapeWidth,0);
+
+    if(GetRightChildBox() != nullptr)
+        GetRightChildBox()->setPos(shapeWidth,0);
+}
+
+void DecisionNode::RearrangeToParentLinkBox()
+{
+    GetToParentLinkBox()->setPos(0,-shapeHeight);
+}
+
 
 void DecisionNode::SetConditionName(const QString &value)
 {
     conditionName = value;
-    textItem->setPlainText(conditionName);
+    SetNodeName(value);
+}
+
+LinkBox *DecisionNode::GetLeftChildBox()
+{
+    return GetToChildLinkBox(0);
+}
+
+LinkBox *DecisionNode::GetRightChildBox()
+{
+    return GetToChildLinkBox(1);
 }
 

@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include "AttachBox.h"
 #include "Utilities/MenuContributer.h"
+#include "TreeUtilities/TreeNode.h"
 
 class BehaviorTask : public QGraphicsObject, public MenuContributer
 {

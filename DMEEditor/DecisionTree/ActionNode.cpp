@@ -1,10 +1,13 @@
 #include "ActionNode.h"
 #include "Core/Application.h"
+#include <QDebug>
 
 ActionNode::ActionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
-    SetActionName("Default");
-    ellipse->setBrush(QBrush(Qt::yellow));
+    CreateToParentLinkBox();
+    //SetShape(new QGraphicsRectItem());
+    SetLinkBoxesLock(true);
+    SetActionName("Action");
 }
 
 ActionNode::~ActionNode()
@@ -23,12 +26,16 @@ void ActionNode::InitialPropertyWidgets()
     Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(SetActionName(const QString& ))));
 }
 
+void ActionNode::RearrangeToParentLinkBox()
+{
+    GetToParentLinkBox()->setPos(0,-30);
+}
+
 
 void ActionNode::SetActionName(const QString& value)
 {
     actionName = value;
-    textItem->setPlainText(actionName);
-
+    SetNodeName(actionName);
 }
 
 

@@ -16,6 +16,8 @@ public:
 protected:
     void InitialPropertyWidgets() override;
 
+    void RearrangeToParentLinkBox() override;
+
 public slots:
     void SetActionName(const QString& value);
 
