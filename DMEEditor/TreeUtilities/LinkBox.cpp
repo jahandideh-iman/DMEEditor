@@ -102,7 +102,7 @@ void LinkBox::Unlink()
 
 void LinkBox::Remove()
 {
-
+    ownerNode->RemoveToChildLinkBox(this);
 }
 
 TreeNode *LinkBox::GetOwnerNode()

@@ -4,17 +4,16 @@
 
 CompoundTask::CompoundTask(CompoundTaskType type)
 {
-    toParentAttachBox = new AttachBox(AttachBox::Role_ToParent,this);
-    toParentAttachBox->setY(-30);
+    InitialToParentLinkBox();
 
-    AddToChildAttachBox(true);
+    AddARemoveableToChildLinkBox();
 
     this->type = type;
 
-    if(type == t_SelectorTask)
-        rect->setBrush(QBrush(Qt::blue));
-    else if (type == t_SequenceTask)
-        rect->setBrush(QBrush(Qt::red));
+//    if(type == t_SelectorTask)
+//        rect->setBrush(QBrush(Qt::blue));
+//    else if (type == t_SequenceTask)
+//        rect->setBrush(QBrush(Qt::red));
 }
 
 
@@ -29,16 +28,8 @@ CompoundTaskType CompoundTask::StringToTaskType(QString str)
 
 CompoundTask::~CompoundTask()
 {
-    for(AttachBox* box : toChildAttachBoxes)
-        delete box;
-    delete toParentAttachBox;
 }
 
-void CompoundTask::ContributeToMenu(QMenu *menu)
-{
-    BehaviorTask::ContributeToMenu(menu);
-    menu->addAction("Add Link", this, SLOT(AddRemoveableChildAttachBox()));
-}
 
 QString CompoundTask::GetTypeString()
 {
@@ -56,9 +47,9 @@ QVector<BehaviorTask *> CompoundTask::GetChildren()
 {
     QVector<BehaviorTask *> children;
 
-    for(AttachBox* box : toChildAttachBoxes)
+    for(LinkBox * box : toChildLinkBoxes)
     {
-        auto task = box->GetChildTask();
+        auto task = dynamic_cast<BehaviorTask*> (box->GetChildNode());
         if(task != nullptr)
             children.push_back(task);
     }
@@ -66,17 +57,11 @@ QVector<BehaviorTask *> CompoundTask::GetChildren()
     return children;
 }
 
-AttachBox *CompoundTask::GetAnEmptyToChildAttachBox()
+LinkBox *CompoundTask::GetAnEmptyToChildAttachBox()
 {
-    for(AttachBox *box : toChildAttachBoxes)
-        if(box->IsAttached() == false)
+    for(LinkBox *box : toChildLinkBoxes)
+        if(box->IsLinked() == false)
             return box;
-    AddToChildAttachBox(true);
-    return toChildAttachBoxes[toChildAttachBoxes.size()-1];
+    AddARemoveableToChildLinkBox();
+    return toChildLinkBoxes[toChildLinkBoxes.size()-1];
 }
-
-void CompoundTask::AddRemoveableChildAttachBox()
-{
-    AddToChildAttachBox(true);
-}
-

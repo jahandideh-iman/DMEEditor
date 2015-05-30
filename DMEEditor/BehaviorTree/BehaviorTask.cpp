@@ -4,64 +4,41 @@
 
 BehaviorTask::BehaviorTask()
 {
-    rect = new QGraphicsRectItem(QRect(-30,-30,60,60),this);
-    setFlag(QGraphicsItem::ItemIsSelectable);
-    setFlag(QGraphicsItem::ItemIsMovable);
-
-    rect->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 }
 
 BehaviorTask::~BehaviorTask()
 {
-    delete rect;
+
 }
 
-void BehaviorTask::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void BehaviorTask::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    painter;
-    option;
-    widget;
+    QGraphicsItem::mouseDoubleClickEvent(event);
+    InitialPropertyWidgets();
 }
 
-QRectF BehaviorTask::boundingRect() const
+void BehaviorTask::OnLinkBoxSelected(LinkBox *selected)
 {
-    return rect->boundingRect();
-}
-
-
-void BehaviorTask::ContributeToMenu(QMenu *menu)
-{
-    menu->addAction("Remove",this, SLOT(Remove()));
-}
-
-AttachBox *BehaviorTask::GetToParentAttachBox()
-{
-    return toParentAttachBox;
-}
-
-void BehaviorTask::AddToChildAttachBox(bool isRemoveable)
-{
-    auto box = new AttachBox(AttachBox::Role_ToChild,this);
-    box->SetRemoveable(isRemoveable);
-    toChildAttachBoxes.push_back(box);
-
-    RearrangeToChildAttachBoxes();
-}
-
-void BehaviorTask::RemoveToChildAttachBox(AttachBox *box)
-{
-    toChildAttachBoxes.removeOne(box);
-    delete box;
-    RearrangeToChildAttachBoxes();
+    ((BehaviorTreeEditor*) Application::Get()->GetEditor())->OnLinkBoxSelected(selected);
 }
 
 void BehaviorTask::Remove()
 {
-    ((BehaviorTreeEditor*) Application::Get()->GetEditor())->RemoveTask(this);
+   ((BehaviorTreeEditor*) Application::Get()->GetEditor())->RemoveTask(this);
 }
 
-void BehaviorTask::RearrangeToChildAttachBoxes()
+void BehaviorTask::RearrangeToChildLinkBoxes()
 {
-    for(int i = 0 ; i < toChildAttachBoxes.size() ; ++i)
-        toChildAttachBoxes[i]->setPos(i*15, 30);
+    for(int i = 0 ; i < toChildLinkBoxes.size() ; ++i)
+        toChildLinkBoxes[i]->setPos(i*15, 30);
+}
+
+void BehaviorTask::InitialPropertyWidgets()
+{
+
+}
+
+void BehaviorTask::RearrangeToParentLinkBox()
+{
+    GetToParentLinkBox()->setY(-30);
 }

@@ -16,13 +16,13 @@ ActionNode::~ActionNode()
 
 QString ActionNode::GetActionName()
 {
-    return actionName;
+    return GetNodeName();
 }
 
 void ActionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", actionName,this,SLOT(SetActionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", GetActionName(),this,SLOT(SetActionName(const QString& ))));
 }
 
 void ActionNode::RearrangeToParentLinkBox()
@@ -30,11 +30,7 @@ void ActionNode::RearrangeToParentLinkBox()
     GetToParentLinkBox()->setPos(0,-30);
 }
 
-
-void ActionNode::SetActionName(const QString& value)
+void ActionNode::SetActionName(const QString& name)
 {
-    actionName = value;
-    SetNodeName(actionName);
+    SetNodeName(name);
 }
-
-

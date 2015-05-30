@@ -1,42 +1,26 @@
 #ifndef BEHAVIORTASK_H
 #define BEHAVIORTASK_H
 
-#include <QGraphicsItem>
-#include "AttachBox.h"
-#include "Utilities/MenuContributer.h"
 #include "TreeUtilities/TreeNode.h"
 
-class BehaviorTask : public QGraphicsObject, public MenuContributer
+class BehaviorTask : public TreeNode
 {
-    Q_OBJECT
 public:
     BehaviorTask();
     virtual ~BehaviorTask();
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    QRectF boundingRect() const;
+    virtual LinkBox *GetAnEmptyToChildAttachBox() = 0;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-    void ContributeToMenu(QMenu *menu);
+    void OnLinkBoxSelected(LinkBox *selected) override;
 
-    AttachBox *GetToParentAttachBox();
-    virtual AttachBox *GetAnEmptyToChildAttachBox() = 0;
-
-public slots:
-    void AddToChildAttachBox(bool isRemoveable = false);
-    void RemoveToChildAttachBox(AttachBox *box);
-    void Remove();
-
-private:
-    void RearrangeToChildAttachBoxes();
+    void Remove() override;
 
 protected:
-    QGraphicsRectItem *rect = nullptr;
+    void RearrangeToParentLinkBox() override;
+    void RearrangeToChildLinkBoxes() override;
 
-    AttachBox *toParentAttachBox = nullptr;
-
-    QVector<AttachBox *> toChildAttachBoxes;
-
-
+    virtual void InitialPropertyWidgets() ;
 };
 
 #endif // BEHAVIORTASK_H

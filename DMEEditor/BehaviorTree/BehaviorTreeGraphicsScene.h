@@ -1,39 +1,28 @@
 #ifndef BEHAVIORTREEGRAPHICSSCENE_H
 #define BEHAVIORTREEGRAPHICSSCENE_H
 
-#include <QGraphicsScene>
+#include "Core/EditorGraphicsScene.h"
 
 class BehaviorTreeEditor;
 
-class BehaviorTreeGraphicsScene : public QGraphicsScene
+class BehaviorTreeGraphicsScene : public EditorGraphicsScene
 {
     Q_OBJECT
 public:
     BehaviorTreeGraphicsScene(BehaviorTreeEditor *editor);
     ~BehaviorTreeGraphicsScene();
 
-
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-
-    void StartTracking(QGraphicsItem *item);
-    void StopTracking();
-
 public slots:
     void CreateActionTaskHelper();
     void CreateSelectorTaskHelper();
     void CreateSequenceTaskHelper();
 
+protected:
+    void ContributeToMenu(QMenu *menu);
+
 private:
-    BehaviorTreeEditor *editor = nullptr;
+    BehaviorTreeEditor *GetEditor();
 
-    QPoint clickPosition;
-
-    QGraphicsLineItem *attachmentPlaceHolder = nullptr;
-
-    QGraphicsItem* trackedItem = nullptr;
 };
 
 #endif // BEHAVIORTREEGRAPHICSSCENE_H

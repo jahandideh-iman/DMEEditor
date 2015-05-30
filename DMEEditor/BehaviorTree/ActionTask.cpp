@@ -5,43 +5,31 @@
 
 ActionTask::ActionTask()
 {
-    toParentAttachBox = new AttachBox(AttachBox::Role_ToParent,this);
-    toParentAttachBox->setY(-30);
-
-    actionName = new QGraphicsTextItem(this);
-    InitialProperties();
+    InitialToParentLinkBox();
+    SetLinkBoxesLock(true);
 }
 
 ActionTask::~ActionTask()
 {
-    delete actionName;
-
 }
 
 void ActionTask::SetActionName(const QString &name)
 {
-    actionName->setPlainText(name);
-}
-
-void ActionTask::InitialProperties()
-{
-    Application::GetPropertyPanel()->Clear();
-    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", GetActionName(),this,SLOT(SetActionName(const QString& ))));
-
+    SetNodeName(name);
 }
 
 QString ActionTask::GetActionName()
 {
-    return actionName->toPlainText();
+    return GetNodeName();
 }
 
-void ActionTask::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void ActionTask::InitialPropertyWidgets()
 {
-    BehaviorTask::mouseDoubleClickEvent(event);
-    InitialProperties();
+    Application::GetPropertyPanel()->Clear();
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", GetActionName(),this,SLOT(SetActionName(const QString& ))));
 }
 
-AttachBox *ActionTask::GetAnEmptyToChildAttachBox()
+LinkBox *ActionTask::GetAnEmptyToChildAttachBox()
 {
     return nullptr;
 }

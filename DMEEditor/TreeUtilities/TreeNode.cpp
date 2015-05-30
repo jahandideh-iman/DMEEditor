@@ -43,6 +43,11 @@ void TreeNode::SetShape(QGraphicsItem *newShape)
     newShape->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 }
 
+void TreeNode::OnLinkBoxSelected(LinkBox *selectedBox)
+{
+    selectedBox;
+}
+
 void TreeNode::OnLinkBoxLinked(LinkBox *box, Link *link)
 {
     box; link;
@@ -50,6 +55,9 @@ void TreeNode::OnLinkBoxLinked(LinkBox *box, Link *link)
 
 void TreeNode::ContributeToMenu(QMenu *menu)
 {
+    if(isLinkBoxesLocked == false)
+         menu->addAction("Add Link",this, SLOT(AddARemoveableToChildLinkBox()));
+
     menu->addAction("Remove",this, SLOT(RemoveSlot()));
 }
 
@@ -94,6 +102,13 @@ void TreeNode::Remove()
     delete this;
 }
 
+void TreeNode::RemoveToChildLinkBox(LinkBox *box)
+{
+    toChildLinkBoxes.removeAll(box);
+    delete box;
+    RearrangeToChildLinkBoxes();
+}
+
 LinkBox *TreeNode::GetToChildLinkBox(int index)
 {
     if(index >= toChildLinkBoxes.size())
@@ -128,5 +143,10 @@ void TreeNode::SetNodeName(const QString &value)
     nodeName->setPlainText(value);
     nodeName->setZValue(10);
     nodeName->setPos(-nodeName->boundingRect().width()/2, -nodeName->boundingRect().height()/2);
+}
+
+QString TreeNode::GetNodeName()
+{
+    return nodeName->toPlainText();
 }
 

@@ -7,24 +7,17 @@ enum CompoundTaskType { t_None, t_SelectorTask, t_SequenceTask};
 
 class CompoundTask : public BehaviorTask
 {
-    Q_OBJECT
 public:
-
     static CompoundTaskType StringToTaskType(QString str);
 
     CompoundTask(CompoundTaskType type);
     ~CompoundTask();
 
-    void ContributeToMenu(QMenu* menu);
-
     QString GetTypeString();
 
     QVector<BehaviorTask *> GetChildren();
 
-    AttachBox *GetAnEmptyToChildAttachBox() override;
-
-public slots:
-    void AddRemoveableChildAttachBox();
+    LinkBox *GetAnEmptyToChildAttachBox() override;
 
 private:
     CompoundTaskType type;

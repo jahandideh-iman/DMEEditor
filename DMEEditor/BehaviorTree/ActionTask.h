@@ -6,23 +6,20 @@
 class ActionTask : public BehaviorTask
 {
     Q_OBJECT
+
 public:
     ActionTask();
     ~ActionTask();
 
     QString GetActionName();
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
-    AttachBox *GetAnEmptyToChildAttachBox() override;
+    LinkBox *GetAnEmptyToChildAttachBox() override;
 
 public slots:
     void SetActionName(const QString &name);
 
-private:
-    void InitialProperties();
-
-private:
-    QGraphicsTextItem* actionName;
+protected:
+    void InitialPropertyWidgets() override;
 
 };
 

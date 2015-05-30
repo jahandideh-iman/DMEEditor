@@ -29,20 +29,16 @@ public:
 
         DecisionTreeNode *GetChild()
         {
-            return  dynamic_cast<DecisionTreeNode *> (GetToChildLinkBox()->GetChildNode());
+            return  dynamic_cast<DecisionTreeNode *> (GetToChildLinkBox(0)->GetChildNode());
         }
 
-        LinkBox *GetToChildLinkBox()
-        {
-            return DecisionTreeNode::GetToChildLinkBox(0);
-        }
 
         void ContributeToMenu(QMenu *menu) override { menu;}
 
     protected:
         void RearrangeToChildLinkBoxes() override
         {
-            GetToChildLinkBox()->setPos(0,30);
+            GetToChildLinkBox(0)->setPos(0,30);
         }
     };
 

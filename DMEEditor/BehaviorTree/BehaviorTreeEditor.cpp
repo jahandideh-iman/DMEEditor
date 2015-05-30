@@ -1,8 +1,6 @@
 #include "BehaviorTreeEditor.h"
 #include "BehaviorTreeGraphicsScene.h"
 #include "ActionTask.h"
-#include "AttachBox.h"
-#include "Attachment.h"
 #include "CompoundTask.h"
 
 BehaviorTreeEditor::BehaviorTreeEditor()
@@ -10,111 +8,105 @@ BehaviorTreeEditor::BehaviorTreeEditor()
     scene = new BehaviorTreeGraphicsScene(this);
     view->setScene(scene);
 
-
-    dummyRoot = new RootTask();
-    dummyRoot->setPos(500,50);
-    scene->addItem(dummyRoot);
+    InitialDummyRoot();
 }
 
 BehaviorTreeEditor::~BehaviorTreeEditor()
 {
     for(auto task: tasks)
         delete task;
-
 }
 
-void BehaviorTreeEditor::CreateActionTask(QPoint pos)
+void BehaviorTreeEditor::CreateActionTask(QPointF pos)
 {
     AddTask(new ActionTask(), pos);
 }
 
-void BehaviorTreeEditor::CreateSequenceTask(QPoint pos)
+void BehaviorTreeEditor::CreateSequenceTask(QPointF pos)
 {
     AddTask(new CompoundTask(t_SequenceTask), pos);
 }
 
-void BehaviorTreeEditor::CreateSelectorTask(QPoint pos)
+void BehaviorTreeEditor::CreateSelectorTask(QPointF pos)
 {
     AddTask(new CompoundTask(t_SelectorTask), pos);
 }
 
-
-void BehaviorTreeEditor::AddTask(BehaviorTask *task, QPoint pos)
+void BehaviorTreeEditor::AddTask(BehaviorTask *task, QPointF pos)
 {
     task->setPos(pos);
     scene->addItem(task);
     tasks.push_back(task);
 }
 
-
 void BehaviorTreeEditor::RemoveTask(BehaviorTask *task)
 {
-    scene->removeItem(task);
+    tasks.removeAll(task);
     delete task;
 }
 
-void BehaviorTreeEditor::AttachBoxSelected(AttachBox *attachBox)
+void BehaviorTreeEditor::OnLinkBoxSelected(LinkBox* selectedBox)
 {
-    if(lastAttachBox != nullptr && attachBox != lastAttachBox)
+    if(lastSelectedLinkBox != nullptr && lastSelectedLinkBox != selectedBox)
     {
-        AttachTasks(lastAttachBox, attachBox);
-        SetInAttachingState(false);
+        LinkTasks(lastSelectedLinkBox, selectedBox);
+        SetInLinkingState(false);
     }
     else
     {
-        lastAttachBox = attachBox;
-        SetInAttachingState(true);
+        lastSelectedLinkBox = selectedBox;
+        SetInLinkingState(true);
     }
 }
 
-void BehaviorTreeEditor::CancelAttachment()
+void BehaviorTreeEditor::CancelMouseTacking()
 {
-    SetInAttachingState(false);
+    SetInLinkingState(false);
 }
 
-void BehaviorTreeEditor::AttachTasks(AttachBox *start, AttachBox *end)
+void BehaviorTreeEditor::LinkTasks(LinkBox *start, LinkBox *end)
 {
-    Attachment *attachment;
-    if(start->GetRole() == AttachBox::Role_ToParent && end->GetRole() == AttachBox::Role_ToChild )
-        attachment = new Attachment(end, start);
-    else if(end->GetRole() == AttachBox::Role_ToParent && start->GetRole() == AttachBox::Role_ToChild )
-        attachment = new Attachment(start, end);
+    Link *link;
+
+    if(start->IsParent() && end->IsChild())
+        link = new Link(start, end);
+    else if(end->IsParent()&& start->IsChild())
+        link = new Link(end, start);
     else
         return;
 
-    attachment->setZValue(start->zValue()-1);
-    scene->addItem(attachment);
+    scene->addItem(link);
 }
 
-void BehaviorTreeEditor::AttachTasks(BehaviorTask *parent, BehaviorTask *child)
+void BehaviorTreeEditor::LinkTasks(BehaviorTask *parent, BehaviorTask *child)
 {
-    AttachTasks(parent->GetAnEmptyToChildAttachBox(), child->GetToParentAttachBox());
-}
-
-void BehaviorTreeEditor::Detach(Attachment *attachment)
-{
-    scene->removeItem(attachment);
-    delete attachment;
+    LinkTasks(parent->GetAnEmptyToChildAttachBox(), child->GetToParentLinkBox());
 }
 
 BehaviorTask *BehaviorTreeEditor::GetRoot()
 {
-    return dummyRoot->GetToChildAttachBox()->GetChildTask();
+    return dummyRoot->GetChild();
 }
 
 void BehaviorTreeEditor::SetRoot(BehaviorTask *root)
 {
-    AttachTasks(dummyRoot->GetToChildAttachBox(), root->GetToParentAttachBox());
+    LinkTasks(dummyRoot->GetToChildLinkBox(0), root->GetToParentLinkBox());
 }
 
-void BehaviorTreeEditor::SetInAttachingState(bool flag)
+void BehaviorTreeEditor::SetInLinkingState(bool flag)
 {
     if(flag == false)
     {
-        lastAttachBox = nullptr;
-        ((BehaviorTreeGraphicsScene*) scene)->StopTracking();
-
+        lastSelectedLinkBox = nullptr;
+        ((BehaviorTreeGraphicsScene*) scene)->StopMouseTracking();
     }
     else
-        ((BehaviorTreeGraphicsScene*) scene)->StartTracking(lastAttachBox);
+        ((BehaviorTreeGraphicsScene*) scene)->StartMouseTracking(lastSelectedLinkBox);
+}
+
+void BehaviorTreeEditor::InitialDummyRoot()
+{
+    dummyRoot = new DummyRoot();
+    AddTask(dummyRoot, QPointF(view->sceneRect().width()/2, 50));
+    view->centerOn(dummyRoot);
 }

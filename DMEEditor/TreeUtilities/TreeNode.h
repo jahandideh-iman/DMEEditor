@@ -20,9 +20,11 @@ public:
 
     void SetShape(QGraphicsItem *newShape);
 
-    virtual void OnLinkBoxSelected(LinkBox *selectedBox) = 0;
+    virtual void OnLinkBoxSelected(LinkBox *selectedBox) ;
     virtual void OnLinkBoxLinked(LinkBox *box, Link *link);
     virtual void Remove();
+
+    void RemoveToChildLinkBox(LinkBox *box);
 
     LinkBox *GetToChildLinkBox(int index);
     LinkBox *GetToParentLinkBox();
@@ -42,12 +44,14 @@ protected:
     void InitialToParentLinkBox();
 
     void SetNodeName(const QString& value);
+    QString GetNodeName();
+
+protected:
+    LinkBox *toParentLinkBox  = nullptr;
+    QVector<LinkBox *> toChildLinkBoxes;
 
 private:
     QGraphicsItem *shape = nullptr;
-
-    LinkBox *toParentLinkBox  = nullptr;
-    QVector<LinkBox *> toChildLinkBoxes;
 
     bool isLinkBoxesLocked = false;
 

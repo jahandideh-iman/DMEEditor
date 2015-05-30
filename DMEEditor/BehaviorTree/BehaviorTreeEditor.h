@@ -4,25 +4,33 @@
 #include "Core/Editor.h"
 #include "BehaviorTask.h"
 
-class AttachBox;
-
 class BehaviorTreeEditor : public Editor
 {
-    class RootTask : public BehaviorTask
+    class DummyRoot : public BehaviorTask
     {
     public:
-        RootTask()
+        DummyRoot()
         {
-            rect->setBrush(QBrush(Qt::yellow));
-            AddToChildAttachBox(false);
+            AddAUnremoveableToChildLinkBox();
+
+            QPolygonF polygon;
+            polygon << QPointF(0, 30) << QPointF(30, -30) << QPointF(-30, -30);
+            QGraphicsPolygonItem *triangle = new QGraphicsPolygonItem(polygon);
+            triangle->setBrush(QBrush(Qt::yellow));
+            SetShape(triangle);
+            SetLinkBoxesLock(true);
         }
 
-        AttachBox *GetToChildAttachBox() { return toChildAttachBoxes[0];}
-        AttachBox *GetAnEmptyToChildAttachBox() override
+        BehaviorTask *GetChild()
         {
-            if(toChildAttachBoxes[0]->IsAttached())
+            return  dynamic_cast<BehaviorTask *> (GetToChildLinkBox(0)->GetChildNode());
+        }
+
+        LinkBox *GetAnEmptyToChildAttachBox() override
+        {
+            if(GetToChildLinkBox(0)->IsLinked())
                 return nullptr;
-            return toChildAttachBoxes[0];
+            return GetToChildLinkBox(0);
         }
 
         void ContributeToMenu(QMenu *menu){menu;}
@@ -32,31 +40,30 @@ public:
     BehaviorTreeEditor();
     ~BehaviorTreeEditor();
 
-    void CreateActionTask(QPoint pos);
-    void CreateSequenceTask(QPoint pos);
-    void CreateSelectorTask(QPoint pos);
+    void CreateActionTask(QPointF pos);
+    void CreateSequenceTask(QPointF pos);
+    void CreateSelectorTask(QPointF pos);
     void RemoveTask(BehaviorTask *task);
-    void AddTask(BehaviorTask *task, QPoint pos);
+    void AddTask(BehaviorTask *task, QPointF pos);
 
-    void AttachBoxSelected(AttachBox* attachBox);
-    void CancelAttachment();
+    void OnLinkBoxSelected(LinkBox *selectedBox);
+    void CancelMouseTacking() override;
 
-    void AttachTasks(AttachBox *start, AttachBox *end);
-    void AttachTasks(BehaviorTask *parent, BehaviorTask* child);
-    void Detach(Attachment* attachment);
+    void LinkTasks(LinkBox *start, LinkBox *end);
+    void LinkTasks(BehaviorTask *parent, BehaviorTask* child);
 
     BehaviorTask *GetRoot();
     void SetRoot(BehaviorTask *root);
 
 private:
-    void SetInAttachingState(bool flag);
+    void SetInLinkingState(bool flag);
 
-
+    void InitialDummyRoot();
 
 private:
-    RootTask *dummyRoot = nullptr;
+    DummyRoot *dummyRoot = nullptr;
 
-    AttachBox* lastAttachBox = nullptr;
+    LinkBox *lastSelectedLinkBox = nullptr;
 
     QVector<BehaviorTask*> tasks;
 };

@@ -14,8 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     BehaviorTree/ActionTask.cpp \
-    BehaviorTree/AttachBox.cpp \
-    BehaviorTree/Attachment.cpp \
     BehaviorTree/BehaviorTask.cpp \
     BehaviorTree/BehaviorTreeEditor.cpp \
     BehaviorTree/BehaviorTreeGraphicsScene.cpp \
@@ -45,8 +43,6 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     BehaviorTree/ActionTask.h \
-    BehaviorTree/AttachBox.h \
-    BehaviorTree/Attachment.h \
     BehaviorTree/BehaviorTask.h \
     BehaviorTree/BehaviorTreeEditor.h \
     BehaviorTree/BehaviorTreeGraphicsScene.h \

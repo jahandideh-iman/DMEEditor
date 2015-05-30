@@ -15,6 +15,7 @@ public:
     void OnLinkBoxSelected(LinkBox *selected) override;
 
     void Remove() override;
+
 protected:
     virtual void InitialPropertyWidgets() ;
 

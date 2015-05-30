@@ -96,7 +96,7 @@ BehaviorTask *BehaviorTreeIOManager::ExtractActionTask(IOManager::XMLNode *xmlNo
     ParseTaskPosition(actionTask, xmlNode);
     editor->AddTask(actionTask, actionTask->pos().toPoint());
     if(parent != nullptr)
-        editor->AttachTasks(parent, actionTask);
+        editor->LinkTasks(parent, actionTask);
     return actionTask;
 }
 
@@ -111,12 +111,12 @@ BehaviorTask *BehaviorTreeIOManager::ExtractCompoundTask(IOManager::XMLNode *xml
     auto childXMLNode = xmlNode->first_node("Child");
     while (childXMLNode != nullptr)
     {
-        editor->AttachTasks(compoundTask, ExtractTask(childXMLNode->first_node("Task")));
+        editor->LinkTasks(compoundTask, ExtractTask(childXMLNode->first_node("Task")));
         childXMLNode = childXMLNode->next_sibling("Child");
     }
 
     if(parent != nullptr)
-        editor->AttachTasks(parent, compoundTask);
+        editor->LinkTasks(parent, compoundTask);
 
     return compoundTask;
 }

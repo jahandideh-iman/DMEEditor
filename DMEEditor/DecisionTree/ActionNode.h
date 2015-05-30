@@ -20,10 +20,8 @@ protected:
     void RearrangeToParentLinkBox() override;
 
 public slots:
-    void SetActionName(const QString& value);
+    void SetActionName(const QString& name);
 
-private:
-    QString actionName;
 };
 
 #endif // ACTIONNODE_H

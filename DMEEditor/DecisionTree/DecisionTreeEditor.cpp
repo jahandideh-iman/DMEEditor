@@ -31,7 +31,7 @@ void DecisionTreeEditor::CreateDecisionNode(QPointF position)
 
 void DecisionTreeEditor::SetRoot(DecisionTreeNode *node)
 {
-    LinkNodes(dummyRoot->GetToChildLinkBox(), node->GetToParentLinkBox());
+    LinkNodes(dummyRoot->GetToChildLinkBox(0), node->GetToParentLinkBox());
 }
 
 DecisionTreeNode *DecisionTreeEditor::GetRoot()
