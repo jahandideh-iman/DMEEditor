@@ -10,7 +10,6 @@ LinkBox::LinkBox(Role role, TreeNode *owner /*= nullptr*/) : QGraphicsObject(own
 
     rect.setParentItem(this);
     rect.setRect(QRect(QPoint(-4,-4), QPoint(4,4)));
-
     rect.setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     if(role == Role_ToChild)

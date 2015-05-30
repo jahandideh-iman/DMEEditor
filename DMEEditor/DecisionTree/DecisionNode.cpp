@@ -13,7 +13,7 @@ DecisionNode::DecisionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 
     SetShape(diamond);
 
-    CreateToParentLinkBox();
+    InitialToParentLinkBox();
     AddAUnremoveableToChildLinkBox();
     AddAUnremoveableToChildLinkBox();
     SetLinkBoxesLock(true);

@@ -6,9 +6,7 @@
 FiniteStateMachineEditor::FiniteStateMachineEditor()
 {
     scene = new FiniteStateMachineGraphicsScene(this);
-    view = new QGraphicsView(scene);
-    view->setSceneRect(0,0,1000,1000);
-    view->setMouseTracking(true);
+    view->setScene(scene);
 }
 
 FiniteStateMachineEditor::~FiniteStateMachineEditor()

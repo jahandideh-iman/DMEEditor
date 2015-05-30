@@ -7,11 +7,8 @@
 DecisionTreeEditor::DecisionTreeEditor()
 {
     scene = new DecisionTreeGraphicsScene(this);
-    view = new QGraphicsView(scene);
-    view->setSceneRect(0,0,1000,1000);
-    view->setMouseTracking(true);
-    view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    view->setDragMode(QGraphicsView::RubberBandDrag);
+    view->setScene(scene);
+    view->setAlignment( Qt::AlignTop);
 
     InitialDummyRoot();
 }
@@ -56,7 +53,7 @@ void DecisionTreeEditor::OnLinkBoxSelected(LinkBox *selected)
     }
 }
 
-void DecisionTreeEditor::CancelLinking()
+void DecisionTreeEditor::CancelMouseTacking()
 {
     SetLinkingState(false);
 }
@@ -77,11 +74,17 @@ void DecisionTreeEditor::LinkNodes(LinkBox *box1, LinkBox *box2)
 
 void DecisionTreeEditor::LinkDecisionNodeTrueChild(DecisionNode *parent, DecisionTreeNode *child)
 {
+    if(child == nullptr)
+        return;
+
     LinkNodes(parent->GetRightChildBox(), child->GetToParentLinkBox());
 }
 
 void DecisionTreeEditor::LinkDecisionNodeFalseChild(DecisionNode *parent, DecisionTreeNode *child)
 {
+    if(child == nullptr)
+        return;
+
     LinkNodes(parent->GetLeftChildBox(), child->GetToParentLinkBox());
 }
 
@@ -100,6 +103,7 @@ void DecisionTreeEditor::InitialDummyRoot()
 {
     dummyRoot = new DummyRootNode();
     AddNode(dummyRoot, QPointF(view->sceneRect().width()/2, 50));
+    view->centerOn(dummyRoot);
 }
 
 void DecisionTreeEditor::AddNode(DecisionTreeNode *node, QPointF pos)
@@ -107,4 +111,10 @@ void DecisionTreeEditor::AddNode(DecisionTreeNode *node, QPointF pos)
     scene->addItem(node);
     nodes.push_back(node);
     node->setPos(pos);
+}
+
+void DecisionTreeEditor::RemoveNode(DecisionTreeNode *node)
+{
+    nodes.removeAll(node);
+    delete node;
 }

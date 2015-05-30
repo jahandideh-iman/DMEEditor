@@ -45,12 +45,12 @@ void TreeNode::SetShape(QGraphicsItem *newShape)
 
 void TreeNode::OnLinkBoxLinked(LinkBox *box, Link *link)
 {
-
+    box; link;
 }
 
 void TreeNode::ContributeToMenu(QMenu *menu)
 {
-    menu->addAction("Remove",this, SLOT(Remove()));
+    menu->addAction("Remove",this, SLOT(RemoveSlot()));
 }
 
 void TreeNode::SetLinkBoxesLock(bool lock)
@@ -84,6 +84,11 @@ void TreeNode::AddAUnremoveableToChildLinkBox()
     RearrangeToChildLinkBoxes();
 }
 
+void TreeNode::RemoveSlot()
+{
+    Remove();
+}
+
 void TreeNode::Remove()
 {
     delete this;
@@ -110,7 +115,7 @@ void TreeNode::RearrangeToParentLinkBox()
 {
 }
 
-void TreeNode::CreateToParentLinkBox()
+void TreeNode::InitialToParentLinkBox()
 {
     Q_ASSERT(toParentLinkBox == nullptr);
     toParentLinkBox = new LinkBox(LinkBox::Role_ToParent, this);

@@ -24,6 +24,11 @@ void DecisionTreeNode::OnLinkBoxSelected(LinkBox *selected)
     ((DecisionTreeEditor*) Application::Get()->GetEditor())->OnLinkBoxSelected(selected);
 }
 
+void DecisionTreeNode::Remove()
+{
+    ((DecisionTreeEditor*) Application::Get()->GetEditor())->RemoveNode(this);
+}
+
 void DecisionTreeNode::InitialPropertyWidgets()
 {
     Application::GetPropertyPanel()->Clear();

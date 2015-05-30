@@ -4,8 +4,7 @@
 
 ActionNode::ActionNode(QGraphicsItem *parent) : DecisionTreeNode(parent)
 {
-    CreateToParentLinkBox();
-    //SetShape(new QGraphicsRectItem());
+    InitialToParentLinkBox();
     SetLinkBoxesLock(true);
     SetActionName("Action");
 }

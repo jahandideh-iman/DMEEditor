@@ -2,6 +2,7 @@
 #define EDITOR_H
 
 #include "QGraphicsView"
+#include "EditorGraphicsScene.h"
 
 class Editor
 {
@@ -11,6 +12,8 @@ public:
 
     QGraphicsView *GetView();
     QGraphicsScene *GetScene();
+
+    virtual void CancelMouseTacking();
 
 protected:
     QGraphicsView *view = nullptr;

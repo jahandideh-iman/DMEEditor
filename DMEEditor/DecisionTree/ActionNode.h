@@ -7,6 +7,7 @@
 class ActionNode : public DecisionTreeNode
 {
     Q_OBJECT
+
 public:
     ActionNode(QGraphicsItem *parent = 0);
     ~ActionNode();

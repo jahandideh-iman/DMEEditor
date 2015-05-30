@@ -1,39 +1,26 @@
 #ifndef DECISIONTREEGRAPHICSSCENE_H
 #define DECISIONTREEGRAPHICSSCENE_H
 
-#include <QGraphicsScene>
+#include "Core/EditorGraphicsScene.h"
 
 class DecisionTreeEditor;
 
-class DecisionTreeGraphicsScene : public QGraphicsScene
+class DecisionTreeGraphicsScene : public EditorGraphicsScene
 {
     Q_OBJECT
 public:
     DecisionTreeGraphicsScene(DecisionTreeEditor *editor);
     ~DecisionTreeGraphicsScene();
 
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
-
-    void StartMouseTracking(QGraphicsItem *startingItem);
-    void StopMouseTracking();
+protected:
+    void ContributeToMenu(QMenu *menu) override;
 
 public slots:
     void CreateActionNodeHelper();
     void CreateDicisionNodeHelper();
 
 private:
-    bool IsTrackingMouse();
-
-    void UpdateMouseTrackingLine(QPointF scenePos);
-
-private:
-    DecisionTreeEditor *editor = nullptr;
-
-    QPointF clickPosition;
-
-    QGraphicsLineItem *mouseTrackingLine = nullptr;
-    QGraphicsItem* mouseTrackingStartingItem = nullptr;
+    DecisionTreeEditor *GetEditor();
 };
 
 #endif // DECISIONTREEGRAPHICSSCENE_H

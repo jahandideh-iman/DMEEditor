@@ -2,8 +2,6 @@
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
 #include "BehaviorTreeEditor.h"
-#include "AttachBox.h"
-#include "ActionTask.h"
 #include "Core/Application.h"
 #include "Utilities/MenuContributer.h"
 

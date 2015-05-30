@@ -7,8 +7,8 @@
 class DecisionNode : public DecisionTreeNode
 {
     Q_OBJECT
-public:
 
+public:
     DecisionNode(QGraphicsItem *parent = 0);
     ~DecisionNode();
 
@@ -18,7 +18,6 @@ public:
     QString GetConditionName();
 
     void OnLinkBoxLinked(LinkBox *box, Link *link);
-
 
     LinkBox *GetLeftChildBox();
     LinkBox *GetRightChildBox();
@@ -31,9 +30,6 @@ protected:
 
 public slots:
     void SetConditionName(const QString& value);
-
-private:
-
 
 private:
     QString conditionName;

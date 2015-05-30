@@ -8,18 +8,21 @@
 class TreeNode : public QGraphicsObject, public MenuContributer
 {
     Q_OBJECT
+
 public:
     TreeNode(QGraphicsItem *parent = nullptr);
     virtual ~TreeNode();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
     QRectF boundingRect() const override;
+
     void ContributeToMenu(QMenu *menu) override;
 
     void SetShape(QGraphicsItem *newShape);
 
     virtual void OnLinkBoxSelected(LinkBox *selectedBox) = 0;
     virtual void OnLinkBoxLinked(LinkBox *box, Link *link);
+    virtual void Remove();
 
     LinkBox *GetToChildLinkBox(int index);
     LinkBox *GetToParentLinkBox();
@@ -28,7 +31,7 @@ public slots:
     void AddARemoveableToChildLinkBox();
     void AddAUnremoveableToChildLinkBox();
 
-    void Remove();
+    void RemoveSlot();
 
 protected:
     void SetLinkBoxesLock(bool lock);
@@ -36,7 +39,7 @@ protected:
     virtual void RearrangeToChildLinkBoxes();
     virtual void RearrangeToParentLinkBox();
 
-    void CreateToParentLinkBox();
+    void InitialToParentLinkBox();
 
     void SetNodeName(const QString& value);
 
@@ -49,7 +52,6 @@ private:
     bool isLinkBoxesLocked = false;
 
     QGraphicsTextItem *nodeName = nullptr;
-
 };
 
 #endif // NODE_H

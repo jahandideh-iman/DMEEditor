@@ -47,11 +47,11 @@ private:
 
 private:
     Role role;
+    TreeNode *ownerNode;
+
     QGraphicsRectItem rect;
 
     Link *link = nullptr;
-
-    TreeNode *ownerNode;
 
     bool isRemoveable = false;
 };

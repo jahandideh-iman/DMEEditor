@@ -4,7 +4,6 @@
 #include <QGraphicsScene>
 
 class BehaviorTreeEditor;
-class AttachBox;
 
 class BehaviorTreeGraphicsScene : public QGraphicsScene
 {

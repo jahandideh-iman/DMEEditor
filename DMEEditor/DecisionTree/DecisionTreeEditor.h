@@ -2,7 +2,6 @@
 #define DECISIONTREEEDITOR_H
 
 #include "Core/Editor.h"
-#include "TreeUtilities/TreeNode.h"
 #include "DecisionTreeNode.h"
 
 class DecisionNode;
@@ -50,12 +49,13 @@ public:
     void CreateActionNode(QPointF position);
     void CreateDecisionNode(QPointF position);
     void AddNode(DecisionTreeNode *node, QPointF pos);
+    void RemoveNode(DecisionTreeNode *node);
 
     void SetRoot(DecisionTreeNode *node);
     DecisionTreeNode *GetRoot();
 
     void OnLinkBoxSelected(LinkBox *selected);
-    void CancelLinking();
+    void CancelMouseTacking() override;
 
     void LinkNodes(LinkBox *box1, LinkBox *box2);
     void LinkDecisionNodeTrueChild(DecisionNode *parent, DecisionTreeNode *child);
@@ -65,7 +65,6 @@ private:
     void SetLinkingState(bool state);
 
     void InitialDummyRoot();
-
 
 private:
     DummyRootNode *dummyRoot = nullptr;

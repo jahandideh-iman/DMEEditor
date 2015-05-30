@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     DecisionTree/DecisionTreeGraphicsScene.cpp \
     TreeUtilities/Link.cpp \
     TreeUtilities/LinkBox.cpp \
-    TreeUtilities/TreeNode.cpp
+    TreeUtilities/TreeNode.cpp \
+    Core/EditorGraphicsScene.cpp
 
 HEADERS  += \
     BehaviorTree/ActionTask.h \
@@ -72,6 +73,7 @@ HEADERS  += \
     DecisionTree/DecisionTreeGraphicsScene.h \
     TreeUtilities/Link.h \
     TreeUtilities/LinkBox.h \
-    TreeUtilities/TreeNode.h
+    TreeUtilities/TreeNode.h \
+    Core/EditorGraphicsScene.h
 
 FORMS    += mainwindow.ui

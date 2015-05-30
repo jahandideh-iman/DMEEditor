@@ -1,11 +1,6 @@
 #ifndef GUINODE_H
 #define GUINODE_H
 
-#include <QGraphicsItem>
-#include <QGraphicsEllipseItem>
-#include <QBrush>
-#include "Utilities/PropertyPanel.h"
-#include "Utilities/MenuContributer.h"
 #include "TreeUtilities/TreeNode.h"
 
 class DecisionTreeNode :  public TreeNode
@@ -19,6 +14,7 @@ public:
 
     void OnLinkBoxSelected(LinkBox *selected) override;
 
+    void Remove() override;
 protected:
     virtual void InitialPropertyWidgets() ;
 

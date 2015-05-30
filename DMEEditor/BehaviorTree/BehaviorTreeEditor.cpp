@@ -8,9 +8,8 @@
 BehaviorTreeEditor::BehaviorTreeEditor()
 {
     scene = new BehaviorTreeGraphicsScene(this);
-    view = new QGraphicsView(scene);
-    view->setSceneRect(0,0,1000,1000);
-    view->setMouseTracking(true);
+    view->setScene(scene);
+
 
     dummyRoot = new RootTask();
     dummyRoot->setPos(500,50);

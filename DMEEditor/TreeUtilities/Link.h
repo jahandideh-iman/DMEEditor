@@ -22,6 +22,7 @@ public:
 
     LinkBox *GetChildLinkBox();
     LinkBox *GetParentLinkBox();
+
 public slots:
     void Unlink();
 
