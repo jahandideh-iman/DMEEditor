@@ -2,45 +2,14 @@
 #include <QMenu>
 #include <QGraphicsSceneContextMenuEvent>
 
-CompoundTask::CompoundTask(CompoundTaskType type)
+CompoundTask::CompoundTask()
 {
     InitialToParentLinkBox();
-
     AddARemoveableToChildLinkBox();
-
-    this->type = type;
-
-//    if(type == t_SelectorTask)
-//        rect->setBrush(QBrush(Qt::blue));
-//    else if (type == t_SequenceTask)
-//        rect->setBrush(QBrush(Qt::red));
-}
-
-
-CompoundTaskType CompoundTask::StringToTaskType(QString str)
-{
-    if(str == "SequenceTask")
-        return t_SequenceTask;
-    if(str == "SelectorTask")
-        return t_SelectorTask;
-    return t_None;
 }
 
 CompoundTask::~CompoundTask()
 {
-}
-
-
-QString CompoundTask::GetTypeString()
-{
-    switch (type) {
-    case t_SelectorTask:
-        return "SelectorTask";
-    case t_SequenceTask:
-        return "SequenceTask";
-    default:
-        return "";
-    }
 }
 
 QVector<BehaviorTask *> CompoundTask::GetChildren()
@@ -65,3 +34,20 @@ LinkBox *CompoundTask::GetAnEmptyToChildAttachBox()
     AddARemoveableToChildLinkBox();
     return toChildLinkBoxes[toChildLinkBoxes.size()-1];
 }
+
+void CompoundTask::RearrangeToParentLinkBox()
+{
+    GetToParentLinkBox()->setY(-30);
+}
+
+void CompoundTask::RearrangeToChildLinkBoxes()
+{
+    int xDistance = 15;
+    int boxXPos = (toChildLinkBoxes.size()-1) / 2.0 * -xDistance;
+    for(int i = 0 ; i < toChildLinkBoxes.size() ; ++i)
+    {
+        toChildLinkBoxes[i]->setPos(boxXPos, 30);
+        boxXPos += xDistance;
+    }
+}
+

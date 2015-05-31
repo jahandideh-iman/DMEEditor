@@ -7,6 +7,8 @@ ActionTask::ActionTask()
 {
     InitialToParentLinkBox();
     SetLinkBoxesLock(true);
+
+    SetActionName("Action");
 }
 
 ActionTask::~ActionTask()
@@ -27,6 +29,11 @@ void ActionTask::InitialPropertyWidgets()
 {
     Application::GetPropertyPanel()->Clear();
     Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", GetActionName(),this,SLOT(SetActionName(const QString& ))));
+}
+
+void ActionTask::RearrangeToParentLinkBox()
+{
+    GetToParentLinkBox()->setY(-30);
 }
 
 LinkBox *ActionTask::GetAnEmptyToChildAttachBox()

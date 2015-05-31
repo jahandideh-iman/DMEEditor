@@ -20,7 +20,7 @@ public slots:
 
 protected:
     void InitialPropertyWidgets() override;
-
+    void RearrangeToParentLinkBox() override;
 };
 
 #endif // ACTIONTASK_H

@@ -27,18 +27,7 @@ void BehaviorTask::Remove()
    ((BehaviorTreeEditor*) Application::Get()->GetEditor())->RemoveTask(this);
 }
 
-void BehaviorTask::RearrangeToChildLinkBoxes()
-{
-    for(int i = 0 ; i < toChildLinkBoxes.size() ; ++i)
-        toChildLinkBoxes[i]->setPos(i*15, 30);
-}
-
 void BehaviorTask::InitialPropertyWidgets()
 {
 
-}
-
-void BehaviorTask::RearrangeToParentLinkBox()
-{
-    GetToParentLinkBox()->setY(-30);
 }

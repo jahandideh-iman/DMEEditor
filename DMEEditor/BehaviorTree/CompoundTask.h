@@ -3,24 +3,22 @@
 
 #include "BehaviorTask.h"
 
-enum CompoundTaskType { t_None, t_SelectorTask, t_SequenceTask};
-
 class CompoundTask : public BehaviorTask
 {
 public:
-    static CompoundTaskType StringToTaskType(QString str);
-
-    CompoundTask(CompoundTaskType type);
+    CompoundTask();
     ~CompoundTask();
-
-    QString GetTypeString();
 
     QVector<BehaviorTask *> GetChildren();
 
     LinkBox *GetAnEmptyToChildAttachBox() override;
 
-private:
-    CompoundTaskType type;
+    virtual QString GetType() = 0;
+
+protected:
+    void RearrangeToParentLinkBox() override;
+    void RearrangeToChildLinkBoxes() override;
+
 };
 
 #endif // COMPOUNDTASK_H

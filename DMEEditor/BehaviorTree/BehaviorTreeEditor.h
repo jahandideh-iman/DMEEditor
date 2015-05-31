@@ -33,6 +33,7 @@ class BehaviorTreeEditor : public Editor
             return GetToChildLinkBox(0);
         }
 
+        void RearrangeToChildLinkBoxes() override {GetToChildLinkBox(0)->setY(30); }
         void ContributeToMenu(QMenu *menu){menu;}
     };
 

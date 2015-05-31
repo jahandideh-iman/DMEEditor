@@ -1,8 +1,8 @@
 #include "BehaviorTreeIOManager.h"
 #include "BehaviorTreeEditor.h"
 #include "ActionTask.h"
-#include "CompoundTask.h"
-
+#include "SelectorTask.h"
+#include "SequenceTask.h"
 
 BehaviorTreeIOManager::BehaviorTreeIOManager()
 {
@@ -44,7 +44,7 @@ void BehaviorTreeIOManager::SaveTask(BehaviorTask *task, int depth)
     {
         auto compoundTask = dynamic_cast<CompoundTask*>(task);
 
-        WriteToFile( tabs + "<Task type=\""+ compoundTask->GetTypeString() +"\" " + xPos + yPos +" > \n");
+        WriteToFile( tabs + "<Task type=\""+ compoundTask->GetType() +"\" " + xPos + yPos +" > \n");
 
         for(auto child : compoundTask->GetChildren())
         {
@@ -102,8 +102,13 @@ BehaviorTask *BehaviorTreeIOManager::ExtractActionTask(IOManager::XMLNode *xmlNo
 
 BehaviorTask *BehaviorTreeIOManager::ExtractCompoundTask(IOManager::XMLNode *xmlNode, BehaviorTask *parent)
 {
-    CompoundTaskType type = CompoundTask::StringToTaskType(GetTaskType(xmlNode));
-    auto compoundTask = new CompoundTask(type);
+    QString taskType =  GetTaskType(xmlNode);
+    CompoundTask *compoundTask;
+    if(taskType == "SelectorTask")
+        compoundTask = new SelectorTask();
+    else if( taskType == "SequenceTask")
+        compoundTask = new SequenceTask();
+
     ParseTaskPosition(compoundTask, xmlNode);
 
     editor->AddTask(compoundTask, compoundTask->pos().toPoint());

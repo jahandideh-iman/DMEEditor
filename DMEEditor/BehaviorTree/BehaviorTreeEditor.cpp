@@ -1,7 +1,8 @@
 #include "BehaviorTreeEditor.h"
 #include "BehaviorTreeGraphicsScene.h"
 #include "ActionTask.h"
-#include "CompoundTask.h"
+#include "SequenceTask.h"
+#include "SelectorTask.h"
 
 BehaviorTreeEditor::BehaviorTreeEditor()
 {
@@ -24,12 +25,12 @@ void BehaviorTreeEditor::CreateActionTask(QPointF pos)
 
 void BehaviorTreeEditor::CreateSequenceTask(QPointF pos)
 {
-    AddTask(new CompoundTask(t_SequenceTask), pos);
+    AddTask(new SequenceTask(), pos);
 }
 
 void BehaviorTreeEditor::CreateSelectorTask(QPointF pos)
 {
-    AddTask(new CompoundTask(t_SelectorTask), pos);
+    AddTask(new SelectorTask(), pos);
 }
 
 void BehaviorTreeEditor::AddTask(BehaviorTask *task, QPointF pos)

@@ -39,7 +39,9 @@ SOURCES += main.cpp\
     TreeUtilities/Link.cpp \
     TreeUtilities/LinkBox.cpp \
     TreeUtilities/TreeNode.cpp \
-    Core/EditorGraphicsScene.cpp
+    Core/EditorGraphicsScene.cpp \
+    BehaviorTree/SequenceTask.cpp \
+    BehaviorTree/SelectorTask.cpp
 
 HEADERS  += \
     BehaviorTree/ActionTask.h \
@@ -70,6 +72,8 @@ HEADERS  += \
     TreeUtilities/Link.h \
     TreeUtilities/LinkBox.h \
     TreeUtilities/TreeNode.h \
-    Core/EditorGraphicsScene.h
+    Core/EditorGraphicsScene.h \
+    BehaviorTree/SequenceTask.h \
+    BehaviorTree/SelectorTask.h
 
 FORMS    += mainwindow.ui

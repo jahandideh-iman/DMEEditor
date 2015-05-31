@@ -138,11 +138,12 @@ void TreeNode::InitialToParentLinkBox()
     RearrangeToParentLinkBox();
 }
 
-void TreeNode::SetNodeName(const QString &value)
+void TreeNode::SetNodeName(const QString &value, float scale)
 {
     nodeName->setPlainText(value);
     nodeName->setZValue(10);
-    nodeName->setPos(-nodeName->boundingRect().width()/2, -nodeName->boundingRect().height()/2);
+    nodeName->setScale(scale);
+    nodeName->setPos(-nodeName->boundingRect().width()/2 * scale, -nodeName->boundingRect().height()/2 * scale);
 }
 
 QString TreeNode::GetNodeName()

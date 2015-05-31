@@ -43,7 +43,7 @@ protected:
 
     void InitialToParentLinkBox();
 
-    void SetNodeName(const QString& value);
+    void SetNodeName(const QString& value, float scale = 1);
     QString GetNodeName();
 
 protected:

@@ -17,9 +17,6 @@ public:
     void Remove() override;
 
 protected:
-    void RearrangeToParentLinkBox() override;
-    void RearrangeToChildLinkBoxes() override;
-
     virtual void InitialPropertyWidgets() ;
 };
 
