@@ -14,7 +14,7 @@ public:
     ~FiniteStateMachineEditor();
 
     void CreateState(QPointF pos);
-    void DeleteState(StateNode *state);
+    void RemoveState(StateNode *state);
     void AddState(StateNode* state);
     void ConnectStates(StateNode *startState, StateNode *endState);
     const QVector<StateNode *> &GetStates() const;
@@ -23,12 +23,22 @@ public:
     StateNode *GetRootState();
 
     void AddTransition(StateTransition *transition);
-    void DeleteTransition(StateTransition *transition);
+    void RemoveTransition(StateTransition *transition);
+
+    void OnStateSelected(StateNode *selected);
+    void CancelMouseTacking() override;
+    bool IsInConnectingState();
+
+private:
+
+    void SetConnectingState(bool state);
 
 private:
     StateNode* rootState = nullptr;
 
     QVector<StateNode *> states;
+
+    StateNode *lastSelectedNode = nullptr;
 
 };
 

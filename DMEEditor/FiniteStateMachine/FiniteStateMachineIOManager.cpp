@@ -6,6 +6,7 @@
 
 FiniteStateMachineIOManager::FiniteStateMachineIOManager()
 {
+
 }
 
 FiniteStateMachineIOManager::~FiniteStateMachineIOManager()
@@ -50,7 +51,10 @@ void FiniteStateMachineIOManager::SaveTransitions()
     {
         for(auto l : state->GetOutLinks())
         {
-            WriteToFile("       <Transition>\n");
+            QString xPos = "XPos=\"" +QString::number(l->GetHandlePos().x()) + "\"";
+            QString yPos = "YPos=\"" +QString::number(l->GetHandlePos().y()) + "\"";
+
+            WriteToFile("       <Transition " + xPos +" "+ yPos + " >\n");
             WriteToFile("           <From>" + l->GetStartNode()->GetStateName()+"</From>\n");
             WriteToFile("           <To>" + l->GetEndNode()->GetStateName()+"</To>\n");
             WriteToFile("           <Condition>" + l->GetConditionName()+"</Condition>\n");
@@ -136,12 +140,16 @@ void FiniteStateMachineIOManager::ParseTransitions(FiniteStateMachineIOManager::
 
 void FiniteStateMachineIOManager::ParseTransition(FiniteStateMachineIOManager::XMLNode *transitionXMLNode)
 {
+    float xPos = QString(transitionXMLNode->first_attribute("XPos")->value()).toFloat();
+    float yPos = QString(transitionXMLNode->first_attribute("YPos")->value()).toFloat();
+
     QString fromStateNode = transitionXMLNode->first_node("From")->value();
     QString toStateNode = transitionXMLNode->first_node("To")->value();
     QString condition = transitionXMLNode->first_node("Condition")->value();
 
     StateTransition* transition = new StateTransition(parsedStatesMap[fromStateNode], parsedStatesMap[toStateNode], condition);
     editor->AddTransition(transition);
+    transition->SetHandlePos(xPos, yPos);
 }
 
 void FiniteStateMachineIOManager::ParseInitialState(FiniteStateMachineIOManager::XMLNode *initalStateXMLNode)

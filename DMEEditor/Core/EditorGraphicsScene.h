@@ -2,6 +2,7 @@
 #define EDITORGRAPHICSSCENE_H
 
 #include <QGraphicsScene>
+#include "Utilities/MenuContributer.h"
 
 
 class Editor;

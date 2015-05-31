@@ -1,47 +1,29 @@
 #ifndef FINITESTATEMACHINEGRAPHICSSCENE_H
 #define FINITESTATEMACHINEGRAPHICSSCENE_H
 
-#include <QGraphicsScene>
+#include "Core/EditorGraphicsScene.h"
 
 class FiniteStateMachineEditor;
 class StateNode;
 class StateTransition;
 
-class FiniteStateMachineGraphicsScene : public QGraphicsScene
+class FiniteStateMachineGraphicsScene : public EditorGraphicsScene
 {
     Q_OBJECT
 public:
     FiniteStateMachineGraphicsScene(FiniteStateMachineEditor* editor);
     ~FiniteStateMachineGraphicsScene();
 
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
-
 public slots:
     void CreateNodeHelper();
-    void DeleteNodeHelper();
-    void StartConnectingNodeHelper();
-    void FinishConnectingNodeHelper(StateNode* endNode);
-    void CancelConnectingNodeHelper();
-    void SetRootNodeHelper();
 
-    void DeleteLinkHelper();
+protected:
+    void ContributeToMenu(QMenu *menu);
 
 private:
-    void ShowContextMenu(QGraphicsSceneContextMenuEvent *event);
-    void ShowContextMenuForNode(QGraphicsSceneContextMenuEvent *event, StateNode* node);
-    void ShowContextMenuForLink(QGraphicsSceneContextMenuEvent *event, StateTransition* link);
 
-    FiniteStateMachineEditor* editor;
+    FiniteStateMachineEditor *GetEditor();
 
-    QPointF contexMenuPosition;
-    StateNode* selectedNode = nullptr;
-    StateTransition* selectedLink = nullptr;
-
-    QGraphicsLineItem* connectionPlaceHolder = nullptr;
-
-    bool isInConnectingState = false;
 };
 
 #endif // FINITESTATEMACHINEGRAPHICSSCENE_H

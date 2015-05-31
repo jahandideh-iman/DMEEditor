@@ -23,7 +23,7 @@ QGraphicsView *Editor::GetView()
 
 }
 
-QGraphicsScene *Editor::GetScene()
+EditorGraphicsScene *Editor::GetScene()
 {
     return scene;
 }

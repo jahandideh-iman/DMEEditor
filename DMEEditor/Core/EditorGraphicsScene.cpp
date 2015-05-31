@@ -1,7 +1,6 @@
 #include "EditorGraphicsScene.h"
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-#include "Utilities/MenuContributer.h"
 #include "Editor.h"
 
 EditorGraphicsScene::EditorGraphicsScene(Editor *editor)

@@ -1,44 +1,31 @@
 #include "StateTransition.h"
 #include "StateNode.h"
-#include <QDebug>
-#include <QGraphicsScene>
 #include "Core/Application.h"
 #include "Utilities/StringProperty.h"
+#include "FiniteStateMachineEditor.h"
+#include "CurvedArrow.h"
 
 StateTransition::StateTransition(StateNode *startNode, StateNode *endNode, QString condition)
 {
-    this->setZValue(-10);
+    this->setZValue(startNode->zValue()+1);
     this->startNode = startNode;
     this->endNode = endNode;
-
-    rect =  new QGraphicsRectItem(QRect(-5,-5,10,10), this);
-    rect->setFlag(QGraphicsItem::ItemIsSelectable);
-    rect->setFlag(QGraphicsItem::ItemIsMovable);
-
-    SetConditionName(condition);
-
 
     startNode->AddOutLink(this);
     endNode->AddInLink(this);
 
-    pathPainter  = new QPainterPath(startNode->pos());
+    setPos(mapFromScene(startNode->scenePos()));
 
+    arrow = new CurvedArrow(startNode, endNode, startNode->GetRadius() ,this);
+    arrow->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
-    path = new QGraphicsPathItem(*pathPainter,this);
-    path->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
-
-    //line = new QGraphicsLineItem(this);
-
-    //line->setLine(QLineF(endNode->pos(), startNode->pos()));
-    //line->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
+    SetConditionName(condition);
 }
 
 StateTransition::~StateTransition()
 {
     RemoveFromStates();
-    delete rect;
-    delete path;
-    delete pathPainter;
+    delete arrow;
 }
 
 void StateTransition::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -54,34 +41,14 @@ void StateTransition::InitialPropertyWidgets()
 
 }
 
-
 void StateTransition::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    option;
-    widget;
-    //pathPainter->
-    QPainterPath pathPainter(startNode->pos());
-    pathPainter.quadTo(rect->pos(), endNode->pos());
-    path->setPath(pathPainter);
-
-    QLineF line(endNode->pos(), rect->pos());
-    line.setLength(20);
-    line.setAngle(line.angle() + 30);
-    painter->drawLine(line);
-    QLineF line2(endNode->pos(), rect->pos());
-    line2.setLength(20);
-    line2.setAngle(line2.angle() - 30);
-    painter->drawLine(line2);
-    //painter->drawPolygon(points,3);
-    //painter->drawPath(path->path().);
-    //path->path().quadTo(QPoint(0,0), endNode->pos());
-    //path->setPath();
-
+    painter;widget;option;
 }
 
 QRectF StateTransition::boundingRect() const
 {
-    return path->boundingRect();
+    return arrow->boundingRect();
 }
 
 StateNode *StateTransition::GetStartNode()
@@ -105,7 +72,28 @@ QString StateTransition::GetConditionName()
     return conditionName;
 }
 
+void StateTransition::ContributeToMenu(QMenu *menu)
+{
+    menu->addAction("Remove", this, SLOT(Remove()));
+}
+
+QPointF StateTransition::GetHandlePos()
+{
+    return arrow->GetHandlePos();
+}
+
+void StateTransition::SetHandlePos(float x, float y)
+{
+    arrow->SetHandleScenePos(x,y);
+}
+
+void StateTransition::Remove()
+{
+    ((FiniteStateMachineEditor*) Application::Get()->GetEditor())->RemoveTransition(this);
+}
+
 void StateTransition::SetConditionName(const QString &value)
 {
     conditionName = value;
+    arrow->SetLabelName(conditionName);
 }

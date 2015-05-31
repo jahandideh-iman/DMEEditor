@@ -1,28 +1,41 @@
 #ifndef STATENODE_H
 #define STATENODE_H
 
-#include <QGraphicsItem>
-#include <QVector>
-#include <vector>
-#include <QGraphicsTextItem>
+#include <QGraphicsObject>
+#include "Utilities/MenuContributer.h"
 
-using std::vector;
 
 class StateTransition;
 
-class StateNode : public QGraphicsObject
+class StateNode : public QGraphicsObject, public MenuContributer
 {
     Q_OBJECT
+
+    class Circle : public QGraphicsEllipseItem
+    {
+    public:
+        Circle(double radius, QGraphicsItem* parent) : QGraphicsEllipseItem(parent)
+        {
+            setRect(-radius, -radius , radius *2 , radius * 2);
+            this->radius = radius;
+        }
+
+        double GetRadius(){ return radius;}
+    private:
+        double radius;
+    };
+
 public:
-    enum { Type = UserType+16 };
-    int type() const { return Type; }
-    StateNode(QString name = "", QString updateAction = "", QString entryAction = "", QString exitAction = "");
+
+    StateNode(QString name = "State", QString updateAction = "", QString entryAction = "", QString exitAction = "");
     ~StateNode();
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     QRectF boundingRect() const;
+
+    void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
 
     void AddOutLink(StateTransition* link);
     void AddInLink(StateTransition* link);
@@ -40,8 +53,16 @@ public:
     QString GetEntryActionName();
     QString GetExitActionName();
 
+    void ContributeToMenu(QMenu *menu);
+
+    double GetRadius();
+
 
 public slots:
+    void Connect();
+    void Remove();
+    void SetAsRoot();
+
     void SetStateName(const QString& value);
     void SetUpdateActionName(const QString& value);
     void SetEntryActionName(const QString& value);
@@ -50,8 +71,10 @@ public slots:
 private:
     void InitialPropertyWidgets();
 
+    bool EditorIsInConnectingState();
+
 private:
-       QGraphicsEllipseItem* ellipse = nullptr;
+       Circle* circle = nullptr;
 
        QVector<StateTransition*> outLinks;
        QVector<StateTransition*> inLinks;
@@ -62,6 +85,8 @@ private:
        QString exitActionName;
 
        bool isRoot = false;
+
+       bool isBeingTracked = false;
 
        QGraphicsTextItem *stateNameTextItem = nullptr;
 };

@@ -41,6 +41,7 @@ void TreeNode::SetShape(QGraphicsItem *newShape)
     newShape->setZValue(0);
     newShape->setParentItem(this);
     newShape->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
+    shape->setFlag(QGraphicsItem::ItemIsSelectable, true);
 }
 
 void TreeNode::OnLinkBoxSelected(LinkBox *selectedBox)

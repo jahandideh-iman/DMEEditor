@@ -13,7 +13,7 @@ FiniteStateMachineEditor::~FiniteStateMachineEditor()
 {
     auto statesCopy(states);
     for(auto state : statesCopy)
-        DeleteState(state);
+        RemoveState(state);
 }
 
 void FiniteStateMachineEditor::CreateState(QPointF pos)
@@ -33,7 +33,7 @@ void FiniteStateMachineEditor::AddState(StateNode *state)
         SetRootState(state);
 }
 
-void FiniteStateMachineEditor::DeleteState(StateNode *state)
+void FiniteStateMachineEditor::RemoveState(StateNode *state)
 {
     if(rootState == state)
         rootState = nullptr;
@@ -73,8 +73,42 @@ void FiniteStateMachineEditor::AddTransition(StateTransition *transition)
     scene->addItem(transition);
 }
 
-void FiniteStateMachineEditor::DeleteTransition(StateTransition *transition)
+void FiniteStateMachineEditor::RemoveTransition(StateTransition *transition)
 {
-    scene->removeItem(transition);
     delete transition;
+}
+
+void FiniteStateMachineEditor::OnStateSelected(StateNode *selected)
+{
+    if(lastSelectedNode != nullptr && lastSelectedNode != selected)
+    {
+        ConnectStates(lastSelectedNode, selected);
+        SetConnectingState(false);
+    }
+    else
+    {
+        lastSelectedNode = selected;
+        SetConnectingState(true);
+    }
+}
+
+void FiniteStateMachineEditor::CancelMouseTacking()
+{
+    SetConnectingState(false);
+}
+
+bool FiniteStateMachineEditor::IsInConnectingState()
+{
+    return lastSelectedNode != nullptr;
+}
+
+void FiniteStateMachineEditor::SetConnectingState(bool state)
+{
+    if(state == false)
+    {
+        lastSelectedNode = nullptr;
+        scene->StopMouseTracking();
+    }
+    else
+        scene->StartMouseTracking(lastSelectedNode);
 }

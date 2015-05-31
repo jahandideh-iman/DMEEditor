@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     TreeUtilities/TreeNode.cpp \
     Core/EditorGraphicsScene.cpp \
     BehaviorTree/SequenceTask.cpp \
-    BehaviorTree/SelectorTask.cpp
+    BehaviorTree/SelectorTask.cpp \
+    FiniteStateMachine/CurvedArrow.cpp
 
 HEADERS  += \
     BehaviorTree/ActionTask.h \
@@ -74,6 +75,7 @@ HEADERS  += \
     TreeUtilities/TreeNode.h \
     Core/EditorGraphicsScene.h \
     BehaviorTree/SequenceTask.h \
-    BehaviorTree/SelectorTask.h
+    BehaviorTree/SelectorTask.h \
+    FiniteStateMachine/CurvedArrow.h
 
 FORMS    += mainwindow.ui

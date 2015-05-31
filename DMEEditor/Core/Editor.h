@@ -11,13 +11,13 @@ public:
     virtual ~Editor();
 
     QGraphicsView *GetView();
-    QGraphicsScene *GetScene();
+    EditorGraphicsScene *GetScene();
 
     virtual void CancelMouseTacking();
 
 protected:
     QGraphicsView *view = nullptr;
-    QGraphicsScene *scene = nullptr;
+    EditorGraphicsScene *scene = nullptr;
 };
 
 #endif // EDITOR_H
