@@ -2,6 +2,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include "Editor.h"
+#include "Application.h"
 
 EditorGraphicsScene::EditorGraphicsScene(Editor *editor)
 {
@@ -63,6 +64,13 @@ void EditorGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
     if(IsTrackingMouse())
         UpdateMouseTrackingLine(mouseEvent->scenePos());
+}
+
+void EditorGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    Application::Get()->GetPropertyPanel()->Clear();
+    QGraphicsScene::mouseDoubleClickEvent(event);
+
 }
 
 bool EditorGraphicsScene::IsTrackingMouse()

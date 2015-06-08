@@ -10,8 +10,6 @@ public:
     ~SelectorTask();
 
     QString GetType() override;
-
-
 };
 
 #endif // SELECTORTASK_H

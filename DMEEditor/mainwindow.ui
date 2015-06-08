@@ -16,11 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="viewLayout">
-      <item row="0" column="0">
-       <widget class="QListView" name="listView"/>
-      </item>
-     </layout>
+     <layout class="QGridLayout" name="viewLayout"/>
     </item>
    </layout>
   </widget>
@@ -33,15 +29,15 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuAsd">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionNew_Behavior_Tree"/>
-    <addaction name="actionNew_Finite_State_Machine"/>
     <addaction name="actionNew_Decision_Tree"/>
-    <addaction name="actionNew"/>
+    <addaction name="actionNew_Finite_State_Machine"/>
+    <addaction name="actionNew_Behavior_Tree"/>
+    <addaction name="separator"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionExit"/>
@@ -51,7 +47,7 @@
      <string>Edit</string>
     </property>
    </widget>
-   <addaction name="menuAsd"/>
+   <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

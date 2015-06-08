@@ -82,7 +82,7 @@ void Application::CreateNewBehaviorTree()
 void Application::SetEditor(Editor *editor)
 {
     DestoryEditor();
-
+    GetPropertyPanel()->Clear();
     this->editor = editor;
     ui->viewLayout->addWidget(editor->GetView(),0,0,3,1);
     ui->viewLayout->addWidget(GetPropertyPanel(),0,3,1,1, Qt::AlignLeft);

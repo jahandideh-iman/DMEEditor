@@ -1,6 +1,7 @@
 #include "BehaviorTask.h"
 #include "Core/Application.h"
 #include "BehaviorTreeEditor.h"
+#include <QDebug>
 
 BehaviorTask::BehaviorTask()
 {
@@ -8,7 +9,6 @@ BehaviorTask::BehaviorTask()
 
 BehaviorTask::~BehaviorTask()
 {
-
 }
 
 void BehaviorTask::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

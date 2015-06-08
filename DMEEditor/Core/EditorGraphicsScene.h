@@ -19,6 +19,7 @@ public:
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 protected:
     virtual void ContributeToMenu(QMenu *menu) = 0;

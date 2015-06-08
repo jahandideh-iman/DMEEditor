@@ -20,7 +20,6 @@ Editor::~Editor()
 QGraphicsView *Editor::GetView()
 {
     return view;
-
 }
 
 EditorGraphicsScene *Editor::GetScene()

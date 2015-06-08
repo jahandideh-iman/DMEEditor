@@ -49,7 +49,7 @@ void DecisionNode::OnLinkBoxLinked(LinkBox *box, Link *link)
 void DecisionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    Application::GetPropertyPanel()->AddProperty(new StringProperty("ConditionName", conditionName,this,SLOT(SetConditionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Condition Name", conditionName,this,SLOT(SetConditionName(const QString& ))));
 }
 
 void DecisionNode::RearrangeToChildLinkBoxes()

@@ -22,7 +22,7 @@ QString ActionNode::GetActionName()
 void ActionNode::InitialPropertyWidgets()
 {
     DecisionTreeNode::InitialPropertyWidgets();
-    Application::GetPropertyPanel()->AddProperty(new StringProperty("ActionName", GetActionName(),this,SLOT(SetActionName(const QString& ))));
+    Application::GetPropertyPanel()->AddProperty(new StringProperty("Action Name", GetActionName(),this,SLOT(SetActionName(const QString& ))));
 }
 
 void ActionNode::RearrangeToParentLinkBox()

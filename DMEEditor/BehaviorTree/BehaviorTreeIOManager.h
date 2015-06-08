@@ -33,8 +33,6 @@ private:
 private:
     void SaveTask(BehaviorTask *task, int depth = 1);
 
-
-
 };
 
 #endif // BEHAVIORTREEIOMANAGER_H

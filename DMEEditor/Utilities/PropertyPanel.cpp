@@ -2,7 +2,10 @@
 
 PropertyPanel::PropertyPanel(QWidget *parent) : QWidget(parent)
 {
+
     setLayout(&layout);
+    layout.setSpacing(10);
+    layout.setSizeConstraint(QLayout::SetFixedSize);
 }
 
 PropertyPanel::~PropertyPanel()
